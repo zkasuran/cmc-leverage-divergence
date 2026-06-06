@@ -1,0 +1,152 @@
+[
+ {
+  "rank": 1,
+  "symbol": "BTC",
+  "name": "Bitcoin",
+  "mc": 1218.0
+ },
+ {
+  "rank": 2,
+  "symbol": "ETH",
+  "name": "Ethereum",
+  "mc": 188.3
+ },
+ {
+  "rank": 3,
+  "symbol": "BNB",
+  "name": "BNB",
+  "mc": 77.6
+ },
+ {
+  "rank": 4,
+  "symbol": "XRP",
+  "name": "XRP",
+  "mc": 68.1
+ },
+ {
+  "rank": 5,
+  "symbol": "SOL",
+  "name": "Solana",
+  "mc": 35.9
+ },
+ {
+  "rank": 6,
+  "symbol": "TRX",
+  "name": "TRON",
+  "mc": 30.5
+ },
+ {
+  "rank": 7,
+  "symbol": "HYPE",
+  "name": "Hyperliquid",
+  "mc": 14.8
+ },
+ {
+  "rank": 8,
+  "symbol": "DOGE",
+  "name": "Dogecoin",
+  "mc": 13.9
+ },
+ {
+  "rank": 9,
+  "symbol": "LEO",
+  "name": "UNUS SED LEO",
+  "mc": 8.8
+ },
+ {
+  "rank": 10,
+  "symbol": "XLM",
+  "name": "Stellar",
+  "mc": 7.1
+ },
+ {
+  "rank": 11,
+  "symbol": "CC",
+  "name": "Canton",
+  "mc": 6.1
+ },
+ {
+  "rank": 12,
+  "symbol": "ZEC",
+  "name": "Zcash",
+  "mc": 5.9
+ },
+ {
+  "rank": 13,
+  "symbol": "ADA",
+  "name": "Cardano",
+  "mc": 5.8
+ },
+ {
+  "rank": 14,
+  "symbol": "XMR",
+  "name": "Monero",
+  "mc": 5.6
+ },
+ {
+  "rank": 15,
+  "symbol": "LINK",
+  "name": "Chainlink",
+  "mc": 5.4
+ },
+ {
+  "rank": 16,
+  "symbol": "BCH",
+  "name": "Bitcoin Cash",
+  "mc": 4.3
+ },
+ {
+  "rank": 17,
+  "symbol": "TON",
+  "name": "Toncoin",
+  "mc": 4.3
+ },
+ {
+  "rank": 18,
+  "symbol": "M",
+  "name": "MemeCore",
+  "mc": 3.7
+ },
+ {
+  "rank": 19,
+  "symbol": "HBAR",
+  "name": "Hedera",
+  "mc": 3.4
+ },
+ {
+  "rank": 20,
+  "symbol": "LTC",
+  "name": "Litecoin",
+  "mc": 3.3
+ },
+ {
+  "rank": 21,
+  "symbol": "AVAX",
+  "name": "Avalanche",
+  "mc": 2.9
+ },
+ {
+  "rank": 22,
+  "symbol": "SUI",
+  "name": "Sui",
+  "mc": 2.9
+ },
+ {
+  "rank": 23,
+  "symbol": "SHIB",
+  "name": "Shiba Inu",
+  "mc": 2.7
+ },
+ {
+  "rank": 24,
+  "symbol": "CRO",
+  "name": "Cronos",
+  "mc": 2.6
+ },
+ {
+  "rank": 25,
+  "symbol": "XAUt",
+  "name": "Tether Gold",
+  "mc": 2.6
+ }
+]

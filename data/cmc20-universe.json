@@ -1,0 +1,185 @@
+{
+ "index20": [
+  {
+   "symbol": "BTC",
+   "name": "Bitcoin",
+   "mc": 1218.0,
+   "rank": 1,
+   "hedgeable": true
+  },
+  {
+   "symbol": "ETH",
+   "name": "Ethereum",
+   "mc": 188.3,
+   "rank": 2,
+   "hedgeable": true
+  },
+  {
+   "symbol": "BNB",
+   "name": "BNB",
+   "mc": 77.6,
+   "rank": 3,
+   "hedgeable": true
+  },
+  {
+   "symbol": "XRP",
+   "name": "XRP",
+   "mc": 68.1,
+   "rank": 4,
+   "hedgeable": true
+  },
+  {
+   "symbol": "SOL",
+   "name": "Solana",
+   "mc": 35.9,
+   "rank": 5,
+   "hedgeable": true
+  },
+  {
+   "symbol": "TRX",
+   "name": "TRON",
+   "mc": 30.5,
+   "rank": 6,
+   "hedgeable": true
+  },
+  {
+   "symbol": "HYPE",
+   "name": "Hyperliquid",
+   "mc": 14.8,
+   "rank": 7,
+   "hedgeable": true
+  },
+  {
+   "symbol": "DOGE",
+   "name": "Dogecoin",
+   "mc": 13.9,
+   "rank": 8,
+   "hedgeable": true
+  },
+  {
+   "symbol": "LEO",
+   "name": "UNUS SED LEO",
+   "mc": 8.8,
+   "rank": 9,
+   "hedgeable": false
+  },
+  {
+   "symbol": "XLM",
+   "name": "Stellar",
+   "mc": 7.1,
+   "rank": 10,
+   "hedgeable": true
+  },
+  {
+   "symbol": "CC",
+   "name": "Canton",
+   "mc": 6.1,
+   "rank": 11,
+   "hedgeable": true
+  },
+  {
+   "symbol": "ZEC",
+   "name": "Zcash",
+   "mc": 5.9,
+   "rank": 12,
+   "hedgeable": true
+  },
+  {
+   "symbol": "ADA",
+   "name": "Cardano",
+   "mc": 5.8,
+   "rank": 13,
+   "hedgeable": true
+  },
+  {
+   "symbol": "XMR",
+   "name": "Monero",
+   "mc": 5.6,
+   "rank": 14,
+   "hedgeable": true
+  },
+  {
+   "symbol": "LINK",
+   "name": "Chainlink",
+   "mc": 5.4,
+   "rank": 15,
+   "hedgeable": true
+  },
+  {
+   "symbol": "BCH",
+   "name": "Bitcoin Cash",
+   "mc": 4.3,
+   "rank": 16,
+   "hedgeable": true
+  },
+  {
+   "symbol": "TON",
+   "name": "Toncoin",
+   "mc": 4.3,
+   "rank": 17,
+   "hedgeable": true
+  },
+  {
+   "symbol": "M",
+   "name": "MemeCore",
+   "mc": 3.7,
+   "rank": 18,
+   "hedgeable": true
+  },
+  {
+   "symbol": "HBAR",
+   "name": "Hedera",
+   "mc": 3.4,
+   "rank": 19,
+   "hedgeable": true
+  },
+  {
+   "symbol": "LTC",
+   "name": "Litecoin",
+   "mc": 3.3,
+   "rank": 20,
+   "hedgeable": true
+  }
+ ],
+ "watch": [
+  {
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "mc": 2.9,
+   "rank": 21,
+   "hedgeable": true
+  },
+  {
+   "symbol": "SUI",
+   "name": "Sui",
+   "mc": 2.9,
+   "rank": 22,
+   "hedgeable": true
+  },
+  {
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 2.7,
+   "rank": 23,
+   "hedgeable": false
+  },
+  {
+   "symbol": "CRO",
+   "name": "Cronos",
+   "mc": 2.6,
+   "rank": 24,
+   "hedgeable": false
+  },
+  {
+   "symbol": "XAUt",
+   "name": "Tether Gold",
+   "mc": 2.6,
+   "rank": 25,
+   "hedgeable": false
+  }
+ ],
+ "tradeable": 19,
+ "untradeable": [
+  "LEO"
+ ]
+}
