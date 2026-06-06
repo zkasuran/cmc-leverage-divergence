@@ -35,7 +35,10 @@
     "eventstudy": "tsx src/cli.ts eventstudy",
     "cmc20": "tsx src/cli.ts cmc20",
     "spec": "tsx src/cli.ts spec",
-    "regime": "tsx src/cli.ts regime"
+    "regime": "tsx src/cli.ts regime",
+    "refresh-universe": "node scripts/refresh-universe.mjs",
+    "build-frontend": "node scripts/build-frontend.mjs",
+    "refresh": "npm run refresh-universe && npm run cmc20 && npm run spec && npm run build-frontend"
   },
   "engines": {
     "node": ">=18"

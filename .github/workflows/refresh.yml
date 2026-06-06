@@ -1,0 +1,47 @@
+name: Refresh data + frontend
+
+# Every 4 hours (at :17 to avoid the on-the-hour stampede), plus manual trigger.
+on:
+  schedule:
+    - cron: "17 */4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci || npm install
+
+      - name: Refresh CMC20 universe + reports + frontend
+        run: |
+          npm run refresh-universe
+          npm run cmc20
+          npm run spec
+          npm run build-frontend
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json index.html demo/index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: auto-refresh CMC20 universe + frontend [skip ci]"
+            git push
+          fi
