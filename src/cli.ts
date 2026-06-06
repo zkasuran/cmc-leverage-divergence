@@ -11,11 +11,14 @@
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeFileSync, mkdirSync } from "node:fs";
-import { loadDataset } from "./data/loaders.js";
+import { loadDataset, ASSETS, PRIMARY } from "./data/loaders.js";
 import { emitReport } from "./report/emit.js";
 import { makeLeverageDivergence } from "./strategy/leverage-divergence.js";
 import { runStrategy, perYear, ablationSet, type YearRow } from "./runners/run.js";
+import { crossAsset, costSensitivity, eventStudy } from "./runners/analysis.js";
 import type { Metrics } from "./types.js";
+
+const PRIMARY_SYMBOL = ASSETS.find((a) => a.prefix === PRIMARY)?.symbol ?? "BNBUSDT";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPORTS = resolve(HERE, "..", "reports");
@@ -36,13 +39,73 @@ function summarize(label: string, m: Metrics): string {
 }
 
 async function cmdBacktest() {
-  const { bars, signals } = loadDataset();
-  const { scorecard, fills, equityCurve } = await runStrategy(makeLeverageDivergence(), bars, signals);
+  const { bars, signals } = loadDataset(PRIMARY);
+  const { scorecard, fills, equityCurve } = await runStrategy(
+    makeLeverageDivergence({ symbol: PRIMARY_SYMBOL }),
+    bars,
+    signals,
+    { symbol: PRIMARY_SYMBOL },
+  );
   const outDir = resolve(REPORTS, "full");
   emitReport(scorecard, fills, equityCurve, outDir);
-  console.log(`Dataset: ${bars.length} daily bars, sha256 ${scorecard.manifest.datasetSha256.slice(0, 12)}…`);
+  console.log(`${PRIMARY_SYMBOL}: ${bars.length} daily bars, sha256 ${scorecard.manifest.datasetSha256.slice(0, 12)}…`);
   console.log(summarize("leverage-divergence", scorecard.metrics));
   console.log(`Reports written to ${outDir}/`);
+}
+
+async function cmdMultiasset() {
+  const rows = await crossAsset();
+  console.log("Headline vs buy-and-hold across assets:");
+  console.log("asset    strat:Sharpe DD%    ret%   | BH:Sharpe DD%    ret%   | fundOff:Sh | PSR  DSR");
+  for (const r of rows) {
+    const s = r.headline, b = r.buyHold;
+    console.log(
+      `${r.symbol.padEnd(8)} ${fmt(s.sharpe)}  ${fmt(s.maxDrawdownPct).padStart(5)} ${fmt(s.totalReturnPct).padStart(8)}` +
+      `  | ${fmt(b.sharpe)}  ${fmt(b.maxDrawdownPct).padStart(5)} ${fmt(b.totalReturnPct).padStart(8)}` +
+      `  | ${fmt(r.fundingOffSharpe).padStart(6)}   | ${fmt(r.psr)} ${fmt(r.dsr)}`,
+    );
+  }
+  mkdirSync(REPORTS, { recursive: true });
+  const csv =
+    "asset,strat_sharpe,strat_maxdd,strat_ret,bh_sharpe,bh_maxdd,bh_ret,funding_off_sharpe,psr,dsr\n" +
+    rows.map((r) => `${r.symbol},${fmt(r.headline.sharpe)},${fmt(r.headline.maxDrawdownPct)},${fmt(r.headline.totalReturnPct)},${fmt(r.buyHold.sharpe)},${fmt(r.buyHold.maxDrawdownPct)},${fmt(r.buyHold.totalReturnPct)},${fmt(r.fundingOffSharpe)},${fmt(r.psr)},${fmt(r.dsr)}`).join("\n") + "\n";
+  writeFileSync(resolve(REPORTS, "multiasset.csv"), csv, "utf8");
+  console.log(`\nWrote ${resolve(REPORTS, "multiasset.csv")}`);
+}
+
+async function cmdCosts() {
+  const rows = await costSensitivity(PRIMARY, PRIMARY_SYMBOL);
+  console.log(`Cost sensitivity (${PRIMARY_SYMBOL}), headline strategy:`);
+  console.log("fee_bps  slip_bps  return%   maxDD%   Sharpe");
+  for (const r of rows) {
+    console.log(`${String(r.feeBps).padStart(6)}  ${String(r.slippageBps).padStart(7)}  ${fmt(r.returnPct).padStart(8)}  ${fmt(r.maxDrawdownPct).padStart(6)}  ${fmt(r.sharpe).padStart(6)}`);
+  }
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(
+    resolve(REPORTS, "cost-sensitivity.csv"),
+    "fee_bps,slippage_bps,return_pct,maxdd_pct,sharpe\n" +
+      rows.map((r) => `${r.feeBps},${r.slippageBps},${fmt(r.returnPct)},${fmt(r.maxDrawdownPct)},${fmt(r.sharpe)}`).join("\n") + "\n",
+    "utf8",
+  );
+  console.log(`\nWrote ${resolve(REPORTS, "cost-sensitivity.csv")}`);
+}
+
+async function cmdEventStudy() {
+  const { bars, signals } = loadDataset(PRIMARY);
+  const stats = eventStudy(bars, signals, [7, 30]);
+  console.log(`Signal event study (${PRIMARY_SYMBOL}): forward return by divergence state`);
+  console.log("horizon  state          n     meanFwd%   hitRate%");
+  for (const s of stats) {
+    console.log(`${String(s.horizonDays).padStart(5)}d  ${s.state.padEnd(13)} ${String(s.n).padStart(4)}   ${fmt(s.meanForwardPct).padStart(8)}   ${fmt(s.hitRatePct).padStart(7)}`);
+  }
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(
+    resolve(REPORTS, "event-study.csv"),
+    "horizon_days,state,n,mean_forward_pct,hit_rate_pct\n" +
+      stats.map((s) => `${s.horizonDays},${s.state},${s.n},${fmt(s.meanForwardPct)},${fmt(s.hitRatePct)}`).join("\n") + "\n",
+    "utf8",
+  );
+  console.log(`\nWrote ${resolve(REPORTS, "event-study.csv")}`);
 }
 
 function printYearTable(rows: YearRow[]) {
@@ -98,8 +161,14 @@ async function main() {
       return cmdWalkforward();
     case "ablation":
       return cmdAblation();
+    case "multiasset":
+      return cmdMultiasset();
+    case "costs":
+      return cmdCosts();
+    case "eventstudy":
+      return cmdEventStudy();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy.`);
       process.exit(1);
   }
 }

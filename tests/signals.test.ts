@@ -40,25 +40,24 @@ describe("computeFeatures", () => {
     expect(computeFeatures(short, sigs(short.map(() => 0.0001)))).toBeNull();
   });
 
-  it("capitulation: abnormally negative funding + weak price => add above base", () => {
+  it("leverage flush: abnormally negative funding + weak price => trim below base", () => {
     const closes = idx.map((k) => 100 - 0.2 * k); // gentle decline
     const funding = idx.map((k) => (k < 33 ? 0.0001 : -0.002)); // abnormally negative tail
     const f = computeFeatures(closes, sigs(funding, 10, 1.0))!;
     expect(f).not.toBeNull();
     expect(f.fundingZ).toBeLessThan(-DEFAULT_DIVERGENCE_CONFIG.zEnter);
-    expect(f.divergence).toBeGreaterThan(0);
-    expect(f.target).toBeGreaterThan(DEFAULT_DIVERGENCE_CONFIG.base);
-    expect(f.target).toBeLessThanOrEqual(1);
+    expect(f.divergence).toBeLessThan(0); // leverage giving up in weakness => step aside
+    expect(f.target).toBeLessThan(DEFAULT_DIVERGENCE_CONFIG.base);
   });
 
-  it("blowoff: abnormally positive funding + extended price => trim below base", () => {
+  it("confirmed momentum: abnormally positive funding + extended price => add above base", () => {
     const closes = idx.map((k) => 100 * Math.pow(1.02, k)); // strong uptrend
     const funding = idx.map((k) => (k < 33 ? 0.0001 : 0.004)); // abnormally positive tail
     const f = computeFeatures(closes, sigs(funding, 85, 1.0))!;
     expect(f.pRet).toBeGreaterThan(DEFAULT_DIVERGENCE_CONFIG.priceUp);
     expect(f.fundingZ).toBeGreaterThan(DEFAULT_DIVERGENCE_CONFIG.zEnter);
-    expect(f.divergence).toBeLessThan(0);
-    expect(f.target).toBeLessThan(DEFAULT_DIVERGENCE_CONFIG.base);
+    expect(f.divergence).toBeGreaterThan(0); // leverage-confirmed uptrend => ride it
+    expect(f.target).toBeGreaterThan(DEFAULT_DIVERGENCE_CONFIG.base);
   });
 
   it("neutral funding => no divergence tilt, target near base", () => {
@@ -70,10 +69,10 @@ describe("computeFeatures", () => {
   });
 
   it("crowding cuts size as the long/short ratio skews", () => {
-    const closes = idx.map((k) => 100 - 0.2 * k);
-    const funding = idx.map((k) => (k < 33 ? 0.0001 : -0.002));
-    const neutral = computeFeatures(closes, sigs(funding, 10, 1.0))!;
-    const crowded = computeFeatures(closes, sigs(funding, 10, 3.0))!;
+    const closes = idx.map((k) => 100 * Math.pow(1.02, k)); // confirmed-up so target > 0
+    const funding = idx.map((k) => (k < 33 ? 0.0001 : 0.004));
+    const neutral = computeFeatures(closes, sigs(funding, 85, 1.0))!;
+    const crowded = computeFeatures(closes, sigs(funding, 85, 3.0))!;
     expect(neutral.crowdingSize).toBe(1);
     expect(crowded.crowdingSize).toBeLessThan(1);
     expect(crowded.target).toBeLessThan(neutral.target);
@@ -86,10 +85,9 @@ describe("trend regime gate", () => {
     const up = Array.from({ length: 115 }, (_, k) => 100 + k); // long uptrend
     const down = Array.from({ length: 15 }, (_, k) => 214 - 8 * k); // sharp drop under the MA
     const closes = [...up, ...down];
-    const funding = closes.map((_, k) => (k < closes.length - 5 ? 0.0001 : -0.003)); // capitulation tail
+    const funding = closes.map(() => 0.0001);
     const f = computeFeatures(closes, sigs(funding), cfg)!;
-    expect(f.divergence).toBeGreaterThan(0); // signal still bullish
-    expect(f.trendFactor).toBe(cfg.riskOffFactor); // but regime is risk-off
+    expect(f.trendFactor).toBe(cfg.riskOffFactor); // price below the MA => risk-off
     expect(f.target).toBeLessThanOrEqual(cfg.riskOffFactor); // so the book is cut
   });
 });
@@ -98,13 +96,12 @@ describe("ablation toggles", () => {
   const closes = idx.map((k) => 100 - 0.2 * k);
   const funding = idx.map((k) => (k < 33 ? 0.0001 : -0.002));
 
-  it("useDivergence=false falls back to pure funding contrarian", () => {
+  it("useDivergence=false removes the funding signal entirely", () => {
     const f = computeFeatures(closes, sigs(funding, 10, 1.0), {
       ...DEFAULT_DIVERGENCE_CONFIG,
       useDivergence: false,
     })!;
-    // funding is abnormally negative => contrarian long bias stays positive
-    expect(f.divergence).toBeGreaterThan(0);
+    expect(f.divergence).toBe(0);
   });
 
   it("useFng=false zeroes the Fear & Greed tilt", () => {

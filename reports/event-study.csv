@@ -1,0 +1,7 @@
+horizon_days,state,n,mean_forward_pct,hit_rate_pct
+7,confirmed-up,132,5.20,56.82
+7,flush-down,156,1.45,50.64
+7,neutral,2176,1.45,52.71
+30,confirmed-up,128,14.23,72.66
+30,flush-down,156,2.76,53.21
+30,neutral,2157,9.38,56.05

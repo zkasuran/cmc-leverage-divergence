@@ -96,7 +96,7 @@ export interface Features {
   fearGreed: number | null;
   /** Long/short ratio carried as-of the bar (or null). */
   longShortRatio: number | null;
-  /** Divergence core score in [-1, 1] (+ = long capitulation, - = de-risk). */
+  /** Leverage signal in [-1, 1] (+ = funding-confirmed momentum/add, - = leverage flush/trim). */
   divergence: number;
   /** Fear & Greed contrarian tilt in [-1, 1]. */
   fngTilt: number;
@@ -190,24 +190,28 @@ export function computeFeatures(
   const fChg = fNow - fBaseline;
   const fundingChgZ = zscore(fChg, fWindow.map((v) => v - fBaseline));
 
-  // --- Divergence core (tilt in [-1, 1]) ---
-  // Capitulation (+): funding abnormally NEGATIVE (crowded shorts paying longs),
-  // gated by price weakness => add. Blowoff (-): funding abnormally POSITIVE
-  // (crowded longs), gated by price extension => trim. The signal is the
-  // leverage-vs-price divergence, never a fixed funding level.
+  // --- Leverage signal, the funding x price interaction, tilt in [-1, 1] ---
+  // The event study (references/backtest-results.md) shows the popular contrarian
+  // reading is BACKWARDS at daily horizon: leverage-CONFIRMED momentum predicts,
+  // capitulation does not bounce. So the score is positive when funding and price
+  // AGREE (confirmed up) and negative when leverage flushes into weakness.
+  //   confirmedUp (+): funding abnormally POSITIVE (leverage building) and price
+  //     extended up => ride it.
+  //   flushDown (-): funding abnormally NEGATIVE (leverage giving up) and price
+  //     weak => step aside.
+  // The `contrarian` ablation flips the tilt and underperforms, which is the proof.
   let divergence = 0;
   if (cfg.useDivergence) {
     const sNeg = clamp01((-fundingZ - cfg.zEnter) / cfg.zScale); // arms once fundingZ <= -zEnter
     const sPos = clamp01((fundingZ - cfg.zEnter) / cfg.zScale); //  arms once fundingZ >= +zEnter
     const priceWeak = clamp01((cfg.priceFlat - pRet) / cfg.priceScale + 0.5);
     const priceHot = clamp01((pRet - cfg.priceUp) / cfg.priceScale + 0.5);
-    const capit = sNeg * priceWeak;
-    const blow = sPos * priceHot;
-    divergence = clamp(capit - blow, -1, 1);
-  } else {
-    // Ablation fallback: pure funding contrarian (no price gating, no symmetry).
-    divergence = clamp(-fundingZ / cfg.zScale, -1, 1);
+    const confirmedUp = sPos * priceHot;
+    const flushDown = sNeg * priceWeak;
+    divergence = clamp(confirmedUp - flushDown, -1, 1);
   }
+  // useDivergence=false leaves divergence at 0: the funding signal is fully
+  // removed, so the ablation honestly measures the funding signal's contribution.
 
   // --- Fear & Greed contrarian tilt ---
   const fearGreed = lastSignal(signals, "fearGreed");

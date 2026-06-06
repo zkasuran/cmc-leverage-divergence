@@ -20,15 +20,16 @@ CMC AI Agent Hub via MCP (`https://mcp.coinmarketcap.com/mcp`, header
 ## Historical (the backtest)
 
 All free and keyless. Fetched and committed by `src/data/fetch.ts` into `data/` so
-runs are reproducible offline (the loaders never touch the network).
+runs are reproducible offline (the loaders never touch the network). Four assets:
+BNB (primary), BTC, ETH, SOL.
 
 | Series | Source | Coverage |
 |--------|--------|----------|
-| Daily price (OHLCV) | Binance `api/v3/klines` (BTCUSDT) | 2019-09 → now (2471 bars) |
-| Perp funding rate (8h) | Binance `fapi/v1/fundingRate` (BTCUSDT) | back to inception (7384 points) |
-| Fear & Greed | Alternative.me `/fng` | since 2018 (3044 readings) |
-| Open interest | Binance `futures/data/openInterestHist` | **~30 days only** |
-| Long/short ratio | Binance `futures/data/globalLongShortAccountRatio` | **~30 days only** |
+| Daily price (OHLCV) | Binance `api/v3/klines` (BNB/BTC/ETH/SOL USDT) | 2019-09 → now (~2100-2471 bars) |
+| Perp funding rate (8h) | Binance `fapi/v1/fundingRate` (per symbol) | back to inception (~6300-7400 points) |
+| Fear & Greed | Alternative.me `/fng` (global) | since 2018 (3044 readings) |
+| Open interest | Binance `futures/data/openInterestHist` (BNB) | **~30 days only** |
+| Long/short ratio | Binance `futures/data/globalLongShortAccountRatio` (BNB) | **~30 days only** |
 
 ## Alignment and honesty
 

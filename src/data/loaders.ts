@@ -10,13 +10,24 @@
  *     serves ~30 days, so older bars get `undefined` (honest, not faked).
  */
 
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Bar, SignalPoint } from "../types.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_DATA_DIR = resolve(HERE, "..", "..", "data");
+
+/** Assets with committed snapshots. `prefix` is the data/ file stem. BNB is primary. */
+export const ASSETS: Array<{ prefix: string; symbol: string }> = [
+  { prefix: "bnb", symbol: "BNBUSDT" },
+  { prefix: "btc", symbol: "BTCUSDT" },
+  { prefix: "eth", symbol: "ETHUSDT" },
+  { prefix: "sol", symbol: "SOLUSDT" },
+];
+
+/** The primary asset (this is a BNB Chain hackathon). */
+export const PRIMARY = "bnb";
 
 interface Point {
   time: number;
@@ -27,9 +38,14 @@ function readJson(dir: string, name: string): any {
   return JSON.parse(readFileSync(resolve(dir, name), "utf8"));
 }
 
+function readJsonIfExists(dir: string, name: string): any | null {
+  const p = resolve(dir, name);
+  return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")) : null;
+}
+
 /** Binance daily klines -> Bar[] (sorted ascending). */
-export function loadBars(dir = DEFAULT_DATA_DIR): Bar[] {
-  const raw: any[] = readJson(dir, "btc-1d.json");
+export function loadBars(prefix = "bnb", dir = DEFAULT_DATA_DIR): Bar[] {
+  const raw: any[] = readJson(dir, `${prefix}-1d.json`);
   return raw
     .map((r) => ({
       time: Number(r[0]),
@@ -42,8 +58,8 @@ export function loadBars(dir = DEFAULT_DATA_DIR): Bar[] {
     .sort((a, b) => a.time - b.time);
 }
 
-function loadFunding(dir: string): Point[] {
-  const raw: any[] = readJson(dir, "btc-funding.json");
+function loadFunding(prefix: string, dir: string): Point[] {
+  const raw: any[] = readJson(dir, `${prefix}-funding.json`);
   return raw
     .map((r) => ({ time: Number(r.fundingTime), value: Number(r.fundingRate) }))
     .sort((a, b) => a.time - b.time);
@@ -56,18 +72,20 @@ function loadFng(dir: string): Point[] {
     .sort((a, b) => a.time - b.time);
 }
 
-function loadOi(dir: string): Point[] {
-  const raw: any[] = readJson(dir, "btc-oi.json");
+function loadOi(prefix: string, dir: string): Point[] {
+  const raw = readJsonIfExists(dir, `${prefix}-oi.json`);
+  if (!raw) return [];
   return raw
-    .map((r) => ({ time: Number(r.timestamp), value: Number(r.sumOpenInterest) }))
-    .sort((a, b) => a.time - b.time);
+    .map((r: any) => ({ time: Number(r.timestamp), value: Number(r.sumOpenInterest) }))
+    .sort((a: Point, b: Point) => a.time - b.time);
 }
 
-function loadLs(dir: string): Point[] {
-  const raw: any[] = readJson(dir, "btc-ls.json");
+function loadLs(prefix: string, dir: string): Point[] {
+  const raw = readJsonIfExists(dir, `${prefix}-ls.json`);
+  if (!raw) return [];
   return raw
-    .map((r) => ({ time: Number(r.timestamp), value: Number(r.longShortRatio) }))
-    .sort((a, b) => a.time - b.time);
+    .map((r: any) => ({ time: Number(r.timestamp), value: Number(r.longShortRatio) }))
+    .sort((a: Point, b: Point) => a.time - b.time);
 }
 
 /** Latest value at or before `t`, or null if none exists yet. Points are sorted ascending. */
@@ -92,13 +110,13 @@ export interface Dataset {
   signals: (SignalPoint | null)[];
 }
 
-/** Load bars + aligned signals from the committed snapshots. */
-export function loadDataset(dir = DEFAULT_DATA_DIR): Dataset {
-  const bars = loadBars(dir);
-  const funding = loadFunding(dir);
+/** Load bars + aligned signals from the committed snapshots for one asset. */
+export function loadDataset(prefix = "bnb", dir = DEFAULT_DATA_DIR): Dataset {
+  const bars = loadBars(prefix, dir);
+  const funding = loadFunding(prefix, dir);
   const fng = loadFng(dir);
-  const oi = loadOi(dir);
-  const ls = loadLs(dir);
+  const oi = loadOi(prefix, dir);
+  const ls = loadLs(prefix, dir);
 
   const signals: (SignalPoint | null)[] = bars.map((bar) => {
     const point: SignalPoint = {};

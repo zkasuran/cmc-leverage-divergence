@@ -36,8 +36,15 @@ export { makeBuyHold } from "./baselines/buy-hold.js";
 export { makeFngOnly } from "./baselines/fng-only.js";
 
 // Data + reports + runners
-export { loadDataset, loadBars, asOf, DEFAULT_DATA_DIR } from "./data/loaders.js";
+export { loadDataset, loadBars, asOf, DEFAULT_DATA_DIR, ASSETS, PRIMARY } from "./data/loaders.js";
 export type { Dataset } from "./data/loaders.js";
 export { emitReport, hashDataset } from "./report/emit.js";
 export { runStrategy, perYear, ablationSet } from "./runners/run.js";
 export type { YearRow, Variant, RunOpts } from "./runners/run.js";
+export { crossAsset, costSensitivity, eventStudy } from "./runners/analysis.js";
+export type { AssetResult, CostRow, EventStat, DivState } from "./runners/analysis.js";
+
+// Statistics (probabilistic + deflated Sharpe)
+export {
+  probabilisticSharpe, deflatedSharpe, sharpePerPeriod, returnsFromEquity,
+} from "./engine/stats.js";

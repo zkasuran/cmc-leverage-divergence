@@ -1,0 +1,4 @@
+fee_bps,slippage_bps,return_pct,maxdd_pct,sharpe
+10,5,563.32,44.42,0.93
+20,10,457.72,49.15,0.86
+30,15,388.90,50.70,0.81

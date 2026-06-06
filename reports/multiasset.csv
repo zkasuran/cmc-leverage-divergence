@@ -1,0 +1,5 @@
+asset,strat_sharpe,strat_maxdd,strat_ret,bh_sharpe,bh_maxdd,bh_ret,funding_off_sharpe,psr,dsr
+BNBUSDT,0.93,44.42,563.32,1.04,70.85,3483.14,1.05,1.00,0.80
+BTCUSDT,0.98,27.16,298.06,0.79,76.55,620.66,0.99,1.00,0.85
+ETHUSDT,0.86,51.03,372.00,0.80,79.28,755.54,0.84,0.99,0.76
+SOLUSDT,1.13,59.68,1019.77,1.00,96.26,1717.91,1.04,1.00,0.57

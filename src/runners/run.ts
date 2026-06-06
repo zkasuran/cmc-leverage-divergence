@@ -15,6 +15,7 @@ import type {
   Granularity,
 } from "../types.js";
 import { makeLeverageDivergence } from "../strategy/leverage-divergence.js";
+import { DEFAULT_DIVERGENCE_CONFIG } from "../signals/divergence.js";
 import { makeBuyHold } from "../baselines/buy-hold.js";
 import { makeFngOnly } from "../baselines/fng-only.js";
 import rsiMeanrev from "../strategies/rsi-meanrev.js";
@@ -112,6 +113,7 @@ export interface Variant {
 export function ablationSet(): Variant[] {
   return [
     { label: "headline", agent: makeLeverageDivergence() },
+    { label: "contrarian", agent: makeLeverageDivergence({ divergence: { tiltScale: -DEFAULT_DIVERGENCE_CONFIG.tiltScale } }) },
     { label: "no-divergence", agent: makeLeverageDivergence({ divergence: { useDivergence: false } }) },
     { label: "no-trend", agent: makeLeverageDivergence({ divergence: { useTrend: false } }) },
     { label: "no-crowding", agent: makeLeverageDivergence({ divergence: { useCrowding: false } }) },

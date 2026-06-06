@@ -29,7 +29,10 @@
     "fetch-data": "tsx src/data/fetch.ts",
     "backtest": "tsx src/cli.ts backtest",
     "walkforward": "tsx src/cli.ts walkforward",
-    "ablation": "tsx src/cli.ts ablation"
+    "ablation": "tsx src/cli.ts ablation",
+    "multiasset": "tsx src/cli.ts multiasset",
+    "costs": "tsx src/cli.ts costs",
+    "eventstudy": "tsx src/cli.ts eventstudy"
   },
   "engines": {
     "node": ">=18"
