@@ -69,6 +69,21 @@ const MULTI = multiRows.map((r) => ({
   strat_ret: f(r.strat_ret), bh_sharpe: f(r.bh_sharpe), bh_maxdd: f(r.bh_maxdd),
   bh_ret: f(r.bh_ret), dsr: f(r.dsr),
 }));
+// Median-summary row + count of assets where the overlay cuts drawdown.
+const median = (arr) => {
+  const s = [...arr].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+};
+const SUMMARY = {
+  n: MULTI.length,
+  medStratDD: f(median(MULTI.map((r) => r.strat_maxdd)), 1),
+  medBhDD: f(median(MULTI.map((r) => r.bh_maxdd)), 1),
+  medStratSharpe: f(median(MULTI.map((r) => r.strat_sharpe))),
+  medBhSharpe: f(median(MULTI.map((r) => r.bh_sharpe))),
+  ddWins: MULTI.filter((r) => r.strat_maxdd < r.bh_maxdd).length,
+  sharpeWins: MULTI.filter((r) => r.strat_sharpe >= r.bh_sharpe).length,
+};
 const ABLATION = ablationRows.slice(0, 6).map((r) => ({
   variant: r.variant, sharpe: f(r.sharpe), maxdd_pct: f(r.maxdd_pct),
 }));
@@ -79,15 +94,18 @@ const SPEC = {
   priceRet: f(spec.readings.price_return_lookback),
 };
 const UNI = universe;
+const CURVE = overlay.curve || [];
 
 const dataLine =
   `var OVERLAY=${JSON.stringify(OVERLAY)};` +
   `var BEAR=${JSON.stringify(BEAR)};` +
   `var EVENT=${JSON.stringify(EVENT)};` +
   `var MULTI=${JSON.stringify(MULTI)};` +
+  `var SUMMARY=${JSON.stringify(SUMMARY)};` +
   `var ABLATION=${JSON.stringify(ABLATION)};` +
   `var SPEC=${JSON.stringify(SPEC)};` +
-  `var UNI=${JSON.stringify(UNI)};`;
+  `var UNI=${JSON.stringify(UNI)};` +
+  `var CURVE=${JSON.stringify(CURVE)};`;
 
 const template = readFileSync(R("scripts/frontend-template.html"), "utf8");
 if (!template.includes("/*__DATA__*/")) {

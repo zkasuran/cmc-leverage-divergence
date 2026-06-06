@@ -139,6 +139,21 @@ export interface OverlayResult {
   buyHold: Metrics;
   overlayPsr: number;
   buyHoldPsr: number;
+  /** Downsampled equity curves (normalised to 100 at start) for charting. */
+  curve: { t: string; ov: number; bh: number }[];
+}
+
+/** Normalise an equity curve to start at 100 and downsample to ~80 points. */
+function normCurve(eq: readonly number[], times: number[], step: number): { t: string; v: number }[] {
+  const base = eq[0] || 1;
+  const out: { t: string; v: number }[] = [];
+  for (let i = 0; i < eq.length; i += step) {
+    out.push({ t: new Date(times[i]!).toISOString().slice(0, 10), v: Math.round((eq[i]! / base) * 1000) / 10 });
+  }
+  // always include the last point
+  const last = eq.length - 1;
+  if ((last % step) !== 0) out.push({ t: new Date(times[last]!).toISOString().slice(0, 10), v: Math.round((eq[last]! / base) * 1000) / 10 });
+  return out;
 }
 
 /**
@@ -150,6 +165,11 @@ export async function cmc20Overlay(): Promise<OverlayResult> {
   const signals = buildBasketSignals(bars);
   const overlay = await runStrategy(makeLeverageDivergence({ symbol: "CMC20" }), bars, signals, { symbol: "CMC20" });
   const bh = await runStrategy(makeBuyHold("CMC20"), bars, signals, { symbol: "CMC20" });
+  const times = bars.map((b) => b.time);
+  const step = Math.max(1, Math.floor(bars.length / 80));
+  const ovC = normCurve(overlay.equityCurve, times, step);
+  const bhC = normCurve(bh.equityCurve, times, step);
+  const curve = ovC.map((p, i) => ({ t: p.t, ov: p.v, bh: bhC[i]?.v ?? p.v }));
   return {
     bars: bars.length,
     firstDay: new Date(bars[0]!.time).toISOString().slice(0, 10),
@@ -158,5 +178,6 @@ export async function cmc20Overlay(): Promise<OverlayResult> {
     buyHold: bh.scorecard.metrics,
     overlayPsr: probabilisticSharpe(returnsFromEquity(overlay.equityCurve), 0),
     buyHoldPsr: probabilisticSharpe(returnsFromEquity(bh.equityCurve), 0),
+    curve,
   };
 }

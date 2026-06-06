@@ -84,6 +84,13 @@ footer a{color:var(--blue);text-decoration:none;font-weight:500}footer a:hover{t
 .repo-btn.primary{background:var(--gold-dim);border-color:var(--gold-dim);color:var(--gold)}
 .repo-btn.primary:hover{background:rgba(240,185,11,.2);border-color:var(--gold)}
 .repo-btn.secondary{color:var(--text-secondary)}.repo-btn.secondary:hover{border-color:var(--border-hover);color:var(--text)}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:20px}
+.chart-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.chart-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.chart-legend{display:flex;gap:14px}.chart-legend .lg{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary)}
+.lgdot{width:10px;height:3px;border-radius:2px;display:inline-block}.lgdot.gold{background:var(--gold)}.lgdot.red{background:var(--red)}
+#chart svg{width:100%;height:auto;display:block}
+.chart-foot{display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-top:6px}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @media(max-width:640px){.hero{padding:40px 0 28px}.hero h1{font-size:24px}.split-numbers{gap:16px}.split-block .number{font-size:40px}.split-divider{font-size:18px}.card-grid{grid-template-columns:1fr 1fr}nav .inner{flex-direction:column;align-items:flex-start}.section-header h2{font-size:18px}.card .card-value{font-size:22px}.hero .hook{font-size:13px}.two-col{grid-template-columns:1fr!important}}
@@ -92,6 +99,7 @@ footer a{color:var(--blue);text-decoration:none;font-weight:500}footer a:hover{t
 <main class=container>
 <section class="hero reveal"><div class=overline>BNB Hack 2026 · Track 2 · Strategy Skills</div><h1><span>CMC20</span> gets a risk gate —<br>built from all 20 of its constituents</h1><p class=hook>CMC20 is CoinMarketCap's flagship index on BNB Chain: the top 20 coins by market cap. <strong>No risk management, 40% drawdown.</strong> We read the funding signal from every constituent that can be hedged (19 of 20), cap-weight it, and time the index. One engine: validated on deep history, applied to the live 20-token basket.</p></section>
 <div class=reveal style=text-align:center;margin-bottom:24px><div class=split-numbers id=hero-split></div><div class=split-result id=hero-delta></div></div>
+<div class="reveal chart-card"><div class=chart-head><span class=chart-title>CMC20 — equity, overlay vs buy &amp; hold</span><span class=chart-legend><span class=lg><span class="lgdot gold"></span>overlay</span><span class=lg><span class="lgdot red"></span>buy &amp; hold</span></span></div><div id=chart></div><div class=chart-foot id=chart-foot></div></div>
 <div class="card-grid reveal" id=overlay-cards></div>
 
 <section class=reveal><div class=section-header><div class=section-eyebrow>The Index, In Full</div><h2>All 20 CMC20 constituents — and the one we can't hedge</h2><p>Derived live from CoinMarketCap's market-cap ranking (ex-stablecoins, ex-wrapped). Green = has a perp funding market, so the overlay can time it. Red = no derivatives market. Refreshes with the ranking, so entries and exits are automatic.</p></div>
@@ -115,6 +123,26 @@ footer a{color:var(--blue);text-decoration:none;font-weight:500}footer a:hover{t
 (function(){var O=OVERLAY;
 document.getElementById('hero-split').innerHTML='<div class=split-block><div class=label>Funding-Regime Overlay</div><div class="number gold">'+O.ovDD+'%</div><div class=sub>max drawdown</div></div><div class=split-divider>vs</div><div class=split-block><div class=label>CMC20 Buy &amp; Hold</div><div class="number red">'+O.bhDD+'%</div><div class=sub>max drawdown</div></div>';
 document.getElementById('hero-delta').innerHTML='&darr; '+O.ddCut+' pts drawdown cut &middot; loss cut '+O.lossCut+' pts';
+// Equity chart (SVG): overlay vs buy-hold, normalised to 100.
+(function(){if(!CURVE||!CURVE.length)return;var W=900,H=240,P=28;var vals=[];CURVE.forEach(function(p){vals.push(p.ov,p.bh)});var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);var pad=(mx-mn)*0.08||1;mn-=pad;mx+=pad;
+function X(i){return P+(W-2*P)*i/(CURVE.length-1)}function Y(v){return P+(H-2*P)*(1-(v-mn)/(mx-mn))}
+function path(key){return CURVE.map(function(p,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(p[key]).toFixed(1)}).join(' ')}
+function area(key){return 'M'+X(0).toFixed(1)+' '+Y(CURVE[0][key]).toFixed(1)+' '+CURVE.map(function(p,i){return 'L'+X(i).toFixed(1)+' '+Y(p[key]).toFixed(1)}).join(' ')+' L'+X(CURVE.length-1).toFixed(1)+' '+(H-P)+' L'+X(0).toFixed(1)+' '+(H-P)+' Z'}
+var y100=Y(100);
+var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="equity curve">'+
+'<defs><linearGradient id="gg" x1=0 y1=0 x2=0 y2=1><stop offset=0 stop-color="#F0B90B" stop-opacity=.18/><stop offset=1 stop-color="#F0B90B" stop-opacity=0/></linearGradient></defs>'+
+'<line x1='+P+' y1='+y100.toFixed(1)+' x2='+(W-P)+' y2='+y100.toFixed(1)+' stroke="#2a2e3a" stroke-dasharray="3 4"/>'+
+'<text x='+(W-P)+' y='+(y100-5).toFixed(1)+' fill="#484f58" font-size=11 text-anchor=end font-family=monospace>start = 100</text>'+
+'<path d="'+area('ov')+'" fill="url(#gg)"/>'+
+'<path d="'+path('bh')+'" fill=none stroke="#f85149" stroke-width=2 stroke-opacity=.85/>'+
+'<path d="'+path('ov')+'" fill=none stroke="#F0B90B" stroke-width=2.5/>'+
+'<circle cx='+X(CURVE.length-1).toFixed(1)+' cy='+Y(CURVE[CURVE.length-1].ov).toFixed(1)+' r=3.5 fill="#F0B90B"/>'+
+'<circle cx='+X(CURVE.length-1).toFixed(1)+' cy='+Y(CURVE[CURVE.length-1].bh).toFixed(1)+' r=3.5 fill="#f85149"/>'+
+'</svg>';
+document.getElementById('chart').innerHTML=svg;
+var last=CURVE[CURVE.length-1];
+document.getElementById('chart-foot').innerHTML='<span>'+CURVE[0].t+'</span><span>overlay '+last.ov+' &middot; buy&amp;hold '+last.bh+' (start 100)</span><span>'+last.t+'</span>';
+})();
 document.getElementById('overlay-cards').innerHTML='<div class=card><div class=card-label>Index Coverage</div><div class="card-value gold">'+UNI.tradeable+'/20</div><div class=card-sub>constituents hedgeable &amp; timed</div></div><div class=card><div class=card-label>Overlay Return</div><div class="card-value gold">'+O.ovRet+'%</div><div class=card-sub>vs '+O.bhRet+'% buy &amp; hold, same window</div></div><div class=card><div class=card-label>Probabilistic Sharpe</div><div class="card-value blue">'+O.ovPsr+'</div><div class=card-sub>vs '+O.bhPsr+' buy &amp; hold &middot; down-only window</div></div><div class=card><div class=card-label>Window</div><div class=card-value style=font-size:18px>'+O.bars+' days</div><div class=card-sub>'+O.firstDay+' &rarr; '+O.lastDay+'</div></div>';
 // Constituent grid
 var cg=document.getElementById('const-grid');var hh='';
@@ -125,7 +153,8 @@ document.getElementById('flaw-box').innerHTML='<strong>What pure market-cap inde
 function T(id){return document.querySelector(id+' tbody')}
 var tb=T('#regime-table');BEAR.forEach(function(r){tb.innerHTML+='<tr><td class=asset>'+r.asset+'</td><td class=loss>'+r.strat+'%</td><td class=loss>'+r.bh+'%</td><td class=win>+'+r.edge+' pts</td></tr>'});
 tb=T('#event-table');EVENT.forEach(function(r){var t='<span style=color:var(--text-muted)>'+r.state+'</span>';if(r.state==='confirmed-up')t='<span style=color:var(--green);font-weight:600>'+r.state+'</span>';if(r.state==='flush-down')t='<span style=color:var(--red)>'+r.state+'</span>';tb.innerHTML+='<tr><td>'+r.horizon_days+'d</td><td>'+t+'</td><td>'+r.n+'</td><td style=font-weight:600>'+r.mean_forward_pct+'%</td><td>'+r.hit_rate_pct+'%</td></tr>'});
-tb=T('#multi-table');MULTI.forEach(function(r){var s=r.strat_sharpe>r.bh_sharpe?' class=win':'';tb.innerHTML+='<tr><td class=asset>'+r.asset.replace('USDT','')+'</td><td'+s+'>'+r.strat_sharpe+'</td><td>'+r.strat_maxdd+'</td><td>'+r.strat_ret+'</td><td>'+r.bh_sharpe+'</td><td>'+r.bh_maxdd+'</td><td>'+r.bh_ret+'</td><td class=gold>'+r.dsr+'</td></tr>'});
+tb=T('#multi-table');MULTI.forEach(function(r){var s=r.strat_sharpe>r.bh_sharpe?' class=win':'';var dd=r.strat_maxdd<r.bh_maxdd?' class=win':'';tb.innerHTML+='<tr><td class=asset>'+r.asset.replace('USDT','')+'</td><td'+s+'>'+r.strat_sharpe+'</td><td'+dd+'>'+r.strat_maxdd+'</td><td>'+r.strat_ret+'</td><td>'+r.bh_sharpe+'</td><td>'+r.bh_maxdd+'</td><td>'+r.bh_ret+'</td><td class=gold>'+r.dsr+'</td></tr>'});
+if(typeof SUMMARY!=='undefined'){tb.innerHTML+='<tr style="border-top:2px solid var(--border);background:var(--gold-glow)"><td class=asset>MEDIAN ('+SUMMARY.n+')</td><td>'+SUMMARY.medStratSharpe+'</td><td class=win>'+SUMMARY.medStratDD+'</td><td>—</td><td>'+SUMMARY.medBhSharpe+'</td><td>'+SUMMARY.medBhDD+'</td><td>—</td><td>—</td></tr><tr style="background:var(--gold-glow)"><td colspan=8 style="color:var(--text-secondary);font-size:11px">Lower drawdown on <strong style="color:var(--green)">'+SUMMARY.ddWins+'/'+SUMMARY.n+'</strong> assets &middot; Sharpe &ge; buy-and-hold on <strong>'+SUMMARY.sharpeWins+'/'+SUMMARY.n+'</strong> (the high-funding megacaps)</td></tr>'}
 tb=T('#ablation-table');ABLATION.forEach(function(r){tb.innerHTML+='<tr><td class=asset>'+r.variant+'</td><td>'+r.sharpe+'</td><td>'+r.maxdd_pct+'</td></tr>'});
 var d=document.getElementById('spec-dot');d.className='dot '+(SPEC.regime==='risk-on'?'g':'r');document.getElementById('spec-label').textContent=SPEC.asset+' · '+SPEC.regime+' · signal='+SPEC.state+' · target='+SPEC.target;
 document.getElementById('spec-pre').innerHTML='<span class=key>Asset</span>         <span class=val>'+SPEC.asset+'</span>\n<span class=key>As Of</span>          <span class=str>'+SPEC.as_of+'</span>\n<span class=key>Regime</span>         <span class=str>'+SPEC.regime+'</span>\n<span class=key>Signal State</span>   <span class=str>'+SPEC.state+'</span>\n<span class=key>Signal Score</span>   <span class=val>'+SPEC.score+'</span>\n<span class=key>Target Alloc</span>   <span class=val>'+SPEC.target+'</span>\n<span class=key>Funding Z</span>       <span class=val>'+SPEC.fundingZ+'</span>\n<span class=key>F&amp;G</span>             <span class=val>'+SPEC.fng+'</span>\n<span class=key>Price Return</span>    <span class=val>'+SPEC.priceRet+'</span>';
