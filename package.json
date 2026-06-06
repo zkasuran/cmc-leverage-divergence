@@ -1,0 +1,62 @@
+{
+  "name": "cmc-leverage-divergence",
+  "version": "0.1.0",
+  "description": "A CoinMarketCap Agent Skill that turns funding-rate-vs-price divergence and market-structure signals into a backtestable crypto strategy spec, with a reproducible backtest harness.",
+  "type": "module",
+  "license": "MIT",
+  "author": "zkasuran",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "cmc-divergence": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "fetch-data": "tsx src/data/fetch.ts",
+    "backtest": "tsx src/cli.ts backtest",
+    "walkforward": "tsx src/cli.ts walkforward",
+    "ablation": "tsx src/cli.ts ablation"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zkasuran/cmc-leverage-divergence.git"
+  },
+  "keywords": [
+    "coinmarketcap",
+    "cmc",
+    "agent-skill",
+    "trading",
+    "backtest",
+    "funding-rate",
+    "fear-and-greed",
+    "crypto",
+    "strategy"
+  ],
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3",
+    "vitest": "^2.0.0"
+  }
+}

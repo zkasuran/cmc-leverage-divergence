@@ -1,0 +1,38 @@
+{
+  "agent": "leverage-divergence",
+  "metrics": {
+    "startingEquity": 10000,
+    "finalEquity": 28675.9122233756,
+    "totalReturnPct": 186.759122233756,
+    "maxDrawdownPct": 26.20594460597853,
+    "sharpe": 0.8351191380866878,
+    "sortino": 0.9048002014171999,
+    "winRatePct": 52.84090909090909,
+    "profitFactor": 1.7553506914215902,
+    "totalTrades": 176,
+    "totalFees": 2182.873193766381,
+    "turnover": 99.39840256084379,
+    "exposurePct": 97.45042492917847,
+    "violations": 0
+  },
+  "manifest": {
+    "agentbenchVersion": "0.1.0",
+    "symbol": "BTCUSDT",
+    "granularity": "1day",
+    "source": "binance-cmc",
+    "bars": 2471,
+    "firstBarTime": 1567296000000,
+    "lastBarTime": 1780704000000,
+    "datasetSha256": "9dc87dad732ee659db41e1064c32fc0246a84b63ed55afe48a9672d8f8f219cb",
+    "schemaVersion": 1,
+    "engine": {
+      "startingEquity": 10000,
+      "feeBps": 10,
+      "slippageBps": 5,
+      "seed": 42
+    },
+    "risk": {
+      "maxDrawdownKill": 0.6
+    }
+  }
+}

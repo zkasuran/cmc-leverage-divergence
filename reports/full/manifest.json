@@ -1,0 +1,20 @@
+{
+  "agentbenchVersion": "0.1.0",
+  "symbol": "BTCUSDT",
+  "granularity": "1day",
+  "source": "binance-cmc",
+  "bars": 2471,
+  "firstBarTime": 1567296000000,
+  "lastBarTime": 1780704000000,
+  "datasetSha256": "9dc87dad732ee659db41e1064c32fc0246a84b63ed55afe48a9672d8f8f219cb",
+  "schemaVersion": 1,
+  "engine": {
+    "startingEquity": 10000,
+    "feeBps": 10,
+    "slippageBps": 5,
+    "seed": 42
+  },
+  "risk": {
+    "maxDrawdownKill": 0.6
+  }
+}
