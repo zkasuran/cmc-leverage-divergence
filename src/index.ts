@@ -44,6 +44,15 @@ export type { YearRow, Variant, RunOpts } from "./runners/run.js";
 export { crossAsset, costSensitivity, eventStudy, cmc20Benchmark } from "./runners/analysis.js";
 export type { AssetResult, CostRow, EventStat, DivState, Cmc20Result } from "./runners/analysis.js";
 export { loadCmc20Bars, loadCmc20Signals } from "./data/cmc-loader.js";
+export { cmc20Overlay, buildBasketSignals } from "./runners/cmc20-overlay.js";
+export type { OverlayResult } from "./runners/cmc20-overlay.js";
+
+// Spec generator — the bridge: same signal code the backtest uses, emitting the
+// live strategy spec the Skill documents.
+export {
+  specFromSnapshot, specFromDataset, specFromFeatures,
+} from "./spec.js";
+export type { StrategySpec, CmcSnapshot, SignalState } from "./spec.js";
 
 // Statistics (probabilistic + deflated Sharpe)
 export {

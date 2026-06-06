@@ -15,7 +15,10 @@ import { loadDataset, ASSETS, PRIMARY } from "./data/loaders.js";
 import { emitReport } from "./report/emit.js";
 import { makeLeverageDivergence } from "./strategy/leverage-divergence.js";
 import { runStrategy, perYear, ablationSet, type YearRow } from "./runners/run.js";
-import { crossAsset, costSensitivity, eventStudy, cmc20Benchmark } from "./runners/analysis.js";
+import { crossAsset, costSensitivity, eventStudy } from "./runners/analysis.js";
+import { specFromDataset, specFromSnapshot, type CmcSnapshot } from "./spec.js";
+import { cmc20Overlay } from "./runners/cmc20-overlay.js";
+import { readFileSync } from "node:fs";
 import type { Metrics } from "./types.js";
 
 const PRIMARY_SYMBOL = ASSETS.find((a) => a.prefix === PRIMARY)?.symbol ?? "BNBUSDT";
@@ -153,20 +156,42 @@ async function cmdAblation() {
 }
 
 async function cmdCmc20() {
-  const r = await cmc20Benchmark();
-  console.log(`CMC20 (CoinMarketCap 20 Index, id 38442, BEP-20 on BSC) — CMC data-api`);
+  // The unified strategy: time CMC's own index with the funding signal built from
+  // its constituents. CMC20 has no perp market, so the signal is the AGGREGATE
+  // funding of its majors (BTC/ETH/BNB/SOL) — the same engine, applied to the
+  // index it is meant to protect.
+  const r = await cmc20Overlay();
+  console.log(`CMC20 funding-regime overlay (CoinMarketCap 20 Index, id 38442, BEP-20 on BSC)`);
   console.log(`  ${r.bars} daily bars, ${r.firstDay} to ${r.lastDay}`);
-  console.log(summarize("strategy (no perp data)", r.strategy));
+  console.log(`  signal = aggregate funding of CMC20 majors (BTC/ETH/BNB/SOL) + CMC20 trend gate`);
+  console.log(summarize("overlay (timed CMC20)", r.overlay));
   console.log(summarize("CMC20 buy-and-hold", r.buyHold));
-  console.log("Note: CMC20 has no perp market, so no funding signal fires; the");
-  console.log("strategy holds base allocation under the trend gate (capital-preserving).");
+  console.log(`  PSR overlay ${r.overlayPsr.toFixed(3)}  vs buy-hold ${r.buyHoldPsr.toFixed(3)}`);
   mkdirSync(REPORTS, { recursive: true });
-  writeFileSync(
-    resolve(REPORTS, "cmc20.json"),
-    JSON.stringify(r, null, 2),
-    "utf8",
-  );
-  console.log(`\nWrote ${resolve(REPORTS, "cmc20.json")}`);
+  writeFileSync(resolve(REPORTS, "cmc20-overlay.json"), JSON.stringify(r, null, 2), "utf8");
+  console.log(`\nWrote ${resolve(REPORTS, "cmc20-overlay.json")}`);
+}
+
+async function cmdSpec() {
+  // `spec --file <snapshot.json>` prices a live CMC snapshot (the shape the Skill
+  // assembles from CMC MCP tools). Default: tail of the committed BNB dataset.
+  const fileArg = process.argv.indexOf("--file");
+  let spec;
+  if (fileArg !== -1 && process.argv[fileArg + 1]) {
+    const snap = JSON.parse(readFileSync(process.argv[fileArg + 1]!, "utf8")) as CmcSnapshot;
+    spec = specFromSnapshot(snap, new Date(loadDataset(PRIMARY).bars.at(-1)!.time).toISOString());
+    if (!spec) { console.error("Not enough data in snapshot to compute a signal."); process.exit(1); }
+    console.log(`Strategy spec for ${spec.asset} (live snapshot):`);
+  } else {
+    const { bars, signals } = loadDataset(PRIMARY);
+    spec = specFromDataset(PRIMARY_SYMBOL, bars, signals);
+    if (!spec) { console.error("Not enough data to compute a signal."); process.exit(1); }
+    console.log(`Strategy spec for ${PRIMARY_SYMBOL} (as-of latest committed bar, same engine as the backtest):`);
+  }
+  console.log(JSON.stringify(spec, null, 2));
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(resolve(REPORTS, "latest-spec.json"), JSON.stringify(spec, null, 2), "utf8");
+  console.error(`\nWrote ${resolve(REPORTS, "latest-spec.json")}`);
 }
 
 async function main() {
@@ -186,8 +211,10 @@ async function main() {
       return cmdEventStudy();
     case "cmc20":
       return cmdCmc20();
+    case "spec":
+      return cmdSpec();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec.`);
       process.exit(1);
   }
 }

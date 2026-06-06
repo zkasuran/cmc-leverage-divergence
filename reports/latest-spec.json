@@ -1,0 +1,37 @@
+{
+  "asset": "BNBUSDT",
+  "as_of": "2026-06-06T00:00:00.000Z",
+  "regime": "risk-off",
+  "signal": {
+    "state": "neutral",
+    "score": 0
+  },
+  "readings": {
+    "funding_rate": 0.00006864,
+    "funding_z": 0.583686,
+    "price_return_lookback": -0.200796,
+    "fear_greed": 12,
+    "long_short_ratio": 2.56,
+    "open_interest": null
+  },
+  "target_allocation": 0.060313,
+  "rules": {
+    "lookback": 7,
+    "z_window": 30,
+    "z_enter": 1,
+    "add_when": "funding_z >= +1 and price extended up (leverage-confirmed momentum)",
+    "trim_when": "funding_z <= -1 and price weak (leverage flush)",
+    "trend_gate": "if close < SMA(100): allocation *= 0.2",
+    "crowding": "allocation *= 1 / (1 + 0.7*|ln(long_short_ratio)|)",
+    "base": 0.5,
+    "tilt_scale": 0.5,
+    "rebalance_deadband": 0.1
+  },
+  "risk": {
+    "max_drawdown_kill": 0.6,
+    "long_only": true,
+    "fees_bps": 10,
+    "slippage_bps": 5
+  },
+  "backtest_ref": "reports/multiasset.csv"
+}

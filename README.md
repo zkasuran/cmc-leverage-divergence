@@ -1,36 +1,53 @@
 # cmc-leverage-divergence
 
-A CoinMarketCap Agent Skill that reads the **funding-rate × price** signal and
-emits a **backtestable, regime-gated** crypto strategy spec, shipped with a
-multi-asset backtest and the statistical rigor to prove the edge is real.
+**A funding-regime overlay for CMC20, CoinMarketCap's own index on BNB Chain —
+delivered as a CMC Agent Hub Skill, proven by a multi-asset backtest.**
 
 Built for **BNB Hack: AI Trading Agent Edition** (CoinMarketCap × Trust Wallet ×
-BNB Chain), Track 2 — Strategy Skills. Primary asset: **BNB**.
+BNB Chain), Track 2 — Strategy Skills.
 
-**Live demo (zero clone):** deploy `demo/index.html` to any static host, or open
-it locally. It renders the headline backtest, the multi-asset table, the event
-study and the ablation, all from the committed reports.
+**Live demo (one click, no clone):** https://zkasuran.github.io/cmc-leverage-divergence/
 
-## CoinMarketCap integration: CMC20 + the Agent Hub
+## The one idea
 
-This is a CMC × BNB collaboration, so the integration is native to both:
+CMC20 is CoinMarketCap's flagship index — the top 20 coins by market cap,
+tokenized as a BEP-20 on BNB Smart Chain (Reserve Protocol DTF, contract
+`0x2f8A339B5889FfaC4c5A956787cdA593b3c36867`). It's a clean way to hold "the
+market", but it took a **40% drawdown** in its first seven months. It has no
+risk management.
 
-- **Signal source — CMC AI Agent Hub (MCP).** The funding/derivatives data that
-  drives the strategy comes from `get_global_crypto_derivatives_metrics` and
-  `get_global_metrics_latest`. The Skill is authored to the openCMC Agent-Skill
-  format, ready for the CMC Skills marketplace.
-- **Benchmark — CMC20, CMC's own index, on BNB Chain.** CMC20 is CoinMarketCap's
-  top-20 index (ex-stables/wrapped), tokenized as a BEP-20 on BNB Smart Chain via
-  Reserve Protocol (contract `0x2f8A339B5889FfaC4c5A956787cdA593b3c36867`). We pull
-  its price history straight from CMC's free data-api (id 38442) and carry it as
-  the sponsor-native benchmark (`npm run cmc20`). CMC20 has no perp market, so it
-  carries no funding signal: the strategy correctly holds base allocation under the
-  trend gate, preserving capital through CMC20's 40% drawdown rather than forcing a
-  bad fit. The closed loop the sponsors want: **CMC data → CMC Agent Hub signal →
-  BNB Chain → CMC20 benchmark.**
+We give it one. CMC20's heavyweight constituents — **BTC, ETH, BNB, SOL** — all
+have perp funding markets. We read their **funding-rate × price** signal from the
+CMC AI Agent Hub, aggregate it into a basket regime, and use it to time exposure
+to CMC20 itself: hold the index when leverage confirms the trend, step to cash
+when funding flushes or the index breaks its trend.
 
+Over CMC20's life so far, that overlay **cut the drawdown from 40% to 23% and the
+loss from -36% to -21%** (`npm run cmc20`). The same signal, validated as a
+return-predictor across all four constituents (the event study below), becomes the
+risk gate CMC20 was missing.
 
-## The finding nobody else reports
+So the pieces are one thing, not two:
+
+```
+  CMC AI Agent Hub (funding, F&G)         ← the data
+        │
+        ▼
+  src/signals/divergence.ts  ────────────  ← the one engine (computeFeatures)
+        │                    \
+        ▼                     ▼
+  validated on BTC/ETH/        timing overlay on
+  BNB/SOL (event study,        CMC20 the index
+  multi-asset backtest)        (npm run cmc20)
+        │                     /
+        ▼                    ▼
+  emitted live as a strategy spec the CMC Agent Hub Skill returns (npm run spec)
+```
+
+One signal engine. It is *validated* on the liquid constituents, *applied* to
+CMC's index, *served* live through the Skill, and *proven* by the backtest — all
+the same `computeFeatures` code.
+
 
 Crypto folklore says deeply negative funding means "shorts are trapped, buy the
 bottom" — a contrarian trade. We tested that across BNB, BTC, ETH and SOL with a
@@ -74,6 +91,22 @@ a multi-year bull, and we say so. The Deflated Sharpe (0.57–0.85) means the re
 survives a haircut for having tried multiple variants. The edge also survives 3x
 trading costs (`reports/cost-sensitivity.csv`).
 
+### Applied to CMC20 (the point of the project)
+
+The same engine, with the signal built from CMC20's constituents (BTC/ETH/BNB/SOL
+aggregate funding), timing the CMC20 index itself over its full life (Nov 2025 –
+Jun 2026, a down market):
+
+| | Return | Max drawdown |
+|--|------:|-------------:|
+| CMC20 buy-and-hold | -35.6% | 40.0% |
+| **Funding-regime overlay** | **-20.7%** | **22.9%** |
+
+Drawdown cut by 17 points, loss cut by 15. This is a 7-month, down-only sample, so
+the *Sharpe* is not meaningful (both are negative) and we don't claim one — the
+honest result is **capital preservation**: the overlay is the risk gate CMC20 lacks.
+Reproduce with `npm run cmc20`.
+
 ### Honest ablation: where funding helps
 
 We report the funding signal's marginal contribution per asset (headline vs the
@@ -93,17 +126,19 @@ skills/cmc-leverage-divergence/   the Agent Skill (the Track-2 deliverable)
   SKILL.md                        frontmatter + the workflow that emits the spec
   references/                     signal math, data sources, spec schema, results
 src/
-  signals/divergence.ts           the funding x price signal (pure, unit-tested)
+  signals/divergence.ts           the funding x price signal (pure, unit-tested) — the one engine
+  spec.ts                         bridge: same engine → live strategy spec (npm run spec)
   strategy/leverage-divergence.ts the allocator
   engine/                         backtest loop, fill sim, metrics, risk guard
   engine/stats.ts                 probabilistic + deflated Sharpe
-  data/                           multi-asset fetch + offline loaders (as-of align)
+  data/                           multi-asset fetch + loaders; cmc-loader (CMC20 via data-api)
   runners/                        backtest, walk-forward, ablation, cross-asset,
-                                  cost-sensitivity, event study
-data/                             committed snapshots (BNB/BTC/ETH/SOL)
-reports/                          committed scorecard, ablation, multiasset,
-                                  event-study, cost-sensitivity, per-year, tearsheet
-tests/                            22 tests: signal math, no-lookahead, stats
+                                  cost-sensitivity, event study, cmc20-overlay
+data/                             committed snapshots (BNB/BTC/ETH/SOL + CMC20)
+reports/                          committed scorecard, ablation, multiasset, event-study,
+                                  cost-sensitivity, per-year, cmc20-overlay, latest-spec
+demo/index.html                   self-contained dashboard (GitHub Pages)
+tests/                            26 tests: signal math, no-lookahead, stats, spec bridge
 ```
 
 ## Run it
@@ -117,7 +152,8 @@ npm run eventstudy  # forward returns by signal state -> reports/event-study.csv
 npm run ablation    # contrarian / no-funding / no-trend / baselines -> reports/ablation.csv
 npm run costs       # 1x/2x/3x cost sensitivity -> reports/cost-sensitivity.csv
 npm run walkforward # per-year, out-of-sample -> reports/walkforward.csv
-npm run cmc20       # CMC20 benchmark via CMC data-api -> reports/cmc20.json
+npm run cmc20       # CMC20 funding-regime overlay -> reports/cmc20-overlay.json
+npm run spec        # live strategy spec from the same engine -> reports/latest-spec.json
 npm run fetch-data  # refresh data/ snapshots (optional; snapshots are committed)
 ```
 

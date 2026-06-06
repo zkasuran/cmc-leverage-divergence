@@ -79,7 +79,17 @@ the asset (default BNB) to get the recent price path and place it against its
 100-day moving average. Optionally `trending_crypto_narratives` for context.
 
 ### Step 4: Compute the signal
-Per `references/signal-math.md`:
+Assemble the readings into a snapshot (recent `closes[]`, aligned `funding[]`,
+latest `fearGreed`/`longShortRatio`) and run the project's spec generator. This is
+the key point: the Skill does NOT re-derive the math in prose — it calls the SAME
+`computeFeatures` the backtester replays over history, so the live spec and the
+backtest are one engine. Two ways:
+- **In an agent with the repo:** write the snapshot to `snapshot.json` and run
+  `npm run spec -- --file snapshot.json`.
+- **Programmatically:** `import { specFromSnapshot } from "cmc-leverage-divergence"`
+  and call it on the snapshot.
+
+The formula it runs (per `references/signal-math.md`):
 1. `pRet` = price return over the lookback (7 bars).
 2. `fundingZ` = z-score of current funding vs its trailing 30-point window.
 3. `signal` in [-1, 1]: confirmed-up (+) when `fundingZ ≥ +1` and price extended;
@@ -87,13 +97,17 @@ Per `references/signal-math.md`:
 4. `trendFactor` = 1 if price ≥ 100-day MA, else 0.2 (risk-off).
 5. `target` = clamp01(`base` + `tiltScale`·`signal`) · `crowdingSize` · `trendFactor`.
 
-### Step 5: Emit the spec
-Emit the spec in the schema from `references/strategy-spec-schema.md`.
+### Step 5: Return the spec
+`specFromSnapshot` returns the exact spec in `references/strategy-spec-schema.md`
+(asset, regime, signal state + score, the readings, target allocation, rules, risk
+gates). That object IS the deliverable. Hand it back to the user.
 
 ### Step 6: Point to the proof
-Cite the repo: multi-asset backtest (`reports/multiasset.csv`), event study
-(`reports/event-study.csv`), deflated Sharpe and cost-sensitivity. Headline: ~half
-the drawdown of buy-and-hold across four assets at comparable-or-better Sharpe.
+The same engine, replayed over history, produces the multi-asset backtest
+(`reports/multiasset.csv`), the event study (`reports/event-study.csv`), the
+ablation and the deflated Sharpe. Headline: ~half the drawdown of buy-and-hold
+across four assets at comparable-or-better Sharpe. `npm run spec` (live) and
+`npm run backtest` (proof) are two views of one signal.
 
 ## Report structure (the spec the Skill returns)
 

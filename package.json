@@ -33,7 +33,8 @@
     "multiasset": "tsx src/cli.ts multiasset",
     "costs": "tsx src/cli.ts costs",
     "eventstudy": "tsx src/cli.ts eventstudy",
-    "cmc20": "tsx src/cli.ts cmc20"
+    "cmc20": "tsx src/cli.ts cmc20",
+    "spec": "tsx src/cli.ts spec"
   },
   "engines": {
     "node": ">=18"
