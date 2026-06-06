@@ -123,36 +123,49 @@ and bear/down (below) segments and compare *within* each:
 |-------|---------------:|-----------------:|----------:|
 | BTC | -37% | -88% | **+51 pts** |
 | ETH | -41% | -91% | **+50 pts** |
-| BNB | -56% | -89% | **+33 pts** |
+| DOGE | -22% | -71% | **+49 pts** |
+| HBAR | -56% | -99% | **+43 pts** |
 | SOL | -61% | -98% | **+37 pts** |
+| BCH | -56% | -93% | **+37 pts** |
+| … | … | … | **+ on 15/15** |
 
 In down/sideways markets — when an allocator actually needs help — the strategy
-**beats buy-and-hold on return** on every asset. It gives up upside in bulls (the
-price of the risk gate), which is why its full-period raw return trails in a
+**beats buy-and-hold on return on all 15 constituents**. It gives up upside in bulls
+(the price of the risk gate), which is why its full-period raw return trails in a
 multi-year bull. `npm run regime`.
 
-### 3. Validation across the constituents (2019–2026)
+### 3. Validation across 15 CMC20 constituents (2018–2026)
 
-| Asset | Strategy Sharpe | maxDD | Buy & hold Sharpe | BH maxDD | Deflated Sharpe |
-|-------|----------------:|------:|------------------:|---------:|----------------:|
-| BNB | 0.93 | **44%** | 1.04 | 71% | 0.80 |
-| BTC | **0.98** | **27%** | 0.79 | 77% | 0.85 |
-| ETH | **0.86** | 51% | 0.80 | 79% | 0.76 |
-| SOL | **1.13** | 60% | 1.00 | 96% | 0.57 |
+Every constituent with a deep Binance price + funding history (15 of the 20 — the
+rest are too new to backtest) was run independently. This is the honest, full
+picture, winners and losers:
 
-Roughly **half the maximum drawdown** of buy-and-hold on every asset, at
-comparable-or-better Sharpe (it beats buy-and-hold on Sharpe for BTC, ETH and SOL).
-The **Deflated Sharpe (0.57–0.85)** is the probability the true Sharpe beats the
-expected-max across every variant we tried — it survives a haircut for
-multiple-testing. The edge also survives 3x trading costs
-(`reports/cost-sensitivity.csv`).
+| | Strategy | Buy & hold |
+|--|---------:|-----------:|
+| **Median max drawdown** | **59%** | 90% |
+| **Mean max drawdown** | **55%** | 87% |
+| Lower drawdown than B&H | **15 / 15 assets** | — |
+| Median Sharpe | 0.50 | 0.74 |
+| Sharpe ≥ buy-and-hold | 6 / 15 assets | — |
+
+The one universal, robust result: **lower maximum drawdown on all 15 assets** (a
+~31-point median cut). The return/Sharpe edge is *concentrated* where it should be
+— the high-funding-activity megacaps (BNB 0.93, BTC 0.98, ETH 0.86, SOL 1.13,
+DOGE 1.11, ADA 0.75) — and **fades on thin-funding alts** (LINK, LTC, BCH, ZEC,
+XMR), exactly as the thesis predicts: the signal is only as good as the leverage
+data behind it. We show the losers rather than hide them. Full table:
+`reports/multiasset.csv`.
+
+The **Deflated Sharpe** (probability the true Sharpe beats the expected-max across
+every variant tried) clears 0.5 on the megacaps and is honestly low on the alts —
+a haircut for multiple-testing that a single in-sample backtest never pays.
 
 > **On rivals printing a "Sharpe of 7.86":** a Sharpe that high on a single
 > in-sample crypto backtest is a red flag, not an achievement (Bailey & López de
-> Prado, 2014). It is what overfitting looks like. We deliberately report deflated
-> Sharpe, walk-forward, cost-sensitivity and the assets/segments where we *don't*
-> win — because a number you can reproduce out-of-sample is worth more than a big
-> number you can't.
+> Prado, 2014). It is what overfitting looks like. We deliberately run 15 assets,
+> report deflated Sharpe, walk-forward, cost-sensitivity and the assets where we
+> *lose* — because a number you can reproduce out-of-sample is worth more than a
+> big number you can't.
 
 ### Honest ablation: where funding helps
 

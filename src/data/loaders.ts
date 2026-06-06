@@ -18,12 +18,29 @@ import type { Bar, SignalPoint } from "../types.js";
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_DATA_DIR = resolve(HERE, "..", "..", "data");
 
-/** Assets with committed snapshots. `prefix` is the data/ file stem. BNB is primary. */
+/**
+ * Validation assets: every CMC20 constituent with both deep daily price history
+ * and a funding market on Binance (>= ~4 years), so the funding-confirmation
+ * signal can be tested out-of-sample on each. BNB is primary (this is a BNB Chain
+ * hackathon). The newer/illiquid constituents (HYPE, CC, M, TON) have no deep
+ * spot history, so they feed the live CMC20 basket but not this backtest.
+ */
 export const ASSETS: Array<{ prefix: string; symbol: string }> = [
   { prefix: "bnb", symbol: "BNBUSDT" },
   { prefix: "btc", symbol: "BTCUSDT" },
   { prefix: "eth", symbol: "ETHUSDT" },
   { prefix: "sol", symbol: "SOLUSDT" },
+  { prefix: "xrp", symbol: "XRPUSDT" },
+  { prefix: "trx", symbol: "TRXUSDT" },
+  { prefix: "doge", symbol: "DOGEUSDT" },
+  { prefix: "xlm", symbol: "XLMUSDT" },
+  { prefix: "ada", symbol: "ADAUSDT" },
+  { prefix: "link", symbol: "LINKUSDT" },
+  { prefix: "ltc", symbol: "LTCUSDT" },
+  { prefix: "bch", symbol: "BCHUSDT" },
+  { prefix: "zec", symbol: "ZECUSDT" },
+  { prefix: "xmr", symbol: "XMRUSDT" },
+  { prefix: "hbar", symbol: "HBARUSDT" },
 ];
 
 /** The primary asset (this is a BNB Chain hackathon). */
