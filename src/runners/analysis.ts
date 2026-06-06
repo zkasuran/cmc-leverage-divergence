@@ -6,6 +6,7 @@
  */
 
 import { loadDataset, ASSETS } from "../data/loaders.js";
+import { loadCmc20Bars, loadCmc20Signals } from "../data/cmc-loader.js";
 import { runStrategy, ablationSet } from "./run.js";
 import { makeLeverageDivergence } from "../strategy/leverage-divergence.js";
 import { makeBuyHold } from "../baselines/buy-hold.js";
@@ -69,6 +70,36 @@ export async function crossAsset(): Promise<AssetResult[]> {
   const out: AssetResult[] = [];
   for (const a of ASSETS) out.push(await runAsset(a.prefix, a.symbol));
   return out;
+}
+
+export interface Cmc20Result {
+  bars: number;
+  firstDay: string;
+  lastDay: string;
+  strategy: Metrics;
+  buyHold: Metrics;
+}
+
+/**
+ * CMC20 benchmark. CoinMarketCap's own top-20 index, tokenized on BNB Smart
+ * Chain (Reserve Protocol DTF, contract 0x2f8A…6867), priced from CMC's free
+ * data-api (id 38442). CMC20 has no perp market, so it carries no funding
+ * signal: the strategy holds its base allocation gated by trend only, which on a
+ * 7-month index in a 42% drawdown is the honest, capital-preserving outcome.
+ * Included as the sponsor-native benchmark, not as a funding-strategy target.
+ */
+export async function cmc20Benchmark(): Promise<Cmc20Result> {
+  const bars = loadCmc20Bars();
+  const signals = loadCmc20Signals(bars);
+  const strat = await runStrategy(makeLeverageDivergence({ symbol: "CMC20" }), bars, signals, { symbol: "CMC20" });
+  const bh = await runStrategy(makeBuyHold("CMC20"), bars, signals, { symbol: "CMC20" });
+  return {
+    bars: bars.length,
+    firstDay: new Date(bars[0]!.time).toISOString().slice(0, 10),
+    lastDay: new Date(bars[bars.length - 1]!.time).toISOString().slice(0, 10),
+    strategy: strat.scorecard.metrics,
+    buyHold: bh.scorecard.metrics,
+  };
 }
 
 export interface CostRow {

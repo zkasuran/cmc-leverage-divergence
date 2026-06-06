@@ -32,7 +32,8 @@
     "ablation": "tsx src/cli.ts ablation",
     "multiasset": "tsx src/cli.ts multiasset",
     "costs": "tsx src/cli.ts costs",
-    "eventstudy": "tsx src/cli.ts eventstudy"
+    "eventstudy": "tsx src/cli.ts eventstudy",
+    "cmc20": "tsx src/cli.ts cmc20"
   },
   "engines": {
     "node": ">=18"

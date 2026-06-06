@@ -15,7 +15,7 @@ import { loadDataset, ASSETS, PRIMARY } from "./data/loaders.js";
 import { emitReport } from "./report/emit.js";
 import { makeLeverageDivergence } from "./strategy/leverage-divergence.js";
 import { runStrategy, perYear, ablationSet, type YearRow } from "./runners/run.js";
-import { crossAsset, costSensitivity, eventStudy } from "./runners/analysis.js";
+import { crossAsset, costSensitivity, eventStudy, cmc20Benchmark } from "./runners/analysis.js";
 import type { Metrics } from "./types.js";
 
 const PRIMARY_SYMBOL = ASSETS.find((a) => a.prefix === PRIMARY)?.symbol ?? "BNBUSDT";
@@ -152,6 +152,23 @@ async function cmdAblation() {
   console.log(`\nWrote ${resolve(REPORTS, "ablation.csv")}`);
 }
 
+async function cmdCmc20() {
+  const r = await cmc20Benchmark();
+  console.log(`CMC20 (CoinMarketCap 20 Index, id 38442, BEP-20 on BSC) — CMC data-api`);
+  console.log(`  ${r.bars} daily bars, ${r.firstDay} to ${r.lastDay}`);
+  console.log(summarize("strategy (no perp data)", r.strategy));
+  console.log(summarize("CMC20 buy-and-hold", r.buyHold));
+  console.log("Note: CMC20 has no perp market, so no funding signal fires; the");
+  console.log("strategy holds base allocation under the trend gate (capital-preserving).");
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(
+    resolve(REPORTS, "cmc20.json"),
+    JSON.stringify(r, null, 2),
+    "utf8",
+  );
+  console.log(`\nWrote ${resolve(REPORTS, "cmc20.json")}`);
+}
+
 async function main() {
   const cmd = process.argv[2] ?? "backtest";
   switch (cmd) {
@@ -167,8 +184,10 @@ async function main() {
       return cmdCosts();
     case "eventstudy":
       return cmdEventStudy();
+    case "cmc20":
+      return cmdCmc20();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20.`);
       process.exit(1);
   }
 }

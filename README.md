@@ -7,6 +7,29 @@ multi-asset backtest and the statistical rigor to prove the edge is real.
 Built for **BNB Hack: AI Trading Agent Edition** (CoinMarketCap × Trust Wallet ×
 BNB Chain), Track 2 — Strategy Skills. Primary asset: **BNB**.
 
+**Live demo (zero clone):** deploy `demo/index.html` to any static host, or open
+it locally. It renders the headline backtest, the multi-asset table, the event
+study and the ablation, all from the committed reports.
+
+## CoinMarketCap integration: CMC20 + the Agent Hub
+
+This is a CMC × BNB collaboration, so the integration is native to both:
+
+- **Signal source — CMC AI Agent Hub (MCP).** The funding/derivatives data that
+  drives the strategy comes from `get_global_crypto_derivatives_metrics` and
+  `get_global_metrics_latest`. The Skill is authored to the openCMC Agent-Skill
+  format, ready for the CMC Skills marketplace.
+- **Benchmark — CMC20, CMC's own index, on BNB Chain.** CMC20 is CoinMarketCap's
+  top-20 index (ex-stables/wrapped), tokenized as a BEP-20 on BNB Smart Chain via
+  Reserve Protocol (contract `0x2f8A339B5889FfaC4c5A956787cdA593b3c36867`). We pull
+  its price history straight from CMC's free data-api (id 38442) and carry it as
+  the sponsor-native benchmark (`npm run cmc20`). CMC20 has no perp market, so it
+  carries no funding signal: the strategy correctly holds base allocation under the
+  trend gate, preserving capital through CMC20's 40% drawdown rather than forcing a
+  bad fit. The closed loop the sponsors want: **CMC data → CMC Agent Hub signal →
+  BNB Chain → CMC20 benchmark.**
+
+
 ## The finding nobody else reports
 
 Crypto folklore says deeply negative funding means "shorts are trapped, buy the
@@ -94,6 +117,7 @@ npm run eventstudy  # forward returns by signal state -> reports/event-study.csv
 npm run ablation    # contrarian / no-funding / no-trend / baselines -> reports/ablation.csv
 npm run costs       # 1x/2x/3x cost sensitivity -> reports/cost-sensitivity.csv
 npm run walkforward # per-year, out-of-sample -> reports/walkforward.csv
+npm run cmc20       # CMC20 benchmark via CMC data-api -> reports/cmc20.json
 npm run fetch-data  # refresh data/ snapshots (optional; snapshots are committed)
 ```
 

@@ -1,0 +1,35 @@
+{
+  "bars": 207,
+  "firstDay": "2025-11-11",
+  "lastDay": "2026-06-05",
+  "strategy": {
+    "startingEquity": 10000,
+    "finalEquity": 10000,
+    "totalReturnPct": 0,
+    "maxDrawdownPct": 0,
+    "sharpe": 0,
+    "sortino": null,
+    "winRatePct": 0,
+    "profitFactor": 0,
+    "totalTrades": 0,
+    "totalFees": 0,
+    "turnover": 0,
+    "exposurePct": 0,
+    "violations": 0
+  },
+  "buyHold": {
+    "startingEquity": 10000,
+    "finalEquity": 6443.599551597863,
+    "totalReturnPct": -35.564004484021375,
+    "maxDrawdownPct": 39.972876079126074,
+    "sharpe": -1.4174807909308058,
+    "sortino": -1.2642366117818764,
+    "winRatePct": 0,
+    "profitFactor": 0,
+    "totalTrades": 0,
+    "totalFees": 9.904950564833195,
+    "turnover": 1.1527909791700304,
+    "exposurePct": 84.54106280193237,
+    "violations": 0
+  }
+}
