@@ -41,7 +41,7 @@ export type { Dataset } from "./data/loaders.js";
 export { emitReport, hashDataset } from "./report/emit.js";
 export { runStrategy, perYear, ablationSet } from "./runners/run.js";
 export type { YearRow, Variant, RunOpts } from "./runners/run.js";
-export { crossAsset, costSensitivity, eventStudy, cmc20Benchmark } from "./runners/analysis.js";
+export { crossAsset, costSensitivity, eventStudy, cmc20Benchmark, regimeReturns } from "./runners/analysis.js";
 export type { AssetResult, CostRow, EventStat, DivState, Cmc20Result } from "./runners/analysis.js";
 export { loadCmc20Bars, loadCmc20Signals } from "./data/cmc-loader.js";
 export { cmc20Overlay, buildBasketSignals } from "./runners/cmc20-overlay.js";

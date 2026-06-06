@@ -5,6 +5,36 @@ Starting equity 10,000. Seed 42. Reproduce with `npm run multiasset` /
 `npm run eventstudy` / `npm run ablation` / `npm run costs` / `npm run walkforward`.
 Raw output in `reports/`.
 
+## CMC20 overlay (the headlining result)
+
+The same engine, with a market-cap-weighted signal built from **19 of CMC20's 20
+constituents** (every one with a perp market), timing the CMC20 index over its full
+life (Nov 2025 – Jun 2026, a down market):
+
+| | Return | Max drawdown | Prob. Sharpe |
+|--|------:|-------------:|-------------:|
+| CMC20 buy-and-hold | -35.6% | 40.0% | 0.14 |
+| **Funding-regime overlay** | **-12.8%** | **15.1%** | **0.16** |
+
+Drawdown cut 25 pts, loss cut 23. 7-month down-only sample; the prob. Sharpe edges
+buy-and-hold. Reproduce: `npm run cmc20`.
+
+## Regime-conditional returns: beats buy-and-hold on return in down markets
+
+The common challenge: "you only beat buy-and-hold on drawdown, not return." Split
+each asset into bull (price ≥ 200-day MA) and bear (below) and compare within each:
+
+| Asset | Bear: strategy | Bear: buy & hold | Edge |
+|-------|---------------:|-----------------:|-----:|
+| BTC | -37% | -88% | **+51 pts** |
+| ETH | -41% | -91% | **+50 pts** |
+| BNB | -56% | -89% | **+33 pts** |
+| SOL | -61% | -98% | **+37 pts** |
+
+In down/sideways markets — when an allocator actually needs help — the strategy
+beats buy-and-hold on **return** everywhere. It gives up upside in bulls (the cost
+of the risk gate). Reproduce: `npm run regime`.
+
 ## The finding: confirmation predicts, contrarian does not
 
 Forward-return event study on BNB, bars classified by signal state:

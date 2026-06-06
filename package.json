@@ -34,7 +34,8 @@
     "costs": "tsx src/cli.ts costs",
     "eventstudy": "tsx src/cli.ts eventstudy",
     "cmc20": "tsx src/cli.ts cmc20",
-    "spec": "tsx src/cli.ts spec"
+    "spec": "tsx src/cli.ts spec",
+    "regime": "tsx src/cli.ts regime"
   },
   "engines": {
     "node": ">=18"

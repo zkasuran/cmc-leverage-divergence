@@ -1,0 +1,116 @@
+[
+ {
+  "symbol": "BTC",
+  "prefix": "btc",
+  "pair": "BTCUSDT",
+  "marketCap": 1216228025482.2102
+ },
+ {
+  "symbol": "ETH",
+  "prefix": "eth",
+  "pair": "ETHUSDT",
+  "marketCap": 188124469154.61456
+ },
+ {
+  "symbol": "BNB",
+  "prefix": "bnb",
+  "pair": "BNBUSDT",
+  "marketCap": 77414777391.51979
+ },
+ {
+  "symbol": "XRP",
+  "prefix": "xrp",
+  "pair": "XRPUSDT",
+  "marketCap": 67959372796.15647
+ },
+ {
+  "symbol": "SOL",
+  "prefix": "sol",
+  "pair": "SOLUSDT",
+  "marketCap": 35774819526.79145
+ },
+ {
+  "symbol": "TRX",
+  "prefix": "trx",
+  "pair": "TRXUSDT",
+  "marketCap": 30416945577.216434
+ },
+ {
+  "symbol": "HYPE",
+  "prefix": "hype",
+  "pair": "HYPEUSDT",
+  "marketCap": 14766636008.969843
+ },
+ {
+  "symbol": "DOGE",
+  "prefix": "doge",
+  "pair": "DOGEUSDT",
+  "marketCap": 13897398727.76015
+ },
+ {
+  "symbol": "XLM",
+  "prefix": "xlm",
+  "pair": "XLMUSDT",
+  "marketCap": 6896865742.35556
+ },
+ {
+  "symbol": "CC",
+  "prefix": "cc",
+  "pair": "CCUSDT",
+  "marketCap": 6048993204.338968
+ },
+ {
+  "symbol": "ZEC",
+  "prefix": "zec",
+  "pair": "ZECUSDT",
+  "marketCap": 5853701003.4753275
+ },
+ {
+  "symbol": "ADA",
+  "prefix": "ada",
+  "pair": "ADAUSDT",
+  "marketCap": 5731429008.49532
+ },
+ {
+  "symbol": "XMR",
+  "prefix": "xmr",
+  "pair": "XMRUSDT",
+  "marketCap": 5549045003.665843
+ },
+ {
+  "symbol": "LINK",
+  "prefix": "link",
+  "pair": "LINKUSDT",
+  "marketCap": 5353261669.10145
+ },
+ {
+  "symbol": "BCH",
+  "prefix": "bch",
+  "pair": "BCHUSDT",
+  "marketCap": 4371929508.672887
+ },
+ {
+  "symbol": "TON",
+  "prefix": "ton",
+  "pair": "TONUSDT",
+  "marketCap": 4274683603.194959
+ },
+ {
+  "symbol": "M",
+  "prefix": "m",
+  "pair": "MUSDT",
+  "marketCap": 3752636396.8685484
+ },
+ {
+  "symbol": "HBAR",
+  "prefix": "hbar",
+  "pair": "HBARUSDT",
+  "marketCap": 3422045347.1948724
+ },
+ {
+  "symbol": "LTC",
+  "prefix": "ltc",
+  "pair": "LTCUSDT",
+  "marketCap": 3270529175.092217
+ }
+]

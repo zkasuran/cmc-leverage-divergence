@@ -15,63 +15,120 @@
  * funding" series (constituent funding averaged), aligned to CMC20's daily bars.
  */
 
+import { readFileSync, existsSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { loadCmc20Bars } from "../data/cmc-loader.js";
-import { loadDataset, ASSETS } from "../data/loaders.js";
+import { loadDataset, DEFAULT_DATA_DIR, asOf } from "../data/loaders.js";
 import { runStrategy } from "./run.js";
 import { makeLeverageDivergence } from "../strategy/leverage-divergence.js";
 import { makeBuyHold } from "../baselines/buy-hold.js";
-import { asOf } from "../data/loaders.js";
 import { returnsFromEquity, probabilisticSharpe } from "../engine/stats.js";
 import type { Bar, SignalPoint, Metrics } from "../types.js";
 
-/** Constituents of CMC20 that have liquid perp funding markets. */
-const CONSTITUENTS = ["btc", "eth", "bnb", "sol"];
+const HERE = dirname(fileURLToPath(import.meta.url));
 
 interface Series {
   time: number;
   value: number;
 }
 
+interface Constituent {
+  symbol: string;
+  prefix: string;
+  pair: string;
+  marketCap: number;
+}
+
 /**
- * Build a basket funding series aligned to CMC20 bars: at each CMC20 bar, average
- * the most-recent funding rate of each constituent (as-of that bar's open, so no
- * lookahead). The basket's Fear & Greed is global, carried straight through.
+ * The CMC20 constituent universe: CoinMarketCap's current top-20 by market cap
+ * (ex-stablecoins, ex-wrapped, per CMC20 methodology) intersected with the assets
+ * that have a liquid perp funding market. Derived in data/cmc20-constituents.json
+ * from the CMC listing API. Falls back to the four majors if the file is absent.
+ *
+ * This is dynamic by construction: re-run `npm run fetch-data` and the universe
+ * refreshes to whatever CMC ranks in the top 20 today, so a coin that drops out
+ * leaves and a new entrant joins automatically.
+ */
+export function loadConstituents(dir = DEFAULT_DATA_DIR): Constituent[] {
+  const path = resolve(dir, "cmc20-constituents.json");
+  if (existsSync(path)) {
+    return JSON.parse(readFileSync(path, "utf8")) as Constituent[];
+  }
+  return [
+    { symbol: "BTC", prefix: "btc", pair: "BTCUSDT", marketCap: 1 },
+    { symbol: "ETH", prefix: "eth", pair: "ETHUSDT", marketCap: 1 },
+    { symbol: "BNB", prefix: "bnb", pair: "BNBUSDT", marketCap: 1 },
+    { symbol: "SOL", prefix: "sol", pair: "SOLUSDT", marketCap: 1 },
+  ];
+}
+
+/** Read one constituent's funding series. Majors come via loadDataset; the rest
+ * from their committed `<prefix>-funding.json`. Returns [] if no data. */
+function constituentFunding(c: Constituent, dir: string): Series[] {
+  // Majors are loaded as full assets (they have klines too).
+  if (["btc", "eth", "bnb", "sol"].includes(c.prefix)) {
+    const { bars, signals } = loadDataset(c.prefix, dir);
+    const out: Series[] = [];
+    for (let i = 0; i < bars.length; i++) {
+      const f = signals[i]?.fundingRate;
+      if (f !== undefined) out.push({ time: bars[i]!.time, value: f });
+    }
+    return out;
+  }
+  const path = resolve(dir, `${c.prefix}-funding.json`);
+  if (!existsSync(path)) return [];
+  const raw: any[] = JSON.parse(readFileSync(path, "utf8"));
+  return raw
+    .map((r) => ({ time: Number(r.fundingTime), value: Number(r.fundingRate) }))
+    .sort((a, b) => a.time - b.time);
+}
+
+/** Global Fear & Greed series (shared across assets). */
+function fngSeries(dir: string): Series[] {
+  const { bars, signals } = loadDataset("btc", dir);
+  return bars
+    .map((b, i) => ({ time: b.time, value: signals[i]?.fearGreed }))
+    .filter((x): x is Series => x.value !== undefined);
+}
+
+/**
+ * Build the CMC20 basket funding series aligned to CMC20 bars: at each bar, take a
+ * MARKET-CAP-WEIGHTED average of every constituent's most-recent funding rate
+ * (as-of that bar's open, so no lookahead), over whatever constituents have data
+ * at that time. Bigger index members move the basket signal more, exactly as they
+ * move the index. Fear & Greed is the global series, carried through.
  */
 export function buildBasketSignals(
   cmc20Bars: readonly Bar[],
+  dir = DEFAULT_DATA_DIR,
 ): (SignalPoint | null)[] {
-  // Collect each constituent's funding series + the (shared, global) F&G series.
-  const fundingByAsset: Series[][] = [];
-  let fng: Series[] = [];
-  for (const prefix of CONSTITUENTS) {
-    const { bars, signals } = loadDataset(prefix);
-    const series: Series[] = [];
-    for (let i = 0; i < bars.length; i++) {
-      const f = signals[i]?.fundingRate;
-      if (f !== undefined) series.push({ time: bars[i]!.time, value: f });
-    }
-    fundingByAsset.push(series);
-    if (fng.length === 0) {
-      fng = bars
-        .map((b, i) => ({ time: b.time, value: signals[i]?.fearGreed }))
-        .filter((x): x is Series => x.value !== undefined);
-    }
-  }
+  const universe = loadConstituents(dir);
+  const series = universe.map((c) => ({ weight: c.marketCap, funding: constituentFunding(c, dir) }));
+  const fng = fngSeries(dir);
 
   return cmc20Bars.map((bar) => {
-    const fundings: number[] = [];
-    for (const series of fundingByAsset) {
-      const v = asOf(series, bar.time);
-      if (v !== null) fundings.push(v);
+    let wsum = 0;
+    let acc = 0;
+    for (const s of series) {
+      const v = asOf(s.funding, bar.time);
+      if (v !== null) { acc += s.weight * v; wsum += s.weight; }
     }
     const point: SignalPoint = {};
-    if (fundings.length > 0) {
-      point.fundingRate = fundings.reduce((a, b) => a + b, 0) / fundings.length;
-    }
+    if (wsum > 0) point.fundingRate = acc / wsum;
     const g = asOf(fng, bar.time);
     if (g !== null) point.fearGreed = g;
     return Object.keys(point).length > 0 ? point : null;
   });
+}
+
+/** How many constituents actually contribute funding at the latest CMC20 bar. */
+export function constituentCoverage(dir = DEFAULT_DATA_DIR): { total: number; withFunding: number; symbols: string[] } {
+  const universe = loadConstituents(dir);
+  const bars = loadCmc20Bars();
+  const last = bars[bars.length - 1]!.time;
+  const have = universe.filter((c) => asOf(constituentFunding(c, dir), last) !== null);
+  return { total: universe.length, withFunding: have.length, symbols: have.map((c) => c.symbol) };
 }
 
 export interface OverlayResult {

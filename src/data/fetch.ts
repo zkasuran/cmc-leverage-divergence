@@ -11,7 +11,7 @@
  * Run: npm run fetch-data
  */
 
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -79,6 +79,28 @@ async function fetchFunding(symbol: string): Promise<any[]> {
   return out;
 }
 
+/** Fetch funding history for every CMC20 constituent that has a Binance perp. */
+async function fetchConstituentFunding() {
+  let universe: Array<{ symbol: string; prefix: string; pair: string }> = [];
+  try {
+    universe = JSON.parse(readFileSync(resolve(DATA, "cmc20-constituents.json"), "utf8"));
+  } catch {
+    console.log("No data/cmc20-constituents.json — skipping constituent funding.");
+    return;
+  }
+  for (const c of universe) {
+    // Skip the four majors already fetched as full assets.
+    if (["btc", "eth", "bnb", "sol"].includes(c.prefix)) continue;
+    try {
+      const funding = await fetchFunding(c.pair);
+      writeFileSync(resolve(DATA, `${c.prefix}-funding.json`), JSON.stringify(funding));
+      console.log(`  ${c.pair}: ${funding.length} funding points`);
+    } catch (e) {
+      console.log(`  ${c.pair}: no perp / fetch failed (${String(e).slice(0, 40)})`);
+    }
+  }
+}
+
 async function main() {
   mkdirSync(DATA, { recursive: true });
 
@@ -93,6 +115,9 @@ async function main() {
     writeFileSync(resolve(DATA, `${prefix}-funding.json`), JSON.stringify(funding));
     console.log(`  ${funding.length} funding points`);
   }
+
+  console.log("Fetching CMC20 constituent funding (top-20 perps)...");
+  await fetchConstituentFunding();
 
   console.log("Fetching Fear & Greed history (global)...");
   const fng = await getJson("https://api.alternative.me/fng/?limit=0&format=json");

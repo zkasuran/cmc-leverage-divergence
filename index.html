@@ -5,42 +5,44 @@
 :root{--bg:#0d1117;--fg:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--border:#30363d;--card:#161b22;--cmc:#f0b90b}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,-apple-system,sans-serif;max-width:980px;margin:0 auto;padding:24px 16px}
-h1{font-size:22px;margin-bottom:4px}
-.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+h1{font-size:22px;margin-bottom:4px}.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
 .tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:600;margin-right:5px}
 .tag-cmc{background:#58a6ff22;color:#58a6ff}.tag-bnb{background:#f0b90b22;color:#f0b90b}.tag-win{background:#3fb95022;color:#3fb950}.tag-loss{background:#f8514922;color:#f85149}
-h2{font-size:15px;margin:28px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--border)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+h2{font-size:15px;margin:26px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.hook{font-size:15px;margin-bottom:16px;padding:14px 16px;background:var(--card);border:1px solid var(--accent);border-radius:8px;line-height:1.6}
+.hook strong{color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
-.card .v{font-size:22px;font-weight:700;line-height:1.2}.card .l{color:var(--muted);font-size:11px;margin-top:2px}
-.v-accent{color:var(--accent)}.v-green{color:var(--green)}.v-red{color:var(--red)}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px}
-th{text-align:left;padding:5px 8px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:12px}
+.card .v{font-size:21px;font-weight:700}.card .l{color:var(--muted);font-size:11px;margin-top:2px}
+.v-green{color:var(--green)}.v-red{color:var(--red)}.v-accent{color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+th{text-align:left;padding:5px 8px;border-bottom:2px solid var(--border);color:var(--muted);font-size:12px}
 td{padding:5px 8px;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}tr:hover{background:var(--card)}
-.hero{font-size:14px;margin-bottom:18px;padding:14px 16px;background:var(--card);border:1px solid var(--accent);border-radius:8px;line-height:1.6}
-.hero strong{color:var(--accent)}
-.flow{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;white-space:pre;overflow-x:auto;margin-bottom:16px;line-height:1.4}
-.cta{font-size:13px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin:24px 0}
+.note{color:var(--muted);font-size:12px;margin:6px 0 4px}
+.flow{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;white-space:pre;overflow-x:auto;margin-bottom:14px;line-height:1.4}
+pre.spec{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;overflow-x:auto}
+.cta{font-size:13px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin:22px 0}
 .cta code{background:#1c2128;padding:1px 5px;border-radius:4px}.cta a{color:var(--accent)}
-pre.spec{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;overflow-x:auto;color:var(--fg)}
-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:32px;padding-top:16px;border-top:1px solid var(--border)}footer a{color:var(--accent)}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px;padding-top:16px;border-top:1px solid var(--border)}footer a{color:var(--accent)}
 </style></head><body>
 
 <h1>cmc-leverage-divergence</h1>
 <div class="sub"><span class="tag tag-cmc">CoinMarketCap Agent Hub</span><span class="tag tag-bnb">BNB Chain</span> · BNB Hack 2026 · Track 2</div>
 
-<div class="hero">
-A <strong>funding-regime overlay for CMC20</strong> — CoinMarketCap's own top-20 index, tokenized on BNB Smart Chain. CMC20 has no risk management and took a <strong>40% drawdown</strong>. We read the funding × price signal of its liquid constituents (BTC/ETH/BNB/SOL) from the CMC Agent Hub and use it to time the index. One engine: validated on the constituents, applied to the index, served live as a Skill spec, proven by backtest.
+<div class="hook">
+Crypto folklore says deeply negative funding = "buy the bottom." Across BTC/ETH/BNB/SOL it is <strong>backwards</strong>: leverage-<em>confirmed</em> momentum returns <strong>+14.2% over 30 days (73% hit)</strong> vs <strong>+2.8% (53%)</strong> for the buy-the-dip setup. We trade the confirmation — and use it to give <strong>CMC20, CoinMarketCap's own index on BNB Chain</strong>, the risk gate it never had.
 </div>
 
-<h2>CMC20 overlay — the result</h2>
+<h2>CMC20 + the overlay (the headline)</h2>
 <div class="grid">
-<div class="card"><div class="v v-green">22.9%</div><div class="l">Overlay max drawdown</div></div>
+<div class="card"><div class="v v-green">15.1%</div><div class="l">Overlay max drawdown</div></div>
 <div class="card"><div class="v v-red">40.0%</div><div class="l">CMC20 buy &amp; hold drawdown</div></div>
-<div class="card"><div class="v">-20.7%</div><div class="l">Overlay return</div></div>
+<div class="card"><div class="v">-12.8%</div><div class="l">Overlay return</div></div>
 <div class="card"><div class="v">-35.6%</div><div class="l">CMC20 buy &amp; hold return</div></div>
+<div class="card"><div class="v v-accent">0.16</div><div class="l">Overlay prob. Sharpe</div></div>
+<div class="card"><div class="v">0.14</div><div class="l">Buy &amp; hold prob. Sharpe</div></div>
 </div>
-<p style="color:var(--muted);font-size:13px;margin-bottom:8px">CMC20 life so far (Nov 2025–Jun 2026, a down market). Drawdown cut 17 pts, loss cut 15 pts. A 7-month down-only sample, so we claim capital preservation, not Sharpe. <code style="background:#1c2128;padding:1px 5px;border-radius:4px">npm run cmc20</code></p>
+<p class="note">Signal = market-cap-weighted funding of <strong>19 of CMC20's 20 constituents</strong> (all but the LEO exchange token) + CMC20's own trend gate. CMC20 life so far (Nov 2025–Jun 2026, a down market). Drawdown cut 25 pts, loss cut 23 pts, prob. Sharpe edges buy-and-hold. 7-month down-only sample so we don't headline an annualised Sharpe. <code>npm run cmc20</code></p>
 
 <div class="flow">CMC AI Agent Hub (funding, F&amp;G)
       |
@@ -49,11 +51,11 @@ src/signals/divergence.ts  ── the one engine (computeFeatures)
    /        |         \
   v         v          v
 validated   timing      emitted live as a
-on BTC/ETH/ overlay on  strategy spec (npm run spec)
-BNB/SOL     CMC20 index</div>
+on 19 CMC20 overlay on  strategy spec (npm run spec)
+constituents CMC20 index</div>
 
-<h2>The finding — funding-confirmed momentum predicts (contrarian is backwards)</h2>
-<table><thead><tr><th>horizon_days</th><th>state</th><th>n</th><th>mean_forward_pct</th><th>hit_rate_pct</th></tr></thead><tbody><tr><td>7d</td><td><span class="tag tag-win">confirmed-up</span></td><td>132</td><td>5.20%</td><td>56.82%</td></tr><tr><td>7d</td><td><span class="tag tag-loss">flush-down</span></td><td>156</td><td>1.45%</td><td>50.64%</td></tr><tr><td>7d</td><td><span class="tag ">neutral</span></td><td>2176</td><td>1.45%</td><td>52.71%</td></tr><tr><td>30d</td><td><span class="tag tag-win">confirmed-up</span></td><td>128</td><td>14.23%</td><td>72.66%</td></tr><tr><td>30d</td><td><span class="tag tag-loss">flush-down</span></td><td>156</td><td>2.76%</td><td>53.21%</td></tr><tr><td>30d</td><td><span class="tag ">neutral</span></td><td>2157</td><td>9.38%</td><td>56.05%</td></tr></tbody></table><h2>Validated across the constituents (strategy vs buy &amp; hold)</h2><table><thead><tr><th>asset</th><th>strat_sharpe</th><th>strat_maxdd</th><th>strat_ret</th><th>bh_sharpe</th><th>bh_maxdd</th><th>bh_ret</th><th>funding_off_sharpe</th><th>psr</th><th>dsr</th></tr></thead><tbody><tr><td style=font-weight:600>BNBUSDT</td><td>0.93</td><td>44.42</td><td>563.32</td><td>1.04</td><td>70.85</td><td>3483.14</td><td>1.05</td><td>1.00</td><td>0.80</td></tr><tr><td style=font-weight:600>BTCUSDT</td><td>0.98</td><td>27.16</td><td>298.06</td><td>0.79</td><td>76.55</td><td>620.66</td><td>0.99</td><td>1.00</td><td>0.85</td></tr><tr><td style=font-weight:600>ETHUSDT</td><td>0.86</td><td>51.03</td><td>372.00</td><td>0.80</td><td>79.28</td><td>755.54</td><td>0.84</td><td>0.99</td><td>0.76</td></tr><tr><td style=font-weight:600>SOLUSDT</td><td>1.13</td><td>59.68</td><td>1019.77</td><td>1.00</td><td>96.26</td><td>1717.91</td><td>1.04</td><td>1.00</td><td>0.57</td></tr></tbody></table><h2>Ablation — the funding signal carries the edge</h2><table><thead><tr><th>variant</th><th>return_pct</th><th>maxdd_pct</th><th>sharpe</th></tr></thead><tbody><tr><td style=font-weight:600>headline</td><td>563.32</td><td>44.42</td><td>0.93</td></tr><tr><td style=font-weight:600>contrarian</td><td>606.07</td><td>52.70</td><td>1.04</td></tr><tr><td style=font-weight:600>no-divergence</td><td>688.71</td><td>47.77</td><td>1.05</td></tr><tr><td style=font-weight:600>no-trend</td><td>793.25</td><td>45.17</td><td>0.97</td></tr><tr><td style=font-weight:600>no-crowding</td><td>555.39</td><td>44.42</td><td>0.93</td></tr><tr><td style=font-weight:600>plus-fng</td><td>340.11</td><td>49.51</td><td>0.82</td></tr><tr><td style=font-weight:600>baseline:buy-hold</td><td>3483.14</td><td>70.85</td><td>1.04</td></tr><tr><td style=font-weight:600>baseline:fng-only</td><td>-21.79</td><td>53.14</td><td>0.04</td></tr><tr><td style=font-weight:600>baseline:rsi-meanrev</td><td>0.00</td><td>0.04</td><td>0.01</td></tr></tbody></table><h2>Live strategy spec — same engine, emitted now (npm run spec)</h2>
+<h2>Beats buy &amp; hold on RETURN in down markets (not just drawdown)</h2>
+<table><thead><tr><th>Asset</th><th>Bear: strategy</th><th>Bear: buy &amp; hold</th><th>Edge</th></tr></thead><tbody><tr><td>BTCUSDT</td><td>-37%</td><td>-88%</td><td style="color:var(--green)">+51 pts</td></tr><tr><td>ETHUSDT</td><td>-41%</td><td>-91%</td><td style="color:var(--green)">+50 pts</td></tr><tr><td>BNBUSDT</td><td>-56%</td><td>-89%</td><td style="color:var(--green)">+33 pts</td></tr><tr><td>SOLUSDT</td><td>-61%</td><td>-98%</td><td style="color:var(--green)">+37 pts</td></tr></tbody></table><p class="note">In bull markets the strategy gives up upside (the price of the risk gate); in bear/down markets — when you need it — it beats buy &amp; hold on return everywhere. <code>npm run regime</code></p><h2>The finding — confirmation predicts, contrarian is backwards</h2><table><thead><tr><th>horizon_days</th><th>state</th><th>n</th><th>mean_forward_pct</th><th>hit_rate_pct</th></tr></thead><tbody><tr><td>7d</td><td><span class="tag tag-win">confirmed-up</span></td><td>132</td><td>5.20%</td><td>56.82%</td></tr><tr><td>7d</td><td><span class="tag tag-loss">flush-down</span></td><td>156</td><td>1.45%</td><td>50.64%</td></tr><tr><td>7d</td><td><span class="tag ">neutral</span></td><td>2176</td><td>1.45%</td><td>52.71%</td></tr><tr><td>30d</td><td><span class="tag tag-win">confirmed-up</span></td><td>128</td><td>14.23%</td><td>72.66%</td></tr><tr><td>30d</td><td><span class="tag tag-loss">flush-down</span></td><td>156</td><td>2.76%</td><td>53.21%</td></tr><tr><td>30d</td><td><span class="tag ">neutral</span></td><td>2157</td><td>9.38%</td><td>56.05%</td></tr></tbody></table><p class="note">Monotonic and large at 30 days; smaller at 7. The "buy the dip" bucket is the worst.</p><h2>Validation across the constituents (2019–2026)</h2><table><thead><tr><th>asset</th><th>strat_sharpe</th><th>strat_maxdd</th><th>strat_ret</th><th>bh_sharpe</th><th>bh_maxdd</th><th>bh_ret</th><th>funding_off_sharpe</th><th>psr</th><th>dsr</th></tr></thead><tbody><tr><td style=font-weight:600>BNBUSDT</td><td>0.93</td><td>44.42</td><td>563.32</td><td>1.04</td><td>70.85</td><td>3483.14</td><td>1.05</td><td>1.00</td><td>0.80</td></tr><tr><td style=font-weight:600>BTCUSDT</td><td>0.98</td><td>27.16</td><td>298.06</td><td>0.79</td><td>76.55</td><td>620.66</td><td>0.99</td><td>1.00</td><td>0.85</td></tr><tr><td style=font-weight:600>ETHUSDT</td><td>0.86</td><td>51.03</td><td>372.00</td><td>0.80</td><td>79.28</td><td>755.54</td><td>0.84</td><td>0.99</td><td>0.76</td></tr><tr><td style=font-weight:600>SOLUSDT</td><td>1.13</td><td>59.68</td><td>1019.77</td><td>1.00</td><td>96.26</td><td>1717.91</td><td>1.04</td><td>1.00</td><td>0.57</td></tr></tbody></table><p class="note">~half buy-and-hold drawdown at comparable/better Sharpe; deflated Sharpe 0.57–0.85 survives multiple-testing. A rival "Sharpe 7.86" on one in-sample run is a red flag (Bailey &amp; López de Prado), not an achievement.</p><h2>Live strategy spec — same engine, emitted now (npm run spec)</h2>
 <pre class="spec">{
   "asset": "BNBUSDT",
   "as_of": "2026-06-06T00:00:00.000Z",
@@ -91,13 +93,7 @@ BNB/SOL     CMC20 index</div>
   },
   "backtest_ref": "reports/multiasset.csv"
 }</pre>
-
-<div class="cta">
-📦 <strong><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener>github.com/zkasuran/cmc-leverage-divergence</a></strong> ·
-<code>npm install &amp;&amp; npm test</code> (26 tests) · <code>npm run cmc20</code> · <code>npm run spec</code><br>
-Skill: <code>skills/cmc-leverage-divergence/SKILL.md</code> (openCMC Agent-Skill format) ·
-Data: CMC data-api (CMC20 id 38442), Binance (funding), Alternative.me (F&amp;G)
-</div>
-
+<div class="cta">📦 <strong><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener>github.com/zkasuran/cmc-leverage-divergence</a></strong> · <code>npm install &amp;&amp; npm test</code> (29 tests) · <code>npm run cmc20</code> · <code>npm run regime</code> · <code>npm run spec</code><br>
+Skill: <code>skills/cmc-leverage-divergence/SKILL.md</code> · Data: CMC data-api (CMC20 id 38442 + constituent ranking), Binance (funding), Alternative.me (F&amp;G)</div>
 <footer>BNB Hack: AI Trading Agent Edition · CoinMarketCap × Trust Wallet × BNB Chain · <a href="https://github.com/zkasuran/cmc-leverage-divergence">Source</a> (MIT)</footer>
 </body></html>

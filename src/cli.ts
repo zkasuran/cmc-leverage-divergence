@@ -15,9 +15,9 @@ import { loadDataset, ASSETS, PRIMARY } from "./data/loaders.js";
 import { emitReport } from "./report/emit.js";
 import { makeLeverageDivergence } from "./strategy/leverage-divergence.js";
 import { runStrategy, perYear, ablationSet, type YearRow } from "./runners/run.js";
-import { crossAsset, costSensitivity, eventStudy } from "./runners/analysis.js";
+import { crossAsset, costSensitivity, eventStudy, regimeReturns } from "./runners/analysis.js";
 import { specFromDataset, specFromSnapshot, type CmcSnapshot } from "./spec.js";
-import { cmc20Overlay } from "./runners/cmc20-overlay.js";
+import { cmc20Overlay, constituentCoverage } from "./runners/cmc20-overlay.js";
 import { readFileSync } from "node:fs";
 import type { Metrics } from "./types.js";
 
@@ -161,9 +161,11 @@ async function cmdCmc20() {
   // funding of its majors (BTC/ETH/BNB/SOL) — the same engine, applied to the
   // index it is meant to protect.
   const r = await cmc20Overlay();
+  const cov = constituentCoverage();
   console.log(`CMC20 funding-regime overlay (CoinMarketCap 20 Index, id 38442, BEP-20 on BSC)`);
   console.log(`  ${r.bars} daily bars, ${r.firstDay} to ${r.lastDay}`);
-  console.log(`  signal = aggregate funding of CMC20 majors (BTC/ETH/BNB/SOL) + CMC20 trend gate`);
+  console.log(`  signal = market-cap-weighted funding of ${cov.withFunding}/${cov.total} CMC20 constituents + CMC20 trend gate`);
+  console.log(`  basket: ${cov.symbols.join(", ")}`);
   console.log(summarize("overlay (timed CMC20)", r.overlay));
   console.log(summarize("CMC20 buy-and-hold", r.buyHold));
   console.log(`  PSR overlay ${r.overlayPsr.toFixed(3)}  vs buy-hold ${r.buyHoldPsr.toFixed(3)}`);
@@ -194,6 +196,26 @@ async function cmdSpec() {
   console.error(`\nWrote ${resolve(REPORTS, "latest-spec.json")}`);
 }
 
+async function cmdRegime() {
+  const rows = await regimeReturns();
+  console.log("Regime-conditional returns (price vs 200-day MA): strategy vs buy-and-hold WITHIN each regime");
+  console.log("asset    regime  share%   strat ret%   buy-hold ret%   edge");
+  for (const r of rows) {
+    const edge = r.stratRetPct - r.bhRetPct;
+    console.log(
+      `${r.asset.padEnd(8)} ${r.regime.padEnd(5)}  ${fmt(r.share * 100).padStart(5)}  ${fmt(r.stratRetPct).padStart(10)}  ${fmt(r.bhRetPct).padStart(13)}   ${edge >= 0 ? "+" : ""}${fmt(edge)}`,
+    );
+  }
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(
+    resolve(REPORTS, "regime-returns.csv"),
+    "asset,regime,share,strat_ret_pct,bh_ret_pct,edge_pct\n" +
+      rows.map((r) => `${r.asset},${r.regime},${fmt(r.share)},${fmt(r.stratRetPct)},${fmt(r.bhRetPct)},${fmt(r.stratRetPct - r.bhRetPct)}`).join("\n") + "\n",
+    "utf8",
+  );
+  console.log(`\nWrote ${resolve(REPORTS, "regime-returns.csv")}`);
+}
+
 async function main() {
   const cmd = process.argv[2] ?? "backtest";
   switch (cmd) {
@@ -213,8 +235,10 @@ async function main() {
       return cmdCmc20();
     case "spec":
       return cmdSpec();
+    case "regime":
+      return cmdRegime();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime.`);
       process.exit(1);
   }
 }
