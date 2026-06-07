@@ -19,7 +19,8 @@
   "files": [
     "dist",
     "skills",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",

@@ -50,7 +50,7 @@ present and unambiguous.
   Trust Wallet automation) rebalances the spot book toward it, respecting
   `rebalance_deadband`.
 - `readings.*` may be `null` when a venue does not expose that series for the period
-  (notably `open_interest` / `long_short_ratio` outside the recent window). A null
+  (`open_interest` / `long_short_ratio` outside the recent window, in particular). A null
   drops that overlay; the core signal still computes from funding + price.
 - `rules` and `risk` are constants (not fit to data) and match the committed
   backtest config so the spec and the evidence are the same strategy.

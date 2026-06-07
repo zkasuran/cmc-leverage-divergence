@@ -31,7 +31,10 @@ jobs:
         run: |
           npm run refresh-universe
           npm run cmc20
-          npm run spec:live || npm run spec
+          npm run spec:live || {
+            echo "::warning title=live CMC read failed::spec:live did not complete, so the decision chain got no new entry. Falling back to the offline spec to keep the frontend fresh. Investigate the CMC fetch.";
+            npm run spec;
+          }
           npm run build-frontend
 
       - name: Verify headline numbers still reproduce

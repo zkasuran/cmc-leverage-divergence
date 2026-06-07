@@ -4,7 +4,7 @@ description: |
   Turns CoinMarketCap AI Agent Hub data into a backtestable crypto strategy spec
   built on the funding-rate x price signal. Use when a user wants a
   derivatives-aware strategy (not a price-only TA bot), asks about funding rates,
-  leverage-confirmed momentum, when to risk-off, or wants a concrete, testable
+  leverage-confirmed momentum, when to risk-off or wants a concrete, testable
   allocation rule for BNB or other majors with a trend regime gate.
   Trigger: "funding rate strategy", "leverage signal", "is this leverage-confirmed",
   "should I risk off", "funding momentum", "backtestable BNB strategy",
@@ -60,7 +60,7 @@ Verify the CMC MCP tools are reachable. If they error, ask the user to configure
 }
 ```
 
-Key at https://pro.coinmarketcap.com/login; the x402 keyless path also works.
+Key at https://pro.coinmarketcap.com/login; the x402 path also works keyless (pay-per-call, about $0.01/request on Base).
 
 ## Workflow
 

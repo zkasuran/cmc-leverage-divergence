@@ -79,12 +79,13 @@ Event study, BNB, forward return by signal state:
 
 Monotonic and large at the **30-day** horizon; the effect is directionally present
 but smaller at 7 days. The contrarian "buy the dip" setup is the *worst* bucket.
-So the strategy trades confirmation. Flipping the tilt to contrarian is our key
-ablation: on the four-asset set it earns a lower deflated Sharpe and a worse
-drawdown profile, which is the proof the direction matters. (On BNB alone the
-contrarian flip posts a higher raw Sharpe but at a markedly worse drawdown: the
-directional result comes from the event study and the cross-asset picture, not a
-single asset's Sharpe.)
+So the strategy trades confirmation. The directional proof is the event study
+above: across BTC/ETH/BNB/SOL the confirmed-up bucket leads the contrarian
+buy-the-dip bucket by a wide, monotonic margin at the 30-day horizon. Flipping the
+tilt to contrarian is our key ablation (`reports/ablation.csv`): on BNB it posts a
+higher raw Sharpe but a markedly worse drawdown (52.7% vs 44.4%), so even where the
+contrarian Sharpe looks better it does so by carrying more risk. The directional
+edge comes from the event study, not a single asset's Sharpe.
 
 ## The strategy
 
@@ -215,14 +216,14 @@ data/                             committed snapshots (CMC20 + 19 constituents)
 reports/                          committed scorecard, ablation, multiasset, event-study,
                                   cost-sensitivity, per-year, cmc20-overlay, latest-spec
 demo/index.html                   self-contained dashboard (GitHub Pages)
-tests/                            56 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, chain, wallet
+tests/                            69 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, chain, wallet, risk gate
 ```
 
 ## Run it
 
 ```bash
 npm install
-npm test            # 56 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, chain, wallet
+npm test            # 69 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, chain, wallet, risk gate
 npm run verify      # re-derive every headline number from the committed data; VERIFIED or it exits nonzero
 npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json (+ a chain entry)
 npm run verify:chain # walk the live chain: re-derive each recorded decision from its inputs; CHAIN VERIFIED or exits nonzero

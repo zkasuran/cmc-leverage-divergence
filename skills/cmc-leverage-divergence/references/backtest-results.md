@@ -64,6 +64,11 @@ Deflated Sharpe (0.57-0.85) is the probability the true Sharpe beats the
 expected-max across all variants tried; all four clear 0.5, so the result is not a
 multiple-testing artifact.
 
+The table above shows the four deep-history majors. The full per-constituent run
+across all 15 CMC20 constituents with deep funding and price history is in
+`reports/multiasset.csv` (reproduce with `npm run multiasset`); it carries the same
+deflated Sharpe column for every constituent.
+
 ## Ablation (BNB) and the funding contribution
 
 | Variant | Return | maxDD | Sharpe | Read |

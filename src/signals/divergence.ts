@@ -1,17 +1,20 @@
 /**
  * Leverage-divergence signal module.
  *
- * The headline mechanism is the divergence between perp **funding** and **price**
- * momentum, not a fixed funding threshold. Two tradable regimes:
+ * The headline mechanism is the interaction of perp **funding** and **price**
+ * momentum, not a fixed funding threshold. The event study (references/
+ * backtest-results.md) shows the popular contrarian read is backwards at the daily
+ * horizon: leverage-CONFIRMED momentum predicts, capitulation does not bounce. So
+ * the signal is positive when funding and price agree, negative when they split:
  *
- *   - Bullish capitulation: funding is abnormally negative (crowded shorts paying
- *     longs) while price is NOT rallying. Forced shorts + a price that refuses to
- *     fall is the historical local-bottom signature → scale long.
- *   - Bearish exhaustion: price pushes higher while funding momentum fades (the
- *     rally is not backed by fresh leverage demand) → step aside.
+ *   - Confirmed up: funding abnormally positive (leverage building) while price is
+ *     extended up. The move is backed by fresh leverage demand → ride it.
+ *   - Flush down: funding abnormally negative (leverage giving up) while price is
+ *     weak → step aside.
  *
- * Around that core sit z-scored overlays (Fear & Greed contrarian tilt, a
- * long/short crowding size-down) so the output is one interpretable target. Each
+ * The `contrarian` ablation flips this tilt and underperforms, which is the proof
+ * the direction matters. Around the core sit z-scored overlays (Fear & Greed tilt,
+ * a long/short crowding size-down) so the output is one interpretable target. Each
  * component is independently toggleable, which is what the ablation runner flips.
  *
  * Everything here is a pure function of arrays that end at the current bar, so it
@@ -232,8 +235,8 @@ export function computeFeatures(
     cfg.base + cfg.tiltScale * divergence + (cfg.useFng ? cfg.fngWeight * fngTilt : 0);
 
   // Trend regime gate: don't fight the primary trend. Below the long MA, cut the
-  // contrarian book to riskOffFactor so capitulation buys aren't knife-catches in
-  // a structural downtrend. Inactive until enough bars exist to form the MA.
+  // book to riskOffFactor so a confirmed-up tilt isn't sized into a structural
+  // downtrend. Inactive until enough bars exist to form the MA.
   let trendFactor = 1;
   if (cfg.useTrend && n > cfg.trendWindow) {
     const sma = mean(closes.slice(n - cfg.trendWindow));

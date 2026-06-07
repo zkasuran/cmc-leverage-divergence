@@ -80,4 +80,4 @@ follows the confirmation convention above.)
 `fundingZ` uses the strictly-prior window; `trendFactor` and `pRet` use only past
 and current closes; signals are index-aligned with bars and capped at the current
 bar by the engine (`tests/engine-signals.test.ts`). `trendWindow`/`zWindow` are
-exposed so a reader can check robustness.
+exposed so a reader can check how stable the result is to the window choice.
