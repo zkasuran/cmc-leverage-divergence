@@ -3,7 +3,7 @@
  *
  * A rival ships a hash-chained log of its live calls, which proves entries were
  * appended in order and not reordered. This proves MORE. Each entry records the
- * live CMC inputs AND the decision they produced, and `verifyChain` re-runs the
+ * live CMC inputs AND the decision they produced. `verifyChain` re-runs the
  * committed engine on those inputs and asserts the recorded decision is exactly
  * what the engine produces. So an entry is rejected on two independent gates:
  *
@@ -98,7 +98,7 @@ export function recomputeDecision(r: ChainRecord): ChainDecision | null {
 
 /**
  * Walk the chain. Every entry must (1) link to its predecessor and re-hash to its
- * stored hashes, and (2) carry a decision that re-derives from its inputs. The
+ * stored hashes; and (2) carry a decision that re-derives from its inputs. The
  * first failure stops the walk and is reported.
  */
 export function verifyChain(records: readonly ChainRecord[]): ChainVerdict {

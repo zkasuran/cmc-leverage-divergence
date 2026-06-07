@@ -215,16 +215,17 @@ data/                             committed snapshots (CMC20 + 19 constituents)
 reports/                          committed scorecard, ablation, multiasset, event-study,
                                   cost-sensitivity, per-year, cmc20-overlay, latest-spec
 demo/index.html                   self-contained dashboard (GitHub Pages)
-tests/                            49 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, wallet
+tests/                            56 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, chain, wallet
 ```
 
 ## Run it
 
 ```bash
 npm install
-npm test            # 49 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, wallet
+npm test            # 56 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, chain, wallet
 npm run verify      # re-derive every headline number from the committed data; VERIFIED or it exits nonzero
-npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json
+npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json (+ a chain entry)
+npm run verify:chain # walk the live chain: re-derive each recorded decision from its inputs; CHAIN VERIFIED or exits nonzero
 npm run backtest    # BNB headline -> reports/full/{scorecard.json,scorecard.html}
 npm run multiasset  # constituents vs buy-hold + deflated Sharpe -> reports/multiasset.csv
 npm run eventstudy  # forward returns by signal state -> reports/event-study.csv
@@ -256,6 +257,30 @@ VERDICT: VERIFIED, every headline number reproduces from the committed data
 CI runs this on every push (`.github/workflows/ci.yml`), so the claims are
 tamper-evident, not asserted. This is the difference between a backtest you can
 check and a screenshot you have to believe.
+
+## The live track record proves the decision, not just the log
+
+Each `npm run spec:live` appends one record to `reports/live-chain.jsonl`: the live
+CMC inputs (price, aggregate funding, the committed history tail) and the decision
+they produced (signal state, score, target allocation), hash-linked to the previous
+entry. `npm run verify:chain` walks it on two gates:
+
+1. The sha256 links match, so nothing was reordered, dropped or edited after the fact.
+2. Each recorded decision re-derives from its recorded inputs through the same
+   engine the backtest uses. Edit an allocation to a number we never produced and
+   the entry fails, even after re-linking every hash.
+
+A plain hash-chained log gives you the first gate. The second is the point: it
+proves the recorded decision is the one the published engine actually produces from
+that exact reading, not just that some number was written down in order. CI runs
+`verify:chain` on every push. The chain grows only from real readings, never
+backfilled.
+
+```
+Decision-provenance chain: 1 entry
+  seq   0  2026-06-07T10:17:46.659Z  BNB    alloc 0.1  c43469a5e924…
+VERDICT: CHAIN VERIFIED, 1 entry verified
+```
 
 ## Using the Skill
 

@@ -37,11 +37,14 @@ jobs:
       - name: Verify headline numbers still reproduce
         run: npm run verify
 
+      - name: Verify the decision-provenance chain re-derives from its inputs
+        run: npm run verify:chain
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json reports/live-spec.json skills/cmc-leverage-divergence/references/live-spec-example.json index.html demo/index.html
+          git add data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json reports/live-spec.json reports/live-chain.jsonl skills/cmc-leverage-divergence/references/live-spec-example.json index.html demo/index.html
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else

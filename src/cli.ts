@@ -329,7 +329,7 @@ async function cmdVerifyChain() {
     console.log(`  seq ${String(r.seq).padStart(3)}  ${r.as_of}  ${r.asset.padEnd(6)} alloc ${r.decision.target_allocation}  ${r.this_hash.slice(0, 12)}…`);
   }
   const v = verifyChain(records);
-  console.log(`\nVERDICT: ${v.ok ? "CHAIN VERIFIED — " + v.reason : "CHAIN BROKEN at seq " + v.brokenAt + " — " + v.reason}`);
+  console.log(`\nVERDICT: ${v.ok ? "CHAIN VERIFIED, " + v.reason : "CHAIN BROKEN at seq " + v.brokenAt + ", " + v.reason}`);
   if (!v.ok) process.exit(1);
 }
 
@@ -414,7 +414,7 @@ async function cmdVerify() {
   }
 
   // Report + dataset fingerprints (recomputed each run, printed for audit).
-  console.log("Results verification — recomputed from the committed dataset:\n");
+  console.log("Results verification, recomputed from the committed dataset:\n");
   for (const c of checks) {
     console.log(`  ${c.ok ? "OK  " : "FAIL"}  ${c.label.padEnd(30)} got ${String(c.got).padStart(10)}  want ${String(c.want).padStart(10)}`);
   }
@@ -427,8 +427,8 @@ async function cmdVerify() {
   }
   const v = verdict(checks);
   console.log(`\nVERDICT: ${v.verified
-    ? "VERIFIED — every headline number reproduces from the committed data"
-    : "UNVERIFIED — drift in: " + v.failed.join(", ")}`);
+    ? "VERIFIED, every headline number reproduces from the committed data"
+    : "UNVERIFIED, drift in: " + v.failed.join(", ")}`);
   if (!v.verified) process.exit(1);
 }
 
