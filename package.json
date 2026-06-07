@@ -36,6 +36,7 @@
     "cmc20": "tsx src/cli.ts cmc20",
     "spec": "tsx src/cli.ts spec",
     "spec:live": "tsx src/cli.ts spec --live",
+    "verify": "tsx src/cli.ts verify",
     "regime": "tsx src/cli.ts regime",
     "refresh-universe": "node scripts/refresh-universe.mjs",
     "build-frontend": "node scripts/build-frontend.mjs",

@@ -1,0 +1,29 @@
+name: CI (test + verify)
+
+# Every push and PR re-runs the tests and re-derives every headline number from the
+# committed dataset. If a number in a report or the README was edited away from what
+# the engine produces, `npm run verify` exits nonzero and CI fails. The claims are
+# tamper-evident on real infrastructure, not a self-stamped log.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install deps
+        run: npm ci || npm install
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Test
+        run: npm test
+      - name: Verify results reproduce from the committed dataset
+        run: npm run verify

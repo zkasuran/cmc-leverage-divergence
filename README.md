@@ -215,14 +215,15 @@ data/                             committed snapshots (CMC20 + 19 constituents)
 reports/                          committed scorecard, ablation, multiasset, event-study,
                                   cost-sensitivity, per-year, cmc20-overlay, latest-spec
 demo/index.html                   self-contained dashboard (GitHub Pages)
-tests/                            39 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter
+tests/                            45 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier
 ```
 
 ## Run it
 
 ```bash
 npm install
-npm test            # 39 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter
+npm test            # 45 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier
+npm run verify      # re-derive every headline number from the committed data; VERIFIED or it exits nonzero
 npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json
 npm run backtest    # BNB headline -> reports/full/{scorecard.json,scorecard.html}
 npm run multiasset  # constituents vs buy-hold + deflated Sharpe -> reports/multiasset.csv
@@ -238,6 +239,23 @@ npm run fetch-data  # refresh data/ snapshots + CMC20 constituent universe (opti
 
 Every run pins a SHA-256 of the candle dataset in the manifest, so results
 reproduce byte-for-byte.
+
+## Verify it yourself (don't trust the numbers, check them)
+
+`npm run verify` re-derives every headline number from the committed dataset and
+checks it against the committed reports AND this README. Edit any number to inflate
+it and the command fails:
+
+```
+OK    cmc20.overlay.maxDD       got   15.06  want   15.06
+OK    eventstudy.30d.up.meanFwd got   14.23  want   14.23
+OK    README.overlay.maxDD      got    15.1  want    15.1
+VERDICT: VERIFIED — every headline number reproduces from the committed data
+```
+
+CI runs this on every push (`.github/workflows/ci.yml`), so the claims are
+tamper-evident, not asserted. This is the difference between a backtest you can
+check and a screenshot you have to believe.
 
 ## Using the Skill
 

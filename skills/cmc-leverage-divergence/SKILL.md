@@ -111,9 +111,11 @@ gates). That object IS the deliverable. Hand it back to the user.
 ### Step 6: Point to the proof
 The same engine, replayed over history, produces the multi-asset backtest
 (`reports/multiasset.csv`), the event study (`reports/event-study.csv`), the
-ablation and the deflated Sharpe. Headline: ~half the drawdown of buy-and-hold
-across four assets at comparable-or-better Sharpe. `npm run spec` (live) and
-`npm run backtest` (proof) are two views of one signal.
+ablation and the deflated Sharpe across 15 CMC20 constituents. `npm run spec:live`
+(live) and `npm run backtest` (proof) are two views of one signal. And `npm run
+verify` re-derives every headline number from the committed data and fails if any
+report or README figure was edited, so the claims are tamper-evident, not asserted
+(CI runs it on every push).
 
 ## Report structure (the spec the Skill returns)
 

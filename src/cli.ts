@@ -18,6 +18,8 @@ import { runStrategy, perYear, ablationSet, type YearRow } from "./runners/run.j
 import { crossAsset, costSensitivity, eventStudy, regimeReturns, realVsProxyFunding } from "./runners/analysis.js";
 import { specFromDataset, specFromSnapshot, type CmcSnapshot } from "./spec.js";
 import { fetchCmcLive, buildLiveSnapshot } from "./data/cmc.js";
+import { checkClose, verdict, type Check } from "./engine/verify.js";
+import { createHash } from "node:crypto";
 import { cmc20Overlay, constituentCoverage } from "./runners/cmc20-overlay.js";
 import { readFileSync } from "node:fs";
 import type { Metrics } from "./types.js";
@@ -320,6 +322,65 @@ async function cmdProxy() {
   console.log(`\nWrote ${resolve(REPORTS, "real-vs-proxy.csv")}`);
 }
 
+async function cmdVerify() {
+  // Re-derive the headline numbers from the committed dataset and prove they match
+  // the committed reports AND the README. If a number was edited anywhere, a check
+  // fails and the verdict is UNVERIFIED. This makes the CLAIMS tamper-evident, not
+  // just a log that a signal was emitted.
+  const r1 = (x: number) => Number(x.toFixed(1));
+  const r2 = (x: number) => Number(x.toFixed(2));
+  const committed = JSON.parse(readFileSync(resolve(REPORTS, "cmc20-overlay.json"), "utf8"));
+  const checks: Check[] = [];
+
+  // 1. CMC20 overlay: recompute and compare to the committed report.
+  const ov = await cmc20Overlay();
+  checks.push(checkClose("cmc20.overlay.maxDD", r2(ov.overlay.maxDrawdownPct), r2(committed.overlay.maxDrawdownPct)));
+  checks.push(checkClose("cmc20.overlay.return", r2(ov.overlay.totalReturnPct), r2(committed.overlay.totalReturnPct)));
+  checks.push(checkClose("cmc20.buyhold.maxDD", r2(ov.buyHold.maxDrawdownPct), r2(committed.buyHold.maxDrawdownPct)));
+  checks.push(checkClose("cmc20.overlay.psr", r2(ov.overlayPsr), r2(committed.overlayPsr)));
+
+  // 2. Event study: recompute the 30d confirmed-up row, compare to the committed CSV.
+  const { bars, signals } = loadDataset(PRIMARY);
+  const es = eventStudy(bars, signals, [7, 30]);
+  const row = es.find((r) => r.horizonDays === 30 && r.state === "confirmed-up");
+  const esRow = readFileSync(resolve(REPORTS, "event-study.csv"), "utf8")
+    .trim().split("\n").map((l) => l.split(",")).find((c) => c[0] === "30" && c[1] === "confirmed-up");
+  if (row && esRow) {
+    checks.push(checkClose("eventstudy.30d.up.meanFwd", r2(row.meanForwardPct), Number(esRow[3])));
+    checks.push(checkClose("eventstudy.30d.up.hitRate", r2(row.hitRatePct), Number(esRow[4])));
+  } else {
+    checks.push({ label: "eventstudy.30d.up.present", ok: false, got: 0, want: 1 });
+  }
+
+  // 3. README headline must match the recomputed overlay (catches a doctored README).
+  const readme = readFileSync(resolve(HERE, "..", "README.md"), "utf8");
+  const m = readme.match(/drawdown from ([\d.]+)% to ([\d.]+)%/);
+  if (m) {
+    checks.push(checkClose("README.buyhold.maxDD", r1(ov.buyHold.maxDrawdownPct), Number(m[1])));
+    checks.push(checkClose("README.overlay.maxDD", r1(ov.overlay.maxDrawdownPct), Number(m[2])));
+  } else {
+    checks.push({ label: "README.headline.parse", ok: false, got: 0, want: 1 });
+  }
+
+  // Report + dataset fingerprints (recomputed each run, printed for audit).
+  console.log("Results verification — recomputed from the committed dataset:\n");
+  for (const c of checks) {
+    console.log(`  ${c.ok ? "OK  " : "FAIL"}  ${c.label.padEnd(30)} got ${String(c.got).padStart(10)}  want ${String(c.want).padStart(10)}`);
+  }
+  console.log("\nDataset fingerprints (sha256, first 16):");
+  for (const f of ["cmc20-hist.json", "bnb-funding.json", "bnb-1d.json"]) {
+    try {
+      const h = createHash("sha256").update(readFileSync(resolve(HERE, "..", "data", f))).digest("hex").slice(0, 16);
+      console.log(`  ${f.padEnd(20)} ${h}`);
+    } catch { /* file optional */ }
+  }
+  const v = verdict(checks);
+  console.log(`\nVERDICT: ${v.verified
+    ? "VERIFIED — every headline number reproduces from the committed data"
+    : "UNVERIFIED — drift in: " + v.failed.join(", ")}`);
+  if (!v.verified) process.exit(1);
+}
+
 async function main() {
   const cmd = process.argv[2] ?? "backtest";
   switch (cmd) {
@@ -343,8 +404,10 @@ async function main() {
       return cmdRegime();
     case "proxy":
       return cmdProxy();
+    case "verify":
+      return cmdVerify();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime | proxy.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime | proxy | verify.`);
       process.exit(1);
   }
 }

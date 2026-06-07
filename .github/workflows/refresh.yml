@@ -27,21 +27,24 @@ jobs:
       - name: Install deps
         run: npm ci || npm install
 
-      - name: Refresh CMC20 universe + reports + frontend
+      - name: Refresh CMC20 universe + live CMC reading + frontend
         run: |
           npm run refresh-universe
           npm run cmc20
-          npm run spec
+          npm run spec:live || npm run spec
           npm run build-frontend
+
+      - name: Verify headline numbers still reproduce
+        run: npm run verify
 
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json index.html demo/index.html
+          git add data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json reports/live-spec.json skills/cmc-leverage-divergence/references/live-spec-example.json index.html demo/index.html
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: auto-refresh CMC20 universe + frontend [skip ci]"
+            git commit -m "chore: auto-refresh CMC20 universe + live CMC spec + frontend [skip ci]"
             git push
           fi
