@@ -37,6 +37,7 @@
     "spec": "tsx src/cli.ts spec",
     "spec:live": "tsx src/cli.ts spec --live",
     "verify": "tsx src/cli.ts verify",
+    "verify:chain": "tsx src/cli.ts verifychain",
     "regime": "tsx src/cli.ts regime",
     "refresh-universe": "node scripts/refresh-universe.mjs",
     "build-frontend": "node scripts/build-frontend.mjs",

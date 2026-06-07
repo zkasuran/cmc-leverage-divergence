@@ -19,7 +19,9 @@ import { crossAsset, costSensitivity, eventStudy, regimeReturns, realVsProxyFund
 import { specFromDataset, specFromSnapshot, type CmcSnapshot } from "./spec.js";
 import { fetchCmcLive, buildLiveSnapshot } from "./data/cmc.js";
 import { checkClose, verdict, type Check } from "./engine/verify.js";
+import { appendRecord, verifyChain, parseChain, type ChainRecord } from "./engine/chain.js";
 import { walletAction } from "./wallet.js";
+import { existsSync, appendFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { cmc20Overlay, constituentCoverage } from "./runners/cmc20-overlay.js";
 import { readFileSync } from "node:fs";
@@ -284,6 +286,51 @@ async function cmdSpecLive() {
   mkdirSync(REPORTS, { recursive: true });
   writeFileSync(resolve(REPORTS, "live-spec.json"), JSON.stringify(artifact, null, 2), "utf8");
   console.error(`\nWrote ${resolve(REPORTS, "live-spec.json")}`);
+
+  // Append this reading to the decision-provenance chain. Each entry records the
+  // exact inputs and the decision, so `npm run verify:chain` can re-derive the
+  // decision from the inputs (not just check that something was logged).
+  const chainPath = resolve(REPORTS, "live-chain.jsonl");
+  const prevRecords = existsSync(chainPath) ? parseChain(readFileSync(chainPath, "utf8")) : [];
+  const prev = prevRecords.at(-1) ?? null;
+  const record = appendRecord(prev, {
+    as_of: live.asOf,
+    asset: sym,
+    inputs: {
+      tail_closes: tailCloses,
+      tail_funding: tailFunding,
+      price: live.price,
+      funding_rate: live.fundingRate,
+      open_interest: live.openInterestUsd,
+    },
+    decision: {
+      signal_state: spec.signal.state,
+      score: spec.signal.score,
+      target_allocation: spec.target_allocation,
+    },
+  });
+  appendFileSync(chainPath, JSON.stringify(record) + "\n", "utf8");
+  console.error(`Appended chain entry seq ${record.seq} (this_hash ${record.this_hash.slice(0, 12)}…) to ${chainPath}`);
+}
+
+async function cmdVerifyChain() {
+  // Walk the decision-provenance chain: every entry must link to its predecessor
+  // (tamper-evidence) AND re-derive its recorded decision from its recorded inputs
+  // through the committed engine (decision-honesty). A plain hash log only does the
+  // first; a forged allocation here fails even with perfect hash links.
+  const chainPath = resolve(REPORTS, "live-chain.jsonl");
+  if (!existsSync(chainPath)) {
+    console.log("No chain yet (reports/live-chain.jsonl). Run `npm run spec:live` to record a reading.");
+    return;
+  }
+  const records: ChainRecord[] = parseChain(readFileSync(chainPath, "utf8"));
+  console.log(`Decision-provenance chain: ${records.length} entr${records.length === 1 ? "y" : "ies"}`);
+  for (const r of records) {
+    console.log(`  seq ${String(r.seq).padStart(3)}  ${r.as_of}  ${r.asset.padEnd(6)} alloc ${r.decision.target_allocation}  ${r.this_hash.slice(0, 12)}…`);
+  }
+  const v = verifyChain(records);
+  console.log(`\nVERDICT: ${v.ok ? "CHAIN VERIFIED — " + v.reason : "CHAIN BROKEN at seq " + v.brokenAt + " — " + v.reason}`);
+  if (!v.ok) process.exit(1);
 }
 
 async function cmdRegime() {
@@ -410,8 +457,10 @@ async function main() {
       return cmdProxy();
     case "verify":
       return cmdVerify();
+    case "verifychain":
+      return cmdVerifyChain();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime | proxy | verify.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime | proxy | verify | verifychain.`);
       process.exit(1);
   }
 }

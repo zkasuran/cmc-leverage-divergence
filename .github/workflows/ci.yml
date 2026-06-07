@@ -27,3 +27,5 @@ jobs:
         run: npm test
       - name: Verify results reproduce from the committed dataset
         run: npm run verify
+      - name: Verify the decision-provenance chain re-derives from its inputs
+        run: npm run verify:chain

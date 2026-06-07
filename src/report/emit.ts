@@ -24,6 +24,11 @@ export function hashDataset(bars: readonly Bar[]): string {
   return h.digest("hex");
 }
 
+/** Deterministic SHA256 of a string, hex-encoded. The one hashing primitive. */
+export function sha256Hex(s: string): string {
+  return createHash("sha256").update(s).digest("hex");
+}
+
 /**
  * Emit the full report suite into `outDir`.
  * Produces:
