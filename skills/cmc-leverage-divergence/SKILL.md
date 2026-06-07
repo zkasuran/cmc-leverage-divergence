@@ -115,7 +115,10 @@ ablation and the deflated Sharpe across 15 CMC20 constituents. `npm run spec:liv
 (live) and `npm run backtest` (proof) are two views of one signal. And `npm run
 verify` re-derives every headline number from the committed data and fails if any
 report or README figure was edited, so the claims are tamper-evident, not asserted
-(CI runs it on every push).
+(CI runs it on every push). `npm run verify:chain` does the same for the live
+readings: each spec:live run appends its inputs and decision to a hash-linked chain,
+and verify:chain re-derives every recorded decision from its inputs, so the live
+track record proves the decision not just that a number was logged.
 
 ## Report structure (the spec the Skill returns)
 
