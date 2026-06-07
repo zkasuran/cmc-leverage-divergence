@@ -1,8 +1,9 @@
 # Data sources
 
-Two worlds: the **live Skill** reads CoinMarketCap through MCP; the **committed
-backtest** reads documented historical feeds, because CMC's MCP surface returns the
-latest snapshot, not multi-year history.
+Two worlds: the **live Skill** reads CoinMarketCap live (the keyless data-api by
+default, or the CMC MCP tools inside an agent); the **committed backtest** reads
+documented historical feeds, because CMC's live surface returns the latest
+snapshot, not multi-year history.
 
 ## Live (the Skill)
 
@@ -16,6 +17,23 @@ CMC AI Agent Hub via MCP (`https://mcp.coinmarketcap.com/mcp`, header
 | `get_crypto_quotes_latest` | latest price/volume for the asset |
 | `get_crypto_marketcap_technical_analysis` | RSI/MACD, support/resistance for trend context |
 | `trending_crypto_narratives` | qualitative sector/narrative context |
+
+### Keyless data-api (the automated `--live` path)
+
+`npm run spec -- --live` uses CMC's public data-api, the same keyless endpoints
+the CMC website calls (browser user-agent, no key), implemented in
+`src/data/cmc.ts`. This is what makes the live path runnable with zero credentials.
+
+| Endpoint | Provides | Used for |
+|----------|----------|----------|
+| `data-api/v3/cryptocurrency/listing` | live price + market cap per coin | the latest close |
+| `data-api/v3/cryptocurrency/market-pairs/latest?category=perpetual` | per-venue funding rate + open interest | aggregate funding (volume-weighted) + OI |
+| `data-api/v3/global-metrics/quotes/latest` | BTC/ETH dominance, market context | optional context |
+
+The aggregate funding is the volume-weighted mean of the per-venue `fundingRate`
+across CMC's perpetual market pairs (19 venues for BNB at last run), the keyless
+equivalent of `get_global_crypto_derivatives_metrics`. A committed example of a
+real run is `references/live-spec-example.json`.
 
 ## Historical (the backtest)
 

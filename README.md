@@ -167,6 +167,22 @@ a haircut for multiple-testing that a single in-sample backtest never pays.
 > *lose* — because a number you can reproduce out-of-sample is worth more than a
 > big number you can't.
 
+### Why REAL funding data matters (not a price proxy)
+
+A common shortcut in "funding" strategies is to never fetch funding at all — they
+*derive* a funding series from price momentum (e.g. `0.0001 + 0.02·return₇`) and
+feed that. We tested what the shortcut costs: the **same strategy** run with real
+Binance perp funding vs that price-proxy, on every asset (`npm run proxy`,
+`reports/real-vs-proxy.csv`).
+
+On the **6 largest assets** — the ones with deep, liquid funding markets, which
+also dominate CMC20 by weight — **real funding beats the proxy 5 / 6, mean Sharpe
+gain +0.18** (XRP +0.63, SOL +0.21, ETH +0.16). On thin-funding alts neither
+carries signal, so the proxy ties by noise. The takeaway is the thesis itself:
+**funding is not a price transform** — where leverage is liquid, the real
+settlement data holds information a price-derived proxy cannot fake. Our pipeline
+fetches real funding for all 19 hedgeable constituents; we do not synthesise it.
+
 ### Honest ablation: where funding helps
 
 We report the funding signal's marginal contribution per asset (headline vs the
@@ -191,21 +207,23 @@ src/
   strategy/leverage-divergence.ts the allocator
   engine/                         backtest loop, fill sim, metrics, risk guard
   engine/stats.ts                 probabilistic + deflated Sharpe
-  data/                           multi-asset fetch + loaders; cmc-loader (CMC20 via data-api)
+  data/                           multi-asset fetch + loaders; cmc-loader (CMC20 via data-api);
+                                  cmc.ts (live keyless CMC adapter: price + funding + dominance)
   runners/                        backtest, walk-forward, ablation, cross-asset, cost,
                                   event study, cmc20-overlay (19-constituent basket), regime
 data/                             committed snapshots (CMC20 + 19 constituents)
 reports/                          committed scorecard, ablation, multiasset, event-study,
                                   cost-sensitivity, per-year, cmc20-overlay, latest-spec
 demo/index.html                   self-contained dashboard (GitHub Pages)
-tests/                            29 tests: signal math, no-lookahead, stats, spec bridge, basket
+tests/                            39 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter
 ```
 
 ## Run it
 
 ```bash
 npm install
-npm test            # 29 tests: signal math, no-lookahead alignment, stats, spec, basket
+npm test            # 39 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter
+npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json
 npm run backtest    # BNB headline -> reports/full/{scorecard.json,scorecard.html}
 npm run multiasset  # constituents vs buy-hold + deflated Sharpe -> reports/multiasset.csv
 npm run eventstudy  # forward returns by signal state -> reports/event-study.csv
@@ -236,6 +254,12 @@ connect the CMC MCP server:
 The Skill reads the live derivatives + price surface and returns a strategy spec
 (allocation + rules + the signal readings that justify it). Schema in
 `references/strategy-spec-schema.md`.
+
+No API key? `npm run spec:live --asset BNB` runs the same live path against CMC's
+public keyless data-api (listing for price, perpetual market-pairs for aggregate
+funding + open interest, global-metrics for dominance) and writes
+`reports/live-spec.json` with the exact CMC endpoints it called. A committed
+example is `skills/cmc-leverage-divergence/references/live-spec-example.json`.
 
 ## Honest limitations
 

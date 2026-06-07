@@ -10,7 +10,7 @@
  * No network, no deps — pure fs + the existing report files.
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -39,7 +39,13 @@ const f = (v, d = 2) => {
 const overlay = json("reports/cmc20-overlay.json");
 const ov = overlay.overlay;
 const bh = overlay.buyHold;
-const spec = json("reports/latest-spec.json");
+// Prefer a live CMC reading (reports/live-spec.json, written by `npm run spec:live`)
+// so the dashboard shows the real CoinMarketCap pull; fall back to the committed
+// offline spec when no live run is present.
+const spec = existsSync(R("reports/live-spec.json"))
+  ? json("reports/live-spec.json")
+  : json("reports/latest-spec.json");
+const live = spec.data_source || null;
 const universe = json("data/cmc20-universe.json");
 const multiRows = csv("reports/multiasset.csv");
 const eventRows = csv("reports/event-study.csv");
@@ -92,9 +98,27 @@ const SPEC = {
   score: spec.signal.score, target: spec.target_allocation, regime: spec.regime,
   fundingZ: f(spec.readings.funding_z), fng: spec.readings.fear_greed,
   priceRet: f(spec.readings.price_return_lookback),
+  // Live-CMC provenance (present only when built from a real spec:live run).
+  live: !!live,
+  source: live ? "CoinMarketCap data-api (live, keyless)" : "committed snapshot",
+  venues: live ? live.perp_venues : null,
+  oiUsd: live && live.open_interest_usd ? Math.round(live.open_interest_usd / 1e6) : null,
+  btcDom: live && live.btc_dominance_pct != null ? f(live.btc_dominance_pct, 1) : null,
+  endpoints: live && live.endpoints ? live.endpoints.length : null,
 };
 const UNI = universe;
 const CURVE = overlay.curve || [];
+
+// Real-funding vs price-proxy, top-6 by market cap (where funding is liquid).
+let PROXY = [];
+try {
+  const pr = csv("reports/real-vs-proxy.csv");
+  const top = ["BNBUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT", "DOGEUSDT"];
+  PROXY = pr.filter((r) => top.includes(r.asset)).map((r) => ({
+    asset: r.asset.replace("USDT", ""),
+    real: f(r.real_sharpe), proxy: f(r.proxy_sharpe), gain: f(r.sharpe_gain),
+  }));
+} catch { /* optional */ }
 
 const dataLine =
   `var OVERLAY=${JSON.stringify(OVERLAY)};` +
@@ -105,7 +129,8 @@ const dataLine =
   `var ABLATION=${JSON.stringify(ABLATION)};` +
   `var SPEC=${JSON.stringify(SPEC)};` +
   `var UNI=${JSON.stringify(UNI)};` +
-  `var CURVE=${JSON.stringify(CURVE)};`;
+  `var CURVE=${JSON.stringify(CURVE)};` +
+  `var PROXY=${JSON.stringify(PROXY)};`;
 
 const template = readFileSync(R("scripts/frontend-template.html"), "utf8");
 if (!template.includes("/*__DATA__*/")) {

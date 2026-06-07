@@ -15,8 +15,9 @@ import { loadDataset, ASSETS, PRIMARY } from "./data/loaders.js";
 import { emitReport } from "./report/emit.js";
 import { makeLeverageDivergence } from "./strategy/leverage-divergence.js";
 import { runStrategy, perYear, ablationSet, type YearRow } from "./runners/run.js";
-import { crossAsset, costSensitivity, eventStudy, regimeReturns } from "./runners/analysis.js";
+import { crossAsset, costSensitivity, eventStudy, regimeReturns, realVsProxyFunding } from "./runners/analysis.js";
 import { specFromDataset, specFromSnapshot, type CmcSnapshot } from "./spec.js";
+import { fetchCmcLive, buildLiveSnapshot } from "./data/cmc.js";
 import { cmc20Overlay, constituentCoverage } from "./runners/cmc20-overlay.js";
 import { readFileSync } from "node:fs";
 import type { Metrics } from "./types.js";
@@ -175,8 +176,14 @@ async function cmdCmc20() {
 }
 
 async function cmdSpec() {
-  // `spec --file <snapshot.json>` prices a live CMC snapshot (the shape the Skill
-  // assembles from CMC MCP tools). Default: tail of the committed BNB dataset.
+  // `spec --live [--asset BNB]` pulls the latest reading from the keyless CMC
+  // data-api (price + aggregate perp funding + open interest) and prices it with
+  // the same engine as the backtest. `spec --file <snapshot.json>` prices a
+  // hand-assembled snapshot. Default: tail of the committed BNB dataset.
+  if (process.argv.includes("--live")) {
+    await cmdSpecLive();
+    return;
+  }
   const fileArg = process.argv.indexOf("--file");
   let spec;
   if (fileArg !== -1 && process.argv[fileArg + 1]) {
@@ -194,6 +201,83 @@ async function cmdSpec() {
   mkdirSync(REPORTS, { recursive: true });
   writeFileSync(resolve(REPORTS, "latest-spec.json"), JSON.stringify(spec, null, 2), "utf8");
   console.error(`\nWrote ${resolve(REPORTS, "latest-spec.json")}`);
+}
+
+/** Live path: assemble a snapshot from real keyless CMC data and price it. */
+async function cmdSpecLive() {
+  const assetArg = process.argv.indexOf("--asset");
+  const sym = (assetArg !== -1 && process.argv[assetArg + 1] ? process.argv[assetArg + 1]! : "BNB").toUpperCase();
+  const match = ASSETS.find((a) => a.symbol === `${sym}USDT`);
+  if (!match) {
+    console.error(`No committed history for ${sym}. Available: ${ASSETS.map((a) => a.symbol.replace("USDT", "")).join(", ")}`);
+    process.exit(1);
+  }
+  const prefix = match.prefix;
+
+  // Reproducible historical context: the committed daily closes + funding, tail
+  // only. The live CMC reading is appended as the newest bar.
+  const { bars, signals } = loadDataset(prefix);
+  const histCloses: number[] = [];
+  const histFunding: number[] = [];
+  for (let i = 0; i < bars.length; i++) {
+    const f = signals[i]?.fundingRate;
+    if (f !== undefined && f !== null) {
+      histCloses.push(bars[i]!.close);
+      histFunding.push(f);
+    }
+  }
+  const tailCloses = histCloses.slice(-150);
+  const tailFunding = histFunding.slice(-150);
+
+  console.error(`Fetching live ${sym} from the CoinMarketCap data-api (keyless)…`);
+  const live = await fetchCmcLive(sym, new Date().toISOString());
+  if (!Number.isFinite(live.price) || live.price <= 0) {
+    console.error(`CMC returned no usable price for ${sym}.`);
+    process.exit(1);
+  }
+  if (live.fundingRate === null || !Number.isFinite(live.fundingRate)) {
+    console.error(`CMC returned no perp funding for ${sym}; cannot build a live signal.`);
+    process.exit(1);
+  }
+
+  const snap = buildLiveSnapshot({
+    asset: sym,
+    histCloses: tailCloses,
+    histFunding: tailFunding,
+    price: live.price,
+    fundingRate: live.fundingRate,
+    openInterest: live.openInterestUsd ?? undefined,
+  });
+  const spec = specFromSnapshot(snap, live.asOf);
+  if (!spec) { console.error("Not enough committed history to price the live reading."); process.exit(1); }
+
+  // Surface the live open interest in the readings and attach data provenance so
+  // a reviewer can see exactly which CMC endpoints produced the spec.
+  const artifact = {
+    ...spec,
+    readings: { ...spec.readings, open_interest: live.openInterestUsd },
+    data_source: {
+      provider: "CoinMarketCap data-api (keyless)",
+      asset: sym,
+      cmc_id: live.id,
+      price_usd: live.price,
+      market_cap_usd: live.marketCap,
+      aggregate_funding_rate: live.fundingRate,
+      open_interest_usd: live.openInterestUsd,
+      perp_venues: live.venues,
+      btc_dominance_pct: live.btcDominance,
+      eth_dominance_pct: live.ethDominance,
+      as_of: live.asOf,
+      endpoints: live.endpoints,
+      note: "Live latest reading from CMC; the z-score/trend windows use committed, reproducible historical snapshots.",
+    },
+  };
+
+  console.log(`Strategy spec for ${sym} (LIVE from CoinMarketCap, ${live.venues} perp venues):`);
+  console.log(JSON.stringify(artifact, null, 2));
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(resolve(REPORTS, "live-spec.json"), JSON.stringify(artifact, null, 2), "utf8");
+  console.error(`\nWrote ${resolve(REPORTS, "live-spec.json")}`);
 }
 
 async function cmdRegime() {
@@ -214,6 +298,26 @@ async function cmdRegime() {
     "utf8",
   );
   console.log(`\nWrote ${resolve(REPORTS, "regime-returns.csv")}`);
+}
+
+async function cmdProxy() {
+  const rows = await realVsProxyFunding();
+  console.log("Real funding vs price-proxy funding (same strategy, same assets):");
+  console.log("asset     real:Sharpe  proxy:Sharpe  gain   | real DD%  proxy DD%");
+  let wins = 0;
+  for (const r of rows) {
+    if (r.realSharpe > r.proxySharpe) wins++;
+    console.log(`${r.asset.padEnd(9)} ${fmt(r.realSharpe).padStart(8)}   ${fmt(r.proxySharpe).padStart(8)}   ${(r.sharpeGain >= 0 ? "+" : "") + fmt(r.sharpeGain)}   | ${fmt(r.realDD).padStart(6)}   ${fmt(r.proxyDD).padStart(6)}`);
+  }
+  console.log(`Real funding beats the price-proxy on ${wins}/${rows.length} assets.`);
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(
+    resolve(REPORTS, "real-vs-proxy.csv"),
+    "asset,real_sharpe,real_maxdd,real_ret,proxy_sharpe,proxy_maxdd,proxy_ret,sharpe_gain\n" +
+      rows.map((r) => `${r.asset},${fmt(r.realSharpe)},${fmt(r.realDD)},${fmt(r.realRet)},${fmt(r.proxySharpe)},${fmt(r.proxyDD)},${fmt(r.proxyRet)},${fmt(r.sharpeGain)}`).join("\n") + "\n",
+    "utf8",
+  );
+  console.log(`\nWrote ${resolve(REPORTS, "real-vs-proxy.csv")}`);
 }
 
 async function main() {
@@ -237,8 +341,10 @@ async function main() {
       return cmdSpec();
     case "regime":
       return cmdRegime();
+    case "proxy":
+      return cmdProxy();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime | proxy.`);
       process.exit(1);
   }
 }

@@ -83,9 +83,15 @@ Assemble the readings into a snapshot (recent `closes[]`, aligned `funding[]`,
 latest `fearGreed`/`longShortRatio`) and run the project's spec generator. This is
 the key point: the Skill does NOT re-derive the math in prose — it calls the SAME
 `computeFeatures` the backtester replays over history, so the live spec and the
-backtest are one engine. Two ways:
-- **In an agent with the repo:** write the snapshot to `snapshot.json` and run
-  `npm run spec -- --file snapshot.json`.
+backtest are one engine. Three ways:
+- **Automated, keyless (recommended):** `npm run spec -- --live --asset BNB`
+  fetches the live reading straight from CoinMarketCap's public data-api (price
+  from the listing, aggregate perp funding + open interest from the perpetual
+  market pairs), assembles the snapshot and prices it with the same engine. No API
+  key. The written `reports/live-spec.json` records the exact CMC endpoints it
+  called (a committed example is `references/live-spec-example.json`).
+- **In an agent with the CMC MCP tools:** write the snapshot the step 1-3 MCP
+  calls produce to `snapshot.json` and run `npm run spec -- --file snapshot.json`.
 - **Programmatically:** `import { specFromSnapshot } from "cmc-leverage-divergence"`
   and call it on the snapshot.
 
@@ -135,8 +141,10 @@ across four assets at comparable-or-better Sharpe. `npm run spec` (live) and
 
 ## Honesty
 
-- CMC MCP is latest-snapshot; the backtest uses documented historical feeds. The
-  signal math is identical in both paths.
+- The live spec reads the latest point from CMC (the keyless data-api in the
+  automated `--live` path, or the CMC MCP tools inside an agent); the z-score and
+  trend windows use the committed historical feeds in `references/data-sources.md`.
+  The signal math is identical in both paths.
 - Open interest / long-short have ~30 days of free history, so crowding is a live
   overlay, not a backtest driver.
 - Funding's marginal value is asset-dependent: it helps ETH/SOL, is flat on BTC,

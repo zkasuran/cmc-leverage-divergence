@@ -244,3 +244,51 @@ export async function regimeReturns(): Promise<RegimeRow[]> {
   }
   return out;
 }
+
+export interface ProxyRow {
+  asset: string;
+  realSharpe: number;
+  realDD: number;
+  realRet: number;
+  proxySharpe: number;
+  proxyDD: number;
+  proxyRet: number;
+  sharpeGain: number;
+}
+
+/**
+ * Real-funding vs price-proxy-funding ablation.
+ *
+ * Some strategy skills do not use real funding data at all — they DERIVE a
+ * "funding" series from price momentum (e.g. `0.0001 + 0.02 * pct_change(7)`),
+ * then feed it to the signal. This measures what that shortcut costs: run the
+ * exact same strategy with (a) the real Binance perp funding we fetched, and
+ * (b) a price-derived proxy, on each asset. If real funding wins, the proxy is
+ * leaving genuine information on the table — funding is NOT a price transform.
+ */
+export async function realVsProxyFunding(): Promise<ProxyRow[]> {
+  const out: ProxyRow[] = [];
+  for (const a of ASSETS) {
+    const { bars, signals } = loadDataset(a.prefix);
+    // Real funding run.
+    const real = await runStrategy(makeLeverageDivergence({ symbol: a.symbol }), bars, signals, { symbol: a.symbol });
+    // Proxy funding: replace each bar's funding with a price-momentum transform,
+    // matching the common "funding from price" shortcut. 7-bar return, same shape.
+    const closes = bars.map((b) => b.close);
+    const proxySignals = signals.map((s, i) => {
+      const past = i >= 7 ? closes[i - 7]! : closes[0]!;
+      const mom = past > 0 ? closes[i]! / past - 1 : 0;
+      const fundingRate = Math.max(-0.0015, Math.min(0.0015, 0.0001 + 0.02 * mom));
+      return { ...(s ?? {}), fundingRate };
+    });
+    const proxy = await runStrategy(makeLeverageDivergence({ symbol: a.symbol }), bars, proxySignals, { symbol: a.symbol });
+    const rm = real.scorecard.metrics, pm = proxy.scorecard.metrics;
+    out.push({
+      asset: a.symbol,
+      realSharpe: rm.sharpe, realDD: rm.maxDrawdownPct, realRet: rm.totalReturnPct,
+      proxySharpe: pm.sharpe, proxyDD: pm.maxDrawdownPct, proxyRet: pm.totalReturnPct,
+      sharpeGain: rm.sharpe - pm.sharpe,
+    });
+  }
+  return out;
+}

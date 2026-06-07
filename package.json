@@ -35,10 +35,12 @@
     "eventstudy": "tsx src/cli.ts eventstudy",
     "cmc20": "tsx src/cli.ts cmc20",
     "spec": "tsx src/cli.ts spec",
+    "spec:live": "tsx src/cli.ts spec --live",
     "regime": "tsx src/cli.ts regime",
     "refresh-universe": "node scripts/refresh-universe.mjs",
     "build-frontend": "node scripts/build-frontend.mjs",
-    "refresh": "npm run refresh-universe && npm run cmc20 && npm run spec && npm run build-frontend"
+    "refresh": "npm run refresh-universe && npm run cmc20 && npm run spec && npm run build-frontend",
+    "proxy": "tsx src/cli.ts proxy"
   },
   "engines": {
     "node": ">=18"
