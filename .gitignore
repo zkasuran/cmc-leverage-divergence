@@ -4,3 +4,5 @@ dist
 # Never commit secrets. The workspace token lives one level up in ../.env, never here.
 .env
 *.env
+SUBMIT.md
+DEMO-VIDEO-SCRIPT.md
