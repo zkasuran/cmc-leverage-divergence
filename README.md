@@ -215,14 +215,14 @@ data/                             committed snapshots (CMC20 + 19 constituents)
 reports/                          committed scorecard, ablation, multiasset, event-study,
                                   cost-sensitivity, per-year, cmc20-overlay, latest-spec
 demo/index.html                   self-contained dashboard (GitHub Pages)
-tests/                            45 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier
+tests/                            49 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, wallet
 ```
 
 ## Run it
 
 ```bash
 npm install
-npm test            # 45 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier
+npm test            # 49 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, wallet
 npm run verify      # re-derive every headline number from the committed data; VERIFIED or it exits nonzero
 npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json
 npm run backtest    # BNB headline -> reports/full/{scorecard.json,scorecard.html}
@@ -278,6 +278,16 @@ public keyless data-api (listing for price, perpetual market-pairs for aggregate
 funding + open interest, global-metrics for dominance) and writes
 `reports/live-spec.json` with the exact CMC endpoints it called. A committed
 example is `skills/cmc-leverage-divergence/references/live-spec-example.json`.
+
+### Act on it: hold CMC20 in Trust Wallet
+
+The spec's `trust_wallet` block turns the allocation into an action. CMC20 is
+CoinMarketCap's own index as a real BEP-20 on BNB Chain
+(`0x2f8A339B5889FfaC4c5A956787cdA593b3c36867`), holdable in Trust Wallet, so the
+live demo shows a one-tap link to that exact token and a "hold X%, keep the rest in
+cash" instruction. The Skill emits the target, it does not place trades. That is the
+honest tie across all three sponsors: CoinMarketCap data, a BNB Chain token, held in
+Trust Wallet.
 
 ## Honest limitations
 

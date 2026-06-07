@@ -137,9 +137,19 @@ report or README figure was edited, so the claims are tamper-evident, not assert
     "size_down_when": "long/short ratio skewed (crowding)"
   },
   "risk": { "max_drawdown_kill": 0.6, "rebalance_deadband": 0.1 },
-  "backtest_ref": "reports/multiasset.csv"
+  "backtest_ref": "reports/multiasset.csv",
+  "trust_wallet": {
+    "token": "CMC20", "holdPct": 10, "cashPct": 90,
+    "instruction": "Hold 10% in CMC20 (BEP-20 on BNB Chain) and 90% in cash/stables.",
+    "trustWalletLink": "https://link.trustwallet.com/open_coin?asset=c20000714_t0x2f8A339B5889FfaC4c5A956787cdA593b3c36867"
+  }
 }
 ```
+
+The `trust_wallet` block turns the allocation into an action: CMC20 is CoinMarketCap's
+own index as a real BEP-20 on BNB Chain, holdable in Trust Wallet, so the link opens
+that exact token. The Skill emits the target, it does not place trades. This is the
+honest BNB Chain + Trust Wallet tie alongside the CoinMarketCap data (all three sponsors).
 
 ## Honesty
 

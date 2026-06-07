@@ -109,6 +109,17 @@ const SPEC = {
 const UNI = universe;
 const CURVE = overlay.curve || [];
 
+// Trust Wallet action: how to hold the live allocation as CMC20 on BNB Chain.
+const WALLET = live && spec.trust_wallet
+  ? {
+      holdPct: spec.trust_wallet.holdPct,
+      cashPct: spec.trust_wallet.cashPct,
+      instruction: spec.trust_wallet.instruction,
+      link: spec.trust_wallet.trustWalletLink,
+      token: spec.trust_wallet.token,
+    }
+  : null;
+
 // Real-funding vs price-proxy, top-6 by market cap (where funding is liquid).
 let PROXY = [];
 try {
@@ -128,6 +139,7 @@ const dataLine =
   `var SUMMARY=${JSON.stringify(SUMMARY)};` +
   `var ABLATION=${JSON.stringify(ABLATION)};` +
   `var SPEC=${JSON.stringify(SPEC)};` +
+  `var WALLET=${JSON.stringify(WALLET)};` +
   `var UNI=${JSON.stringify(UNI)};` +
   `var CURVE=${JSON.stringify(CURVE)};` +
   `var PROXY=${JSON.stringify(PROXY)};`;

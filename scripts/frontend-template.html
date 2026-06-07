@@ -78,6 +78,9 @@ td.asset{font-weight:600;color:var(--text)}td.win{color:var(--green);font-weight
 .spec-grid .key{color:var(--blue);white-space:nowrap}
 .spec-grid .val{color:var(--gold);text-align:right;font-variant-numeric:tabular-nums;word-break:break-all}
 .spec-grid .val.str{color:var(--green)}
+.spec-wallet{padding:14px 18px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.spec-wallet-text{font-size:12px;color:var(--text-secondary)}
+.spec-wallet-btn{align-self:flex-start;background:var(--blue);color:#001;font-size:12px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:8px}
 footer{padding:28px 0 36px;border-top:1px solid var(--border);text-align:center}
 footer p{font-size:11px;color:var(--text-muted);line-height:1.8}
 footer a{color:var(--blue);text-decoration:none;font-weight:500}footer a:hover{text-decoration:underline}
@@ -118,7 +121,7 @@ footer a{color:var(--blue);text-decoration:none;font-weight:500}footer a:hover{t
 <section class=reveal><div class=section-header><div class=section-eyebrow>Validation · 15 Constituents</div><h2>Per-constituent backtest (2018–2026)</h2><p>Every CMC20 constituent with deep Binance price + funding history (15 of 20) run independently — winners and losers shown. <strong>Lower max drawdown on 15/15 assets</strong> (median 59% vs 90%). The return/Sharpe edge concentrates in high-funding megacaps and fades on thin-funding alts, exactly as the thesis predicts: the signal is only as good as the leverage data behind it. Deflated Sharpe haircuts for multiple-testing. A rival "Sharpe 7.86" on one run is a red flag, not an achievement.</p></div><div class=table-wrap><table id=multi-table><thead><tr><th>Asset</th><th>Strat Sharpe</th><th>Strat DD%</th><th>Strat Ret%</th><th>BH Sharpe</th><th>BH DD%</th><th>BH Ret%</th><th>DSR</th></tr></thead><tbody></tbody></table></div></section>
 <section class="reveal two-col" style=display:grid;grid-template-columns:1fr 1fr;gap:20px>
 <div><div class=section-header><div class=section-eyebrow>Ablation</div><h2>Signal breakdown (BNB)</h2></div><div class=table-wrap><table id=ablation-table><thead><tr><th>Variant</th><th>Sharpe</th><th>DD%</th></tr></thead><tbody></tbody></table></div></div>
-<div><div class=section-header><div class=section-eyebrow>Live Spec</div><h2>Engine output right now</h2></div><div class=spec-card id=spec-card><div class=spec-header><span id=spec-dot class=dot></span><span id=spec-label></span></div><div class=spec-grid id=spec-grid></div></div>
+<div><div class=section-header><div class=section-eyebrow>Live Spec</div><h2>Engine output right now</h2></div><div class=spec-card id=spec-card><div class=spec-header><span id=spec-dot class=dot></span><span id=spec-label></span></div><div class=spec-grid id=spec-grid></div><div id=spec-wallet></div></div>
 </section></main>
 <footer><p>cmc-leverage-divergence · MIT License · BNB Hack: AI Trading Agent Edition<br>CoinMarketCap × Trust Wallet × BNB Chain</p><div class=repo-cta><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn primary">↗ GitHub Repository</a><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn secondary">npm install && npm test (29 tests)</a></div></footer>
 <script>
@@ -164,5 +167,6 @@ var d=document.getElementById('spec-dot');d.className='dot '+(SPEC.regime==='ris
 var specRows=[['Asset',SPEC.asset,'str'],['As Of',SPEC.as_of,'str'],['Regime',SPEC.regime,'str'],['Signal State',SPEC.state,'str'],['Signal Score',SPEC.score,''],['Target Alloc',SPEC.target,''],['Funding Z',SPEC.fundingZ,''],['Fear &amp; Greed',SPEC.fng,''],['Price Return',SPEC.priceRet,'']];
 if(SPEC.live){specRows.push(['Data source',SPEC.source,'str']);if(SPEC.venues!=null)specRows.push(['Perp venues (CMC)',SPEC.venues,'']);if(SPEC.oiUsd!=null)specRows.push(['Open interest','$'+SPEC.oiUsd+'M','']);if(SPEC.btcDom!=null)specRows.push(['BTC dominance',SPEC.btcDom+'%','']);if(SPEC.endpoints!=null)specRows.push(['CMC endpoints called',SPEC.endpoints,'']);}
 document.getElementById('spec-grid').innerHTML=specRows.map(function(r){return '<div class=key>'+r[0]+'</div><div class="val '+r[2]+'">'+r[1]+'</div>'}).join('');
+if(typeof WALLET!=='undefined'&&WALLET){document.getElementById('spec-wallet').innerHTML='<div class=spec-wallet><div class=spec-wallet-text>Act on it: '+WALLET.instruction+'</div><a class=spec-wallet-btn href="'+WALLET.link+'" target=_blank rel=noopener>Hold '+WALLET.token+' in Trust Wallet ↗</a></div>';}
 var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting)en.target.classList.add('visible')})},{threshold:.1});document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});setTimeout(function(){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('visible')})},100)})();
 </script></body></html>

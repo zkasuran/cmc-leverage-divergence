@@ -19,6 +19,7 @@ import { crossAsset, costSensitivity, eventStudy, regimeReturns, realVsProxyFund
 import { specFromDataset, specFromSnapshot, type CmcSnapshot } from "./spec.js";
 import { fetchCmcLive, buildLiveSnapshot } from "./data/cmc.js";
 import { checkClose, verdict, type Check } from "./engine/verify.js";
+import { walletAction } from "./wallet.js";
 import { createHash } from "node:crypto";
 import { cmc20Overlay, constituentCoverage } from "./runners/cmc20-overlay.js";
 import { readFileSync } from "node:fs";
@@ -273,6 +274,9 @@ async function cmdSpecLive() {
       endpoints: live.endpoints,
       note: "Live latest reading from CMC; the z-score/trend windows use committed, reproducible historical snapshots.",
     },
+    // How to ACT on the spec: hold the allocation as CMC20 (a real BEP-20 on BNB
+    // Chain) in Trust Wallet. The Skill emits the target, it does not place trades.
+    trust_wallet: walletAction(spec.target_allocation),
   };
 
   console.log(`Strategy spec for ${sym} (LIVE from CoinMarketCap, ${live.venues} perp venues):`);
