@@ -13,10 +13,10 @@ underperforms (see `backtest-results.md`).
 
 ## Inputs (as-of the current bar)
 
-- `closes[]` — daily close prices, oldest first.
-- `funding[]` — perp funding rate aligned to each bar (most recent 8h settlement
+- `closes[]`: daily close prices, oldest first.
+- `funding[]`: perp funding rate aligned to each bar (most recent 8h settlement
   at or before the bar open).
-- `fearGreed`, `longShortRatio` — optional overlays.
+- `fearGreed`, `longShortRatio`: optional overlays.
 
 ## Parameters (fixed a priori, not fit to data)
 

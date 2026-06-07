@@ -9,7 +9,7 @@ Raw output in `reports/`.
 
 The same engine, with a market-cap-weighted signal built from **19 of CMC20's 20
 constituents** (every one with a perp market), timing the CMC20 index over its full
-life (Nov 2025 – Jun 2026, a down market):
+life (Nov 2025 to Jun 2026, a down market):
 
 | | Return | Max drawdown | Prob. Sharpe |
 |--|------:|-------------:|-------------:|
@@ -31,7 +31,7 @@ each asset into bull (price ≥ 200-day MA) and bear (below) and compare within 
 | BNB | -56% | -89% | **+33 pts** |
 | SOL | -61% | -98% | **+37 pts** |
 
-In down/sideways markets — when an allocator actually needs help — the strategy
+In down/sideways markets (when an allocator actually needs help) the strategy
 beats buy-and-hold on **return** everywhere. It gives up upside in bulls (the cost
 of the risk gate). Reproduce: `npm run regime`.
 

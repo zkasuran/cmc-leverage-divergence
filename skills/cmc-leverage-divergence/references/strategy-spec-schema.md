@@ -52,5 +52,5 @@ present and unambiguous.
 - `readings.*` may be `null` when a venue does not expose that series for the period
   (notably `open_interest` / `long_short_ratio` outside the recent window). A null
   drops that overlay; the core signal still computes from funding + price.
-- `rules` and `risk` are constants, not fit to data, and match the committed
+- `rules` and `risk` are constants (not fit to data) and match the committed
   backtest config so the spec and the evidence are the same strategy.

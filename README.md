@@ -1,22 +1,22 @@
 # cmc-leverage-divergence
 
-**A funding-regime overlay for CMC20, CoinMarketCap's own index on BNB Chain —
+**A funding-regime overlay for CMC20, CoinMarketCap's own index on BNB Chain,
 delivered as a CMC Agent Hub Skill, proven by a multi-asset backtest.**
 
 > **The hook:** crypto folklore says deeply negative funding = "shorts are trapped,
 > buy the bottom." Across BTC/ETH/BNB/SOL it is **backwards**: leverage-*confirmed*
 > momentum returns **+14.2% over 30 days (73% hit rate)**, while the "buy the dip"
-> setup returns just **+2.8% (53%)**. We trade the confirmation, and we use it to
+> setup returns just **+2.8% (53%)**. We trade the confirmation and we use it to
 > give CoinMarketCap's own index the risk gate it never had.
 
 Built for **BNB Hack: AI Trading Agent Edition** (CoinMarketCap × Trust Wallet ×
-BNB Chain), Track 2 — Strategy Skills.
+BNB Chain), Track 2: Strategy Skills.
 
 **Live demo (one click, no clone):** https://zkasuran.github.io/cmc-leverage-divergence/
 
 ## The one idea
 
-CMC20 is CoinMarketCap's flagship index — the top 20 coins by market cap
+CMC20 is CoinMarketCap's flagship index, the top 20 coins by market cap
 (ex-stables, ex-wrapped), tokenized as a BEP-20 on BNB Smart Chain (Reserve
 Protocol DTF, contract `0x2f8A339B5889FfaC4c5A956787cdA593b3c36867`). It's a clean
 way to hold "the market", but it took a **40% drawdown** in its first seven months.
@@ -26,7 +26,7 @@ We give it one. **19 of CMC20's 20 constituents have perp funding markets**
 (every one except the exchange token LEO). We read their **funding-rate × price**
 signal from the CMC AI Agent Hub, combine it into a **market-cap-weighted basket
 regime** (bigger index members move the signal more, exactly as they move the
-index), and use it to time exposure to CMC20 itself: hold the index when leverage
+index) and use it to time exposure to CMC20 itself: hold the index when leverage
 confirms the trend, step to cash when funding flushes or the index breaks its trend.
 
 The constituent set is **derived live from CMC's own market-cap ranking**
@@ -35,7 +35,7 @@ dynamic by construction: a coin that drops out of the top 20 leaves the basket a
 a new entrant joins automatically.
 
 Over CMC20's life so far, that overlay **cut the drawdown from 40.0% to 15.1% and
-the loss from -35.6% to -12.8%**, and its probabilistic Sharpe edges
+the loss from -35.6% to -12.8%** and its probabilistic Sharpe edges
 buy-and-hold's (0.16 vs 0.14) even on this short down-only window (`npm run cmc20`).
 The same signal, validated as a return-predictor across the constituents (event
 study below), becomes the risk gate CMC20 was missing.
@@ -58,7 +58,7 @@ So the pieces are one thing, not two:
 ```
 
 One signal engine. It is *validated* on the liquid constituents, *applied* to
-CMC's index, *served* live through the Skill, and *proven* by the backtest — all
+CMC's index, *served* live through the Skill and *proven* by the backtest, all
 the same `computeFeatures` code.
 
 ## The finding: confirmation predicts, contrarian is backwards
@@ -82,7 +82,7 @@ but smaller at 7 days. The contrarian "buy the dip" setup is the *worst* bucket.
 So the strategy trades confirmation. Flipping the tilt to contrarian is our key
 ablation: on the four-asset set it earns a lower deflated Sharpe and a worse
 drawdown profile, which is the proof the direction matters. (On BNB alone the
-contrarian flip posts a higher raw Sharpe but at a markedly worse drawdown — the
+contrarian flip posts a higher raw Sharpe but at a markedly worse drawdown: the
 directional result comes from the event study and the cross-asset picture, not a
 single asset's Sharpe.)
 
@@ -107,7 +107,7 @@ The funding signal, built from CMC20's 19 perp-liquid constituents
 | **Funding-regime overlay** | **-12.8%** | **15.1%** | **0.16** |
 
 Drawdown cut by 25 points, loss cut by 23. It's a 7-month down-only sample, so a
-raw *annualised Sharpe* isn't meaningful (and we don't headline one — sitting in
+raw *annualised Sharpe* isn't meaningful (and we don't headline one; sitting in
 cash through a decline mechanically lowers it); the honest, comparable read is the
 **probabilistic Sharpe, which edges buy-and-hold (0.16 vs 0.14)** while the
 overlay is in the market 83% of the time. The result is **capital preservation**:
@@ -129,14 +129,14 @@ and bear/down (below) segments and compare *within* each:
 | BCH | -56% | -93% | **+37 pts** |
 | … | … | … | **+ on 15/15** |
 
-In down/sideways markets — when an allocator actually needs help — the strategy
+In down/sideways markets (when an allocator actually needs help) the strategy
 **beats buy-and-hold on return on all 15 constituents**. It gives up upside in bulls
 (the price of the risk gate), which is why its full-period raw return trails in a
 multi-year bull. `npm run regime`.
 
 ### 3. Validation across 15 CMC20 constituents (2018–2026)
 
-Every constituent with a deep Binance price + funding history (15 of the 20 — the
+Every constituent with a deep Binance price + funding history (15 of the 20, the
 rest are too new to backtest) was run independently. This is the honest, full
 picture, winners and losers:
 
@@ -144,42 +144,42 @@ picture, winners and losers:
 |--|---------:|-----------:|
 | **Median max drawdown** | **59%** | 90% |
 | **Mean max drawdown** | **55%** | 87% |
-| Lower drawdown than B&H | **15 / 15 assets** | — |
+| Lower drawdown than B&H | **15 / 15 assets** | - |
 | Median Sharpe | 0.50 | 0.74 |
-| Sharpe ≥ buy-and-hold | 6 / 15 assets | — |
+| Sharpe ≥ buy-and-hold | 6 / 15 assets | - |
 
-The one universal, robust result: **lower maximum drawdown on all 15 assets** (a
+The one universal result: **lower maximum drawdown on all 15 assets** (a
 ~31-point median cut). The return/Sharpe edge is *concentrated* where it should be
-— the high-funding-activity megacaps (BNB 0.93, BTC 0.98, ETH 0.86, SOL 1.13,
-DOGE 1.11, ADA 0.75) — and **fades on thin-funding alts** (LINK, LTC, BCH, ZEC,
+(the high-funding-activity megacaps: BNB 0.93, BTC 0.98, ETH 0.86, SOL 1.13,
+DOGE 1.11, ADA 0.75) and **fades on thin-funding alts** (LINK, LTC, BCH, ZEC,
 XMR), exactly as the thesis predicts: the signal is only as good as the leverage
 data behind it. We show the losers rather than hide them. Full table:
 `reports/multiasset.csv`.
 
 The **Deflated Sharpe** (probability the true Sharpe beats the expected-max across
-every variant tried) clears 0.5 on the megacaps and is honestly low on the alts —
+every variant tried) clears 0.5 on the megacaps and is honestly low on the alts,
 a haircut for multiple-testing that a single in-sample backtest never pays.
 
 > **On rivals printing a "Sharpe of 7.86":** a Sharpe that high on a single
 > in-sample crypto backtest is a red flag, not an achievement (Bailey & López de
 > Prado, 2014). It is what overfitting looks like. We deliberately run 15 assets,
 > report deflated Sharpe, walk-forward, cost-sensitivity and the assets where we
-> *lose* — because a number you can reproduce out-of-sample is worth more than a
+> *lose*, because a number you can reproduce out-of-sample is worth more than a
 > big number you can't.
 
 ### Why REAL funding data matters (not a price proxy)
 
-A common shortcut in "funding" strategies is to never fetch funding at all — they
+A common shortcut in "funding" strategies is to never fetch funding at all: they
 *derive* a funding series from price momentum (e.g. `0.0001 + 0.02·return₇`) and
 feed that. We tested what the shortcut costs: the **same strategy** run with real
 Binance perp funding vs that price-proxy, on every asset (`npm run proxy`,
 `reports/real-vs-proxy.csv`).
 
-On the **6 largest assets** — the ones with deep, liquid funding markets, which
-also dominate CMC20 by weight — **real funding beats the proxy 5 / 6, mean Sharpe
+On the **6 largest assets** (the ones with deep, liquid funding markets, which
+also dominate CMC20 by weight) **real funding beats the proxy 5 / 6, mean Sharpe
 gain +0.18** (XRP +0.63, SOL +0.21, ETH +0.16). On thin-funding alts neither
 carries signal, so the proxy ties by noise. The takeaway is the thesis itself:
-**funding is not a price transform** — where leverage is liquid, the real
+**funding is not a price transform**: where leverage is liquid, the real
 settlement data holds information a price-derived proxy cannot fake. Our pipeline
 fetches real funding for all 19 hedgeable constituents; we do not synthesise it.
 
@@ -188,9 +188,9 @@ fetches real funding for all 19 hedgeable constituents; we do not synthesise it.
 We report the funding signal's marginal contribution per asset (headline vs the
 same strategy with funding turned off):
 
-- ETH (+0.02 Sharpe) and SOL (+0.09) — funding adds value.
-- BTC — roughly flat.
-- **BNB — funding does not help here; the trend gate carries it.** We show this
+- ETH (+0.02 Sharpe) and SOL (+0.09): funding adds value.
+- BTC: roughly flat.
+- **BNB: funding does not help here; the trend gate carries it.** We show this
   rather than hide it. Funding earns its place where leverage is most informative,
   and the predictive finding (event study) holds on BNB even where the marginal
   portfolio Sharpe is absorbed by the regime gate.
@@ -202,7 +202,7 @@ skills/cmc-leverage-divergence/   the Agent Skill (the Track-2 deliverable)
   SKILL.md                        frontmatter + the workflow that emits the spec
   references/                     signal math, data sources, spec schema, results
 src/
-  signals/divergence.ts           the funding x price signal (pure, unit-tested) — the one engine
+  signals/divergence.ts           the funding x price signal (pure, unit-tested): the one engine
   spec.ts                         bridge: same engine -> live strategy spec (npm run spec)
   strategy/leverage-divergence.ts the allocator
   engine/                         backtest loop, fill sim, metrics, risk guard
@@ -250,7 +250,7 @@ it and the command fails:
 OK    cmc20.overlay.maxDD       got   15.06  want   15.06
 OK    eventstudy.30d.up.meanFwd got   14.23  want   14.23
 OK    README.overlay.maxDD      got    15.1  want    15.1
-VERDICT: VERIFIED — every headline number reproduces from the committed data
+VERDICT: VERIFIED, every headline number reproduces from the committed data
 ```
 
 CI runs this on every push (`.github/workflows/ci.yml`), so the claims are
@@ -307,7 +307,7 @@ BNB Hack encourages AI tooling and requires no disclosure. For transparency
 anyway: built with help from Claude (Anthropic), which drafted the engine, signal
 module, analyses and docs. Every number here is from the committed, reproducible
 backtest. The decision to flip the thesis after the event study contradicted the
-contrarian version, and the honesty about where funding does and does not help,
+contrarian version and the honesty about where funding does and does not help
 are deliberate.
 
 ## License

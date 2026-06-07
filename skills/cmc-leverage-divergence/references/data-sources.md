@@ -1,14 +1,14 @@
 # Data sources
 
 Two worlds: the **live Skill** reads CoinMarketCap live (the keyless data-api by
-default, or the CMC MCP tools inside an agent); the **committed backtest** reads
+default or the CMC MCP tools inside an agent); the **committed backtest** reads
 documented historical feeds, because CMC's live surface returns the latest
 snapshot, not multi-year history.
 
 ## Live (the Skill)
 
 CMC AI Agent Hub via MCP (`https://mcp.coinmarketcap.com/mcp`, header
-`X-CMC-MCP-API-KEY`), or the keyless x402 path ($0.01/request on Base).
+`X-CMC-MCP-API-KEY`) or the keyless x402 path ($0.01/request on Base).
 
 | Tool | Provides |
 |------|----------|

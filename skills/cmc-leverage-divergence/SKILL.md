@@ -28,7 +28,7 @@ regime. This is deliberately a strategy a price-only bot cannot build: it needs 
 derivatives surface CMC exposes.
 
 The Skill does not place trades. It reads the live market through CMC MCP tools,
-computes the signal exactly as the committed backtester does, and emits a
+computes the signal exactly as the committed backtester does and emits a
 structured spec (allocation + rules + the readings that justify it). A reproducible
 multi-asset backtest ships in the repo as evidence.
 
@@ -81,7 +81,7 @@ the asset (default BNB) to get the recent price path and place it against its
 ### Step 4: Compute the signal
 Assemble the readings into a snapshot (recent `closes[]`, aligned `funding[]`,
 latest `fearGreed`/`longShortRatio`) and run the project's spec generator. This is
-the key point: the Skill does NOT re-derive the math in prose — it calls the SAME
+the key point: the Skill does NOT re-derive the math in prose. It calls the SAME
 `computeFeatures` the backtester replays over history, so the live spec and the
 backtest are one engine. Three ways:
 - **Automated, keyless (recommended):** `npm run spec -- --live --asset BNB`
@@ -154,12 +154,12 @@ honest BNB Chain + Trust Wallet tie alongside the CoinMarketCap data (all three 
 ## Honesty
 
 - The live spec reads the latest point from CMC (the keyless data-api in the
-  automated `--live` path, or the CMC MCP tools inside an agent); the z-score and
+  automated `--live` path or the CMC MCP tools inside an agent); the z-score and
   trend windows use the committed historical feeds in `references/data-sources.md`.
   The signal math is identical in both paths.
 - Open interest / long-short have ~30 days of free history, so crowding is a live
   overlay, not a backtest driver.
-- Funding's marginal value is asset-dependent: it helps ETH/SOL, is flat on BTC,
+- Funding's marginal value is asset-dependent: it helps ETH/SOL, is flat on BTC
   and does not help on BNB, where the trend gate carries the result. We report
   this. The strategy is long-only spot and does not beat buy-and-hold's raw return
   in a bull; it targets far lower drawdown at comparable risk-adjusted return.
