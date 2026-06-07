@@ -150,8 +150,11 @@ if (!template.includes("/*__DATA__*/")) {
 }
 const html = template.replace("/*__DATA__*/", dataLine);
 
-writeFileSync(R("index.html"), html);
-writeFileSync(R("demo/index.html"), html);
+// Asset paths differ by output location: root index.html -> assets/, demo/ -> ../assets/.
+const rootHtml = html.replace(/\{\{A\}\}/g, "assets");
+const demoHtml = html.replace(/\{\{A\}\}/g, "../assets");
+writeFileSync(R("index.html"), rootHtml);
+writeFileSync(R("demo/index.html"), demoHtml);
 console.log(`Frontend rebuilt: ${html.length} chars`);
 console.log(`  CMC20 overlay: ${OVERLAY.ovDD}% DD vs ${OVERLAY.bhDD}% buy-hold`);
 console.log(`  constituents: ${UNI.index20.length} (${UNI.tradeable} hedgeable), watch: ${UNI.watch.length}`);

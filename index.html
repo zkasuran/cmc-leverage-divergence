@@ -3,106 +3,157 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>cmc-leverage-divergence — funding-regime overlay for CMC20</title>
+<title>cmc-leverage-divergence — a risk gate for CMC20</title>
+<meta name="description" content="A CoinMarketCap Skill that reads CMC live and gives CMC's own index the risk gate it never had, built on a funding signal whose popular reading we proved backwards. Drawdown 40% to 15%.">
+<meta property="og:title" content="cmc-leverage-divergence — a risk gate for CMC20">
+<meta property="og:description" content="We proved the popular 'buy negative funding' read backwards, then used the real signal to cut CMC20's drawdown from 40% to 15%. Live CoinMarketCap data, verifiable numbers.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://zkasuran.github.io/cmc-leverage-divergence/assets/og.jpg">
+<meta property="og:url" content="https://zkasuran.github.io/cmc-leverage-divergence/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080a0d;--card:#13151c;--card2:#0f1117;--border:#1c1f2a;--border-hover:#2a2e3a;--gold:#F0B90B;--gold-dim:rgba(240,185,11,0.13);--gold-glow:rgba(240,185,11,0.04);--blue:#58a6ff;--blue-dim:rgba(88,166,255,0.1);--green:#3fb950;--green-dim:rgba(63,185,80,0.1);--red:#f85149;--red-dim:rgba(248,81,73,0.1);--text:#e6edf3;--text-secondary:#8b949e;--text-muted:#484f58;--fd:'Chakra Petch',system-ui,sans-serif;--fm:'JetBrains Mono',ui-monospace,monospace;--r:12px;--rs:8px}
+:root{
+  --bg:#F6F8FC;--bg2:#EDF2F9;--card:#FFFFFF;--card2:#F4F7FB;
+  --border:#E3E9F3;--border-hover:#C7D4E8;
+  --text:#0B1220;--text-secondary:#54637C;--text-muted:#93A1B6;
+  /* sponsor brand */
+  --cmc:#3861FB;--bnb:#F0B90B;--trust:#0500FF;
+  /* readable accents (kept under names the render code uses) */
+  --gold:#F0B90B;--gold-ink:#8A6D00;--gold-dim:rgba(240,185,11,.16);--gold-glow:rgba(240,185,11,.08);
+  --blue:#3861FB;--blue-ink:#2A4FDB;--blue-dim:rgba(56,97,251,.1);
+  --green:#0E9F6E;--green-dim:rgba(14,159,110,.1);
+  --red:#E02424;--red-dim:rgba(224,36,36,.07);
+  --fd:'Fraunces',Georgia,'Times New Roman',serif;
+  --fb:'IBM Plex Sans',system-ui,sans-serif;
+  --fm:'IBM Plex Mono',ui-monospace,monospace;
+  --r:14px;--rs:9px;--shadow:0 1px 2px rgba(11,18,32,.04),0 8px 24px rgba(11,18,32,.05);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--fm);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(240,185,11,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,185,11,0.025) 1px,transparent 1px);background-size:60px 60px}
-.container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px}
-nav{position:sticky;top:0;z-index:100;background:rgba(8,10,13,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 0}
-nav .inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-nav .logo{font-family:var(--fd);font-weight:700;font-size:14px;color:var(--gold);letter-spacing:.02em}
-nav .tags{display:flex;gap:8px;flex-wrap:wrap}
-nav .tag{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:20px;border:1px solid var(--border)}
-.tag-gold{border-color:var(--gold-dim);color:var(--gold)}.tag-blue{border-color:var(--blue-dim);color:var(--blue)}
-.hero{padding:72px 0 44px;text-align:center}
-.hero .overline{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:16px}
-.hero h1{font-family:var(--fd);font-size:clamp(28px,5vw,46px);font-weight:700;line-height:1.15;letter-spacing:-.01em;margin-bottom:16px;color:var(--text)}
-.hero h1 span{color:var(--gold)}
-.hero .hook{font-size:14px;color:var(--text-secondary);max-width:700px;margin:0 auto 36px;line-height:1.7}
-.hero .hook strong{color:var(--text)}
-.split-numbers{display:flex;justify-content:center;align-items:center;gap:clamp(20px,6vw,56px);flex-wrap:wrap;margin-bottom:14px}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* ambient droplet layer */
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
+.container{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 22px}
+nav{position:sticky;top:0;z-index:100;background:rgba(246,248,252,.82);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-bottom:1px solid var(--border)}
+nav .inner{max-width:1120px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+nav .logo{display:flex;align-items:center;gap:9px;font-family:var(--fm);font-weight:600;font-size:13px;color:var(--text);letter-spacing:-.01em}
+nav .logo .mark{width:13px;height:18px;border-radius:0 0 7px 7px/0 0 11px 11px;background:linear-gradient(180deg,var(--cmc) 0 40%,var(--bnb) 40% 70%,var(--trust) 70% 100%);box-shadow:0 2px 5px rgba(56,97,251,.3);transform:rotate(8deg)}
+nav .tags{display:flex;gap:7px;flex-wrap:wrap}
+nav .tag{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;padding:4px 11px;border-radius:20px;border:1px solid var(--border);background:var(--card)}
+.tag-cmc{border-color:var(--blue-dim);color:var(--blue-ink)}.tag-bnb{border-color:var(--gold-dim);color:var(--gold-ink)}.tag-trust{border-color:rgba(5,0,255,.18);color:var(--trust)}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center;padding:64px 0 30px}
+.hero .overline{font-family:var(--fm);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:18px}
+.hero h1{font-family:var(--fd);font-size:clamp(32px,4.4vw,52px);font-weight:600;line-height:1.05;letter-spacing:-.015em;margin-bottom:18px}
+.hero h1 em{font-style:italic;color:var(--cmc)}
+.hero .hook{font-size:15px;color:var(--text-secondary);max-width:560px;margin-bottom:22px;line-height:1.65}
+.hero .hook strong{color:var(--text);font-weight:600}
+.tri-strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--fm);font-size:11px;color:var(--text-secondary)}
+.tri-strip b{font-weight:500}
+.tri-strip .s{display:inline-flex;align-items:center;gap:6px}
+.tri-strip .d{width:9px;height:9px;border-radius:50%}
+.tri-strip .d.cmc{background:var(--cmc)}.tri-strip .d.bnb{background:var(--bnb)}.tri-strip .d.trust{background:var(--trust)}
+.hero-art{position:relative}
+.hero-art img{width:100%;height:auto;display:block;filter:drop-shadow(0 24px 48px rgba(56,97,251,.16))}
+.hero-art .ring{position:absolute;inset:-6% ;border-radius:50%;background:radial-gradient(circle at 50% 45%,rgba(240,185,11,.14),transparent 62%);z-index:-1}
+/* verified banner */
+.verified{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:var(--rs);padding:13px 18px;margin:6px 0 28px;box-shadow:var(--shadow)}
+.verified .vb{font-family:var(--fm);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--green);background:var(--green-dim);padding:4px 10px;border-radius:6px;white-space:nowrap}
+.verified .vt{font-size:12.5px;color:var(--text-secondary)}
+.verified .vt code{font-family:var(--fm);background:var(--bg2);padding:1px 6px;border-radius:5px;color:var(--text)}
+/* split hero numbers */
+.split-numbers{display:flex;justify-content:center;align-items:flex-end;gap:clamp(22px,6vw,60px);flex-wrap:wrap;margin-bottom:12px}
 .split-block{text-align:center}
-.split-block .label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:8px}
-.split-block .number{font-family:var(--fd);font-size:clamp(48px,8vw,80px);font-weight:700;line-height:1}
-.split-block .number.gold{color:var(--gold)}.split-block .number.red{color:var(--red)}
-.split-block .sub{font-size:13px;color:var(--text-secondary);margin-top:6px}
-.split-divider{font-family:var(--fd);font-size:clamp(24px,4vw,36px);font-weight:700;color:var(--text-muted)}
-.split-result{margin-top:8px;font-family:var(--fd);font-size:18px;font-weight:600;color:var(--green)}
-section{padding:40px 0}
+.split-block .label{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:10px}
+.split-block .number{font-family:var(--fd);font-size:clamp(52px,8vw,88px);font-weight:600;line-height:.92;letter-spacing:-.02em}
+.split-block .number.gold{color:var(--cmc)}.split-block .number.red{color:var(--red)}
+.split-block .sub{font-size:13px;color:var(--text-secondary);margin-top:8px}
+.split-divider{font-family:var(--fd);font-style:italic;font-size:clamp(22px,4vw,34px);font-weight:500;color:var(--text-muted);padding-bottom:18px}
+.split-result{text-align:center;margin-top:10px}
+.split-result span{display:inline-block;font-family:var(--fm);font-size:13px;font-weight:600;color:var(--gold-ink);background:var(--gold-dim);padding:8px 16px;border-radius:30px}
+section{padding:42px 0}
 .section-header{margin-bottom:24px}
-.section-eyebrow{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:8px}
-.section-header h2{font-family:var(--fd);font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--text)}
-.section-header p{font-size:13px;color:var(--text-secondary);margin-top:6px;max-width:680px;line-height:1.6}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;transition:border-color .2s}
-.card:hover{border-color:var(--border-hover)}
-.card .card-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px}
-.card .card-value{font-family:var(--fd);font-size:26px;font-weight:700;line-height:1.15}
-.card .card-value.gold{color:var(--gold)}.card .card-value.green{color:var(--green)}.card .card-value.red{color:var(--red)}.card .card-value.blue{color:var(--blue)}
-.card .card-sub{font-size:12px;color:var(--text-secondary);margin-top:4px}
-/* Index constituent grid */
-.index-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;margin-bottom:16px}
-.index-legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px;font-size:11px;color:var(--text-secondary)}
+.section-eyebrow{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--blue-ink);margin-bottom:9px}
+.section-header h2{font-family:var(--fd);font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-.015em;line-height:1.1}
+.section-header p{font-size:13.5px;color:var(--text-secondary);margin-top:9px;max-width:700px;line-height:1.65}
+.section-header p code{font-family:var(--fm);background:var(--bg2);padding:1px 6px;border-radius:5px;font-size:12px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 1px 2px rgba(11,18,32,.04),0 14px 34px rgba(11,18,32,.09)}
+.card .card-label{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px}
+.card .card-value{font-family:var(--fd);font-size:30px;font-weight:600;line-height:1.05;letter-spacing:-.01em}
+.card .card-value.gold{color:var(--cmc)}.card .card-value.green{color:var(--green)}.card .card-value.red{color:var(--red)}.card .card-value.blue{color:var(--blue)}
+.card .card-sub{font-size:12px;color:var(--text-secondary);margin-top:6px}
+.index-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow)}
+.index-legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px;font-size:11.5px;color:var(--text-secondary)}
 .index-legend span{display:inline-flex;align-items:center;gap:6px}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-.dot.g{background:var(--green)}.dot.r{background:var(--red)}.dot.b{background:var(--blue)}
-.const-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
-.const{background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;transition:all .2s;position:relative}
-.const:hover{border-color:var(--gold-dim);transform:translateY(-2px)}
-.const .rank{font-size:9px;color:var(--text-muted);font-weight:600}
-.const .sym{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--text);margin-top:1px}
-.const .mc{font-size:10px;color:var(--text-secondary);margin-top:1px}
-.const.untradeable{border-color:var(--red-dim)}
+.dot.g{background:var(--green)}.dot.r{background:var(--red)}.dot.b{background:var(--cmc)}
+.const-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:9px}
+.const{background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:11px 13px;transition:all .2s;position:relative}
+.const:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:var(--shadow)}
+.const .rank{font-family:var(--fm);font-size:9px;color:var(--text-muted);font-weight:500}
+.const .sym{font-family:var(--fd);font-size:16px;font-weight:600;color:var(--text);margin-top:2px}
+.const .mc{font-family:var(--fm);font-size:10px;color:var(--text-secondary);margin-top:2px}
+.const.untradeable{border-color:rgba(224,36,36,.25);background:var(--red-dim)}
 .const.untradeable .sym{color:var(--red)}
-.const .badge{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%}
+.const .badge{position:absolute;top:9px;right:9px;width:7px;height:7px;border-radius:50%}
 .const .badge.g{background:var(--green)}.const .badge.r{background:var(--red)}
-.const.watch{border-style:dashed;opacity:.85}
-.const.watch .sym{color:var(--blue)}
-.flaw-box{background:var(--red-dim);border:1px solid rgba(248,81,73,0.25);border-radius:var(--rs);padding:14px 18px;margin-top:16px;font-size:12px;line-height:1.7;color:var(--text-secondary)}
-.flaw-box strong{color:var(--red)}
-.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow-x:auto;margin-bottom:16px}
-table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{text-align:left;padding:10px 14px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap}
-tbody td{padding:10px 14px;border-bottom:1px solid rgba(28,31,42,.5);white-space:nowrap;font-variant-numeric:tabular-nums}
-tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:var(--gold-glow)}
-td.asset{font-weight:600;color:var(--text)}td.win{color:var(--green);font-weight:600}td.loss{color:var(--red)}td.gold{color:var(--gold);font-weight:600}
-.spec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.spec-card .spec-header{padding:12px 18px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px}
-.spec-grid{padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:7px 18px;font-size:12px}
-.spec-grid .key{color:var(--blue);white-space:nowrap}
-.spec-grid .val{color:var(--gold);text-align:right;font-variant-numeric:tabular-nums;word-break:break-all}
+.const.watch{border-style:dashed;opacity:.9}
+.const.watch .sym{color:var(--cmc)}
+.flaw-box{background:var(--red-dim);border:1px solid rgba(224,36,36,.2);border-radius:var(--rs);padding:14px 18px;margin-top:16px;font-size:12.5px;line-height:1.7;color:var(--text-secondary)}
+.flaw-box strong{color:var(--red)}.flaw-box em{color:var(--text);font-style:italic}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow-x:auto;margin-bottom:16px;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-family:var(--fm);font-size:12px}
+thead th{text-align:left;padding:11px 15px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap;background:var(--card2)}
+tbody td{padding:11px 15px;border-bottom:1px solid var(--border);white-space:nowrap;font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:var(--bg2)}
+td.asset{font-weight:600;color:var(--text)}td.win{color:var(--green);font-weight:600}td.loss{color:var(--red)}td.gold{color:var(--gold-ink);font-weight:600}
+.spec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.spec-card .spec-header{padding:13px 18px;border-bottom:1px solid var(--border);font-family:var(--fm);font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px}
+.spec-grid{padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-family:var(--fm);font-size:12px}
+.spec-grid .key{color:var(--blue-ink);white-space:nowrap}
+.spec-grid .val{color:var(--text);text-align:right;font-variant-numeric:tabular-nums;word-break:break-all;font-weight:500}
 .spec-grid .val.str{color:var(--green)}
-.spec-wallet{padding:14px 18px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.spec-wallet{padding:14px 18px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;background:var(--card2)}
 .spec-wallet-text{font-size:12px;color:var(--text-secondary)}
-.spec-wallet-btn{align-self:flex-start;background:var(--blue);color:#001;font-size:12px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:8px}
-footer{padding:28px 0 36px;border-top:1px solid var(--border);text-align:center}
-footer p{font-size:11px;color:var(--text-muted);line-height:1.8}
-footer a{color:var(--blue);text-decoration:none;font-weight:500}footer a:hover{text-decoration:underline}
-.repo-cta{margin-top:14px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.repo-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--rs);font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border);transition:all .2s}
-.repo-btn.primary{background:var(--gold-dim);border-color:var(--gold-dim);color:var(--gold)}
-.repo-btn.primary:hover{background:rgba(240,185,11,.2);border-color:var(--gold)}
-.repo-btn.secondary{color:var(--text-secondary)}.repo-btn.secondary:hover{border-color:var(--border-hover);color:var(--text)}
-.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:20px}
+.spec-wallet-btn{align-self:flex-start;background:var(--trust);color:#fff;font-family:var(--fm);font-size:12px;font-weight:600;text-decoration:none;padding:9px 15px;border-radius:8px;box-shadow:0 4px 12px rgba(5,0,255,.25);transition:transform .15s}
+.spec-wallet-btn:hover{transform:translateY(-1px)}
+footer{padding:34px 0 40px;border-top:1px solid var(--border);text-align:center;margin-top:20px}
+footer p{font-size:12px;color:var(--text-muted);line-height:1.9}
+footer a{color:var(--blue-ink);text-decoration:none;font-weight:500}footer a:hover{text-decoration:underline}
+.repo-cta{margin-top:16px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.repo-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:var(--rs);font-family:var(--fm);font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border);transition:all .2s}
+.repo-btn.primary{background:var(--cmc);border-color:var(--cmc);color:#fff;box-shadow:0 6px 16px rgba(56,97,251,.28)}
+.repo-btn.primary:hover{transform:translateY(-2px)}
+.repo-btn.secondary{background:var(--card);color:var(--text-secondary)}.repo-btn.secondary:hover{border-color:var(--border-hover);color:var(--text)}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:20px;box-shadow:var(--shadow)}
 .chart-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.chart-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
-.chart-legend{display:flex;gap:14px}.chart-legend .lg{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary)}
-.lgdot{width:10px;height:3px;border-radius:2px;display:inline-block}.lgdot.gold{background:var(--gold)}.lgdot.red{background:var(--red)}
+.chart-title{font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)}
+.chart-legend{display:flex;gap:14px}.chart-legend .lg{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;color:var(--text-secondary)}
+.lgdot{width:11px;height:3px;border-radius:2px;display:inline-block}.lgdot.gold{background:var(--bnb)}.lgdot.red{background:var(--red)}
 #chart svg{width:100%;height:auto;display:block}
-.chart-foot{display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-top:6px}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
+.chart-foot{display:flex;justify-content:space-between;font-family:var(--fm);font-size:10px;color:var(--text-muted);margin-top:6px}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease-out,transform .6s ease-out}
 .reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:640px){.hero{padding:40px 0 28px}.hero h1{font-size:24px}.split-numbers{gap:16px}.split-block .number{font-size:40px}.split-divider{font-size:18px}.card-grid{grid-template-columns:1fr 1fr}nav .inner{flex-direction:column;align-items:flex-start}.section-header h2{font-size:18px}.card .card-value{font-size:22px}.hero .hook{font-size:13px}.two-col{grid-template-columns:1fr!important}}
+@media(max-width:860px){.hero{grid-template-columns:1fr;gap:8px;padding:40px 0 20px}.hero-art{order:-1;max-width:300px;margin:0 auto}}
+@media(max-width:640px){.hero h1{font-size:30px}.split-numbers{gap:18px}.split-block .number{font-size:46px}.split-divider{font-size:18px;padding-bottom:10px}.card-grid{grid-template-columns:1fr 1fr}nav .inner{flex-direction:column;align-items:flex-start}.two-col{grid-template-columns:1fr!important}.hero .hook{font-size:14px}}
+@media(prefers-reduced-motion:reduce){#fx{display:none}body{background:linear-gradient(135deg,#F6F8FC,#EDF2F9 60%,#F3EFE4)}}
 </style></head><body>
-<nav><div class=inner><div class=logo>CMC · Leverage-Divergence</div><div class=tags><span class="tag tag-gold">BNB Chain</span><span class="tag tag-blue">CoinMarketCap Agent Hub</span><span class="tag tag-gold">CMC20 Index</span></div></div></nav>
+<canvas id=fx aria-hidden=true></canvas>
+<nav><div class=inner><div class=logo><span class=mark></span>cmc-leverage-divergence</div><div class=tags><span class="tag tag-cmc">CoinMarketCap</span><span class="tag tag-bnb">BNB Chain</span><span class="tag tag-trust">Trust Wallet</span></div></div></nav>
 <main class=container>
-<section class="hero reveal"><div class=overline>BNB Hack 2026 · Track 2 · Strategy Skills</div><h1><span>CMC20</span> gets a risk gate —<br>built from all 20 of its constituents</h1><p class=hook>CMC20 is CoinMarketCap's flagship index on BNB Chain: the top 20 coins by market cap. <strong>No risk management, 40% drawdown.</strong> We read the funding signal from every constituent that can be hedged (19 of 20), cap-weight it, and time the index. One engine: validated on deep history, applied to the live 20-token basket.</p></section>
+<section class="hero reveal">
+<div class=hero-text><div class=overline>BNB Hack 2026 · Track 2 · Strategy Skills</div><h1>Crypto says buy negative funding. We proved it <em>backwards.</em></h1><p class=hook>Then we used the real signal to give <strong>CMC20</strong>, CoinMarketCap's own index on BNB Chain, the risk gate it never had. One engine, read live from CoinMarketCap, validated on deep history, <strong>drawdown 40% to 15%.</strong></p>
+<div class=tri-strip><b>Built on</b><span class=s><span class="d cmc"></span>CoinMarketCap</span><span class=s><span class="d bnb"></span>BNB Chain</span><span class=s><span class="d trust"></span>Trust Wallet</span></div></div>
+<div class=hero-art><div class=ring></div><picture><source srcset="assets/hero.webp" type="image/webp"><img src="assets/hero.jpg" alt="three liquid droplets in CoinMarketCap blue, BNB gold and Trust Wallet blue merging" width=960 height=720 loading=eager></picture></div>
+</section>
+<div class="verified reveal"><span class=vb>✓ VERIFIED</span><span class=vt>Every headline number re-derives from the committed data. Run <code>npm run verify</code> and edit a figure to inflate it, it exits nonzero. CI enforces it on every push.</span></div>
 <div class=reveal style=text-align:center;margin-bottom:24px><div class=split-numbers id=hero-split></div><div class=split-result id=hero-delta></div></div>
 <div class="reveal chart-card"><div class=chart-head><span class=chart-title>CMC20 — equity, overlay vs buy &amp; hold</span><span class=chart-legend><span class=lg><span class="lgdot gold"></span>overlay</span><span class=lg><span class="lgdot red"></span>buy &amp; hold</span></span></div><div id=chart></div><div class=chart-foot id=chart-foot></div></div>
 <div class="card-grid reveal" id=overlay-cards></div>
@@ -117,18 +168,53 @@ footer a{color:var(--blue);text-decoration:none;font-weight:500}footer a:hover{t
 
 <section class=reveal><div class=section-header><div class=section-eyebrow>The Rival-Killer</div><h2>Beats buy-and-hold on return in bear markets</h2><p>The obvious challenge: "you only win on drawdown." Split each deep-history asset by regime (price above/below 200-day MA). In down markets the strategy BEATS buy-and-hold on return everywhere — when an allocator actually needs it.</p></div><div class=table-wrap><table id=regime-table><thead><tr><th>Asset</th><th>Bear: Strategy</th><th>Bear: Buy &amp; Hold</th><th>Edge</th></tr></thead><tbody></tbody></table></div></section>
 <section class=reveal><div class=section-header><div class=section-eyebrow>The Finding</div><h2>Confirmation predicts — contrarian is backwards</h2><p>Crypto folklore says deeply negative funding = "buy the bottom." We tested it. Leverage-confirmed momentum (+14.2% mean 30d, 73% hit) vs the buy-the-dip setup (+2.8%, 53%). The contrarian bucket is worst. Monotonic.</p></div><div class=table-wrap><table id=event-table><thead><tr><th>Horizon</th><th>Signal State</th><th>n</th><th>Mean Forward</th><th>Hit Rate</th></tr></thead><tbody></tbody></table></div></section>
-<section class=reveal><div class=section-header><div class=section-eyebrow>Real Data, Not A Proxy</div><h2>Funding is not a price transform</h2><p>A common shortcut: never fetch funding, just derive it from price momentum (<code style="background:#1c2128;padding:1px 5px;border-radius:4px">0.0001 + 0.02·return₇</code>). We ran the same strategy with real Binance funding vs that proxy. On the 6 largest assets (liquid funding, and CMC20's heaviest weights) <strong>real funding wins 5/6, mean Sharpe +0.18</strong>. We fetch real funding for all 19 hedgeable constituents — we never synthesise it.</p></div><div class=table-wrap><table id=proxy-table><thead><tr><th>Asset</th><th>Real funding Sharpe</th><th>Price-proxy Sharpe</th><th>Gain</th></tr></thead><tbody></tbody></table></div></section>
+<section class=reveal><div class=section-header><div class=section-eyebrow>Real Data, Not A Proxy</div><h2>Funding is not a price transform</h2><p>A common shortcut: never fetch funding, just derive it from price momentum (<code>0.0001 + 0.02·return₇</code>). We ran the same strategy with real Binance funding vs that proxy. On the 6 largest assets (liquid funding, and CMC20's heaviest weights) <strong>real funding wins 5/6, mean Sharpe +0.18</strong>. We fetch real funding for all 19 hedgeable constituents — we never synthesise it.</p></div><div class=table-wrap><table id=proxy-table><thead><tr><th>Asset</th><th>Real funding Sharpe</th><th>Price-proxy Sharpe</th><th>Gain</th></tr></thead><tbody></tbody></table></div></section>
 <section class=reveal><div class=section-header><div class=section-eyebrow>Validation · 15 Constituents</div><h2>Per-constituent backtest (2018–2026)</h2><p>Every CMC20 constituent with deep Binance price + funding history (15 of 20) run independently — winners and losers shown. <strong>Lower max drawdown on 15/15 assets</strong> (median 59% vs 90%). The return/Sharpe edge concentrates in high-funding megacaps and fades on thin-funding alts, exactly as the thesis predicts: the signal is only as good as the leverage data behind it. Deflated Sharpe haircuts for multiple-testing. A rival "Sharpe 7.86" on one run is a red flag, not an achievement.</p></div><div class=table-wrap><table id=multi-table><thead><tr><th>Asset</th><th>Strat Sharpe</th><th>Strat DD%</th><th>Strat Ret%</th><th>BH Sharpe</th><th>BH DD%</th><th>BH Ret%</th><th>DSR</th></tr></thead><tbody></tbody></table></div></section>
 <section class="reveal two-col" style=display:grid;grid-template-columns:1fr 1fr;gap:20px>
 <div><div class=section-header><div class=section-eyebrow>Ablation</div><h2>Signal breakdown (BNB)</h2></div><div class=table-wrap><table id=ablation-table><thead><tr><th>Variant</th><th>Sharpe</th><th>DD%</th></tr></thead><tbody></tbody></table></div></div>
-<div><div class=section-header><div class=section-eyebrow>Live Spec</div><h2>Engine output right now</h2></div><div class=spec-card id=spec-card><div class=spec-header><span id=spec-dot class=dot></span><span id=spec-label></span></div><div class=spec-grid id=spec-grid></div><div id=spec-wallet></div></div>
+<div><div class=section-header><div class=section-eyebrow>Live Spec</div><h2>Engine output right now</h2></div><div class=spec-card id=spec-card><div class=spec-header><span id=spec-dot class=dot></span><span id=spec-label></span></div><div class=spec-grid id=spec-grid></div><div id=spec-wallet></div></div></div>
 </section></main>
-<footer><p>cmc-leverage-divergence · MIT License · BNB Hack: AI Trading Agent Edition<br>CoinMarketCap × Trust Wallet × BNB Chain</p><div class=repo-cta><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn primary">↗ GitHub Repository</a><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn secondary">npm install && npm test (29 tests)</a></div></footer>
+<footer><p>cmc-leverage-divergence · MIT License · BNB Hack: AI Trading Agent Edition<br>Built on CoinMarketCap · BNB Chain · Trust Wallet</p><div class=repo-cta><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn primary">↗ GitHub Repository</a><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn secondary">npm install &amp;&amp; npm test (49 tests)</a></div></footer>
 <script>
-var OVERLAY={"ovRet":-12.8,"ovDD":15.1,"ovPsr":0.16,"bhRet":-35.6,"bhDD":40,"bhPsr":0.14,"ddCut":24.9,"lossCut":22.8,"bars":207,"firstDay":"2025-11-11","lastDay":"2026-06-05"};var BEAR=[{"asset":"BNB","strat":-55,"bh":-89,"edge":33},{"asset":"BTC","strat":-37,"bh":-88,"edge":51},{"asset":"ETH","strat":-41,"bh":-91,"edge":50},{"asset":"SOL","strat":-61,"bh":-98,"edge":37},{"asset":"XRP","strat":-79,"bh":-100,"edge":21},{"asset":"TRX","strat":-60,"bh":-91,"edge":31},{"asset":"DOGE","strat":-22,"bh":-71,"edge":49},{"asset":"XLM","strat":-76,"bh":-99,"edge":23},{"asset":"ADA","strat":-67,"bh":-100,"edge":33},{"asset":"LINK","strat":-69,"bh":-94,"edge":26},{"asset":"LTC","strat":-85,"bh":-100,"edge":15},{"asset":"BCH","strat":-56,"bh":-93,"edge":37},{"asset":"ZEC","strat":-72,"bh":-96,"edge":23},{"asset":"XMR","strat":-75,"bh":-92,"edge":17},{"asset":"HBAR","strat":-56,"bh":-99,"edge":43}];var EVENT=[{"horizon_days":"7","state":"confirmed-up","n":132,"mean_forward_pct":5.2,"hit_rate_pct":56.82},{"horizon_days":"7","state":"flush-down","n":156,"mean_forward_pct":1.45,"hit_rate_pct":50.64},{"horizon_days":"7","state":"neutral","n":2176,"mean_forward_pct":1.45,"hit_rate_pct":52.71},{"horizon_days":"30","state":"confirmed-up","n":128,"mean_forward_pct":14.23,"hit_rate_pct":72.66},{"horizon_days":"30","state":"flush-down","n":156,"mean_forward_pct":2.76,"hit_rate_pct":53.21},{"horizon_days":"30","state":"neutral","n":2157,"mean_forward_pct":9.38,"hit_rate_pct":56.05}];var MULTI=[{"asset":"BNBUSDT","strat_sharpe":0.93,"strat_maxdd":44.42,"strat_ret":563.32,"bh_sharpe":1.04,"bh_maxdd":70.85,"bh_ret":3483.14,"dsr":0.8},{"asset":"BTCUSDT","strat_sharpe":0.98,"strat_maxdd":27.16,"strat_ret":298.06,"bh_sharpe":0.79,"bh_maxdd":76.55,"bh_ret":620.66,"dsr":0.85},{"asset":"ETHUSDT","strat_sharpe":0.86,"strat_maxdd":51.03,"strat_ret":372,"bh_sharpe":0.8,"bh_maxdd":79.28,"bh_ret":755.54,"dsr":0.76},{"asset":"SOLUSDT","strat_sharpe":1.13,"strat_maxdd":59.68,"strat_ret":1019.77,"bh_sharpe":1,"bh_maxdd":96.26,"bh_ret":1717.91,"dsr":0.57},{"asset":"XRPUSDT","strat_sharpe":0.49,"strat_maxdd":56.94,"strat_ret":161.23,"bh_sharpe":0.54,"bh_maxdd":82.99,"bh_ret":65.47,"dsr":0.48},{"asset":"TRXUSDT","strat_sharpe":0.5,"strat_maxdd":45.81,"strat_ret":164.32,"bh_sharpe":0.74,"bh_maxdd":78.3,"bh_ret":884.1,"dsr":0.78},{"asset":"DOGEUSDT","strat_sharpe":1.11,"strat_maxdd":64.5,"strat_ret":1733.62,"bh_sharpe":0.76,"bh_maxdd":92.33,"bh_ret":2531.65,"dsr":0.66},{"asset":"XLMUSDT","strat_sharpe":0.62,"strat_maxdd":58.17,"strat_ret":363.53,"bh_sharpe":0.48,"bh_maxdd":90.1,"bh_ret":6.19,"dsr":0.25},{"asset":"ADAUSDT","strat_sharpe":0.75,"strat_maxdd":59.12,"strat_ret":436.77,"bh_sharpe":0.43,"bh_maxdd":94.67,"bh_ret":-35.08,"dsr":0.62},{"asset":"LINKUSDT","strat_sharpe":0.17,"strat_maxdd":63.62,"strat_ret":-9.55,"bh_sharpe":0.89,"bh_maxdd":90.17,"bh_ret":1551.8,"dsr":0.33},{"asset":"LTCUSDT","strat_sharpe":0.04,"strat_maxdd":65.13,"strat_ret":-26.34,"bh_sharpe":0.21,"bh_maxdd":90.29,"bh_ret":-83.03,"dsr":0.28},{"asset":"BCHUSDT","strat_sharpe":0.01,"strat_maxdd":62.88,"strat_ret":-27.46,"bh_sharpe":0.47,"bh_maxdd":94.13,"bh_ret":0.6,"dsr":0.19},{"asset":"ZECUSDT","strat_sharpe":0.08,"strat_maxdd":63.57,"strat_ret":-20.68,"bh_sharpe":0.76,"bh_maxdd":94.17,"bh_ret":414.73,"dsr":0.22},{"asset":"XMRUSDT","strat_sharpe":-0.07,"strat_maxdd":66.81,"strat_ret":-28.33,"bh_sharpe":0.6,"bh_maxdd":78.32,"bh_ret":84.88,"dsr":0.16},{"asset":"HBARUSDT","strat_sharpe":0.3,"strat_maxdd":41.57,"strat_ret":34.02,"bh_sharpe":0.67,"bh_maxdd":92.76,"bh_ret":139.64,"dsr":0.24}];var SUMMARY={"n":15,"medStratDD":59.1,"medBhDD":90.2,"medStratSharpe":0.5,"medBhSharpe":0.74,"ddWins":15,"sharpeWins":6};var ABLATION=[{"variant":"headline","sharpe":0.93,"maxdd_pct":44.42},{"variant":"contrarian","sharpe":1.04,"maxdd_pct":52.7},{"variant":"no-divergence","sharpe":1.05,"maxdd_pct":47.77},{"variant":"no-trend","sharpe":0.97,"maxdd_pct":45.17},{"variant":"no-crowding","sharpe":0.93,"maxdd_pct":44.42},{"variant":"plus-fng","sharpe":0.82,"maxdd_pct":49.51}];var SPEC={"asset":"BNB","as_of":"2026-06-07","state":"neutral","score":0,"target":0.1,"regime":"risk-off","fundingZ":-0.88,"fng":null,"priceRet":-0.18,"live":true,"source":"CoinMarketCap data-api (live, keyless)","venues":19,"oiUsd":634,"btcDom":58.3,"endpoints":3};var WALLET={"holdPct":10,"cashPct":90,"instruction":"Hold 10% in CMC20 (BEP-20 on BNB Chain) and 90% in cash/stables.","link":"https://link.trustwallet.com/open_coin?asset=c20000714_t0x2f8A339B5889FfaC4c5A956787cdA593b3c36867","token":"CMC20"};var UNI={"index20":[{"symbol":"BTC","name":"Bitcoin","mc":1218.3,"rank":1,"hedgeable":true},{"symbol":"ETH","name":"Ethereum","mc":189.2,"rank":2,"hedgeable":true},{"symbol":"BNB","name":"BNB","mc":77.5,"rank":3,"hedgeable":true},{"symbol":"XRP","name":"XRP","mc":67.9,"rank":4,"hedgeable":true},{"symbol":"SOL","name":"Solana","mc":36,"rank":5,"hedgeable":true},{"symbol":"TRX","name":"TRON","mc":30.7,"rank":6,"hedgeable":true},{"symbol":"HYPE","name":"Hyperliquid","mc":14.4,"rank":7,"hedgeable":true},{"symbol":"DOGE","name":"Dogecoin","mc":13.9,"rank":8,"hedgeable":true},{"symbol":"LEO","name":"UNUS SED LEO","mc":8.7,"rank":9,"hedgeable":false},{"symbol":"XLM","name":"Stellar","mc":7.2,"rank":10,"hedgeable":true},{"symbol":"CC","name":"Canton","mc":6.3,"rank":11,"hedgeable":true},{"symbol":"ZEC","name":"Zcash","mc":6,"rank":12,"hedgeable":true},{"symbol":"ADA","name":"Cardano","mc":5.7,"rank":13,"hedgeable":true},{"symbol":"XMR","name":"Monero","mc":5.5,"rank":14,"hedgeable":true},{"symbol":"LINK","name":"Chainlink","mc":5.4,"rank":15,"hedgeable":true},{"symbol":"TON","name":"Toncoin","mc":4.4,"rank":16,"hedgeable":true},{"symbol":"BCH","name":"Bitcoin Cash","mc":4.4,"rank":17,"hedgeable":true},{"symbol":"M","name":"MemeCore","mc":3.9,"rank":18,"hedgeable":true},{"symbol":"HBAR","name":"Hedera","mc":3.5,"rank":19,"hedgeable":true},{"symbol":"LTC","name":"Litecoin","mc":3.2,"rank":20,"hedgeable":true}],"watch":[{"symbol":"SUI","name":"Sui","mc":2.9,"rank":21,"hedgeable":true},{"symbol":"AVAX","name":"Avalanche","mc":2.9,"rank":22,"hedgeable":true},{"symbol":"SHIB","name":"Shiba Inu","mc":2.7,"rank":23,"hedgeable":false},{"symbol":"XAUt","name":"Tether Gold","mc":2.6,"rank":24,"hedgeable":false},{"symbol":"CRO","name":"Cronos","mc":2.6,"rank":25,"hedgeable":false}],"tradeable":19,"untradeable":["LEO"]};var CURVE=[{"t":"2025-11-11","ov":100,"bh":100},{"t":"2025-11-13","ov":100,"bh":100},{"t":"2025-11-15","ov":100,"bh":100},{"t":"2025-11-17","ov":100,"bh":100},{"t":"2025-11-19","ov":100,"bh":100},{"t":"2025-11-21","ov":100,"bh":100},{"t":"2025-11-23","ov":100,"bh":100},{"t":"2025-11-25","ov":100,"bh":100},{"t":"2025-11-27","ov":100,"bh":100},{"t":"2025-11-29","ov":100,"bh":100},{"t":"2025-12-01","ov":100,"bh":100},{"t":"2025-12-03","ov":100,"bh":100},{"t":"2025-12-05","ov":100,"bh":100},{"t":"2025-12-07","ov":100,"bh":100},{"t":"2025-12-09","ov":100,"bh":100},{"t":"2025-12-11","ov":100,"bh":100},{"t":"2025-12-13","ov":98.8,"bh":100.2},{"t":"2025-12-15","ov":96.5,"bh":95.4},{"t":"2025-12-17","ov":96,"bh":94.5},{"t":"2025-12-19","ov":97.2,"bh":96.9},{"t":"2025-12-21","ov":97.4,"bh":97.2},{"t":"2025-12-23","ov":96.9,"bh":96.3},{"t":"2025-12-25","ov":96.4,"bh":95.3},{"t":"2025-12-27","ov":96.8,"bh":96.1},{"t":"2025-12-29","ov":96.8,"bh":96.1},{"t":"2025-12-31","ov":97,"bh":96.4},{"t":"2026-01-02","ov":98.6,"bh":99.8},{"t":"2026-01-04","ov":99.4,"bh":101.4},{"t":"2026-01-06","ov":101.2,"bh":104.3},{"t":"2026-01-08","ov":99.7,"bh":101.3},{"t":"2026-01-10","ov":99.3,"bh":100.4},{"t":"2026-01-12","ov":99.6,"bh":101},{"t":"2026-01-14","ov":102.7,"bh":107.3},{"t":"2026-01-16","ov":101.7,"bh":105.3},{"t":"2026-01-18","ov":101.1,"bh":104},{"t":"2026-01-20","ov":97.5,"bh":96.8},{"t":"2026-01-22","ov":98,"bh":97.8},{"t":"2026-01-24","ov":98,"bh":97.7},{"t":"2026-01-26","ov":97.6,"bh":96.9},{"t":"2026-01-28","ov":97.8,"bh":98.4},{"t":"2026-01-30","ov":94.5,"bh":91.8},{"t":"2026-02-01","ov":90.1,"bh":83},{"t":"2026-02-03","ov":91.1,"bh":81.8},{"t":"2026-02-05","ov":88.8,"bh":67.9},{"t":"2026-02-07","ov":94.1,"bh":74.9},{"t":"2026-02-09","ov":94,"bh":75.8},{"t":"2026-02-11","ov":92.8,"bh":72},{"t":"2026-02-13","ov":94.3,"bh":74.3},{"t":"2026-02-15","ov":94,"bh":73.9},{"t":"2026-02-17","ov":93.6,"bh":73.2},{"t":"2026-02-19","ov":92.9,"bh":72.2},{"t":"2026-02-21","ov":93,"bh":73.5},{"t":"2026-02-23","ov":92.6,"bh":69.8},{"t":"2026-02-25","ov":93.2,"bh":74.6},{"t":"2026-02-27","ov":92.7,"bh":70.9},{"t":"2026-03-01","ov":92.7,"bh":71},{"t":"2026-03-03","ov":93,"bh":73.4},{"t":"2026-03-05","ov":93.4,"bh":76.1},{"t":"2026-03-07","ov":92.9,"bh":72.2},{"t":"2026-03-09","ov":93,"bh":73.6},{"t":"2026-03-11","ov":93.3,"bh":75.6},{"t":"2026-03-13","ov":93.4,"bh":76.3},{"t":"2026-03-15","ov":93.7,"bh":78.4},{"t":"2026-03-17","ov":93.9,"bh":80.5},{"t":"2026-03-19","ov":93.3,"bh":75.9},{"t":"2026-03-21","ov":93.2,"bh":74.7},{"t":"2026-03-23","ov":93.4,"bh":76.6},{"t":"2026-03-25","ov":93.5,"bh":77.1},{"t":"2026-03-27","ov":92.8,"bh":71.5},{"t":"2026-03-29","ov":92.7,"bh":71.3},{"t":"2026-03-31","ov":93.1,"bh":73.6},{"t":"2026-04-02","ov":92.9,"bh":72.3},{"t":"2026-04-04","ov":92.9,"bh":72.6},{"t":"2026-04-06","ov":93.1,"bh":74},{"t":"2026-04-08","ov":93.4,"bh":76.4},{"t":"2026-04-10","ov":93.7,"bh":78.2},{"t":"2026-04-12","ov":93.4,"bh":76},{"t":"2026-04-14","ov":93.8,"bh":79.2},{"t":"2026-04-16","ov":94,"bh":80.9},{"t":"2026-04-18","ov":93.1,"bh":81},{"t":"2026-04-20","ov":92.2,"bh":80.9},{"t":"2026-04-22","ov":93.6,"bh":83.4},{"t":"2026-04-24","ov":93,"bh":82.4},{"t":"2026-04-26","ov":93.5,"bh":83.3},{"t":"2026-04-28","ov":92.1,"bh":80.8},{"t":"2026-04-30","ov":92.1,"bh":80.8},{"t":"2026-05-02","ov":93.3,"bh":82.9},{"t":"2026-05-04","ov":94,"bh":84.1},{"t":"2026-05-06","ov":95,"bh":85.7},{"t":"2026-05-08","ov":94.4,"bh":84.7},{"t":"2026-05-10","ov":96,"bh":87.1},{"t":"2026-05-12","ov":94.3,"bh":85},{"t":"2026-05-14","ov":94.7,"bh":85.7},{"t":"2026-05-16","ov":92.7,"bh":82.5},{"t":"2026-05-18","ov":91.8,"bh":80.9},{"t":"2026-05-20","ov":92.3,"bh":81.6},{"t":"2026-05-22","ov":91.1,"bh":79.8},{"t":"2026-05-24","ov":91.8,"bh":80.9},{"t":"2026-05-26","ov":91.3,"bh":80.1},{"t":"2026-05-28","ov":89.8,"bh":77.6},{"t":"2026-05-30","ov":89.9,"bh":78.4},{"t":"2026-06-01","ov":88.7,"bh":76.5},{"t":"2026-06-03","ov":87.8,"bh":69.2},{"t":"2026-06-05","ov":87.2,"bh":64.4}];var PROXY=[{"asset":"BNB","real":0.93,"proxy":0.84,"gain":0.09},{"asset":"BTC","real":0.98,"proxy":1.04,"gain":-0.06},{"asset":"ETH","real":0.86,"proxy":0.7,"gain":0.16},{"asset":"SOL","real":1.13,"proxy":0.92,"gain":0.21},{"asset":"XRP","real":0.49,"proxy":-0.14,"gain":0.63},{"asset":"DOGE","real":1.11,"proxy":1.03,"gain":0.08}];
+/* Ambient droplet + ripple field. Light, dependency-free, reduced-motion aware. */
+(function(){
+  var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(rm)return;
+  var cv=document.getElementById('fx'),ctx=cv.getContext('2d'),dpr=Math.min(window.devicePixelRatio||1,2);
+  var W,H,drops=[],ripples=[],COLORS=[[56,97,251],[240,185,11],[5,0,255]];
+  function resize(){W=cv.width=innerWidth*dpr;H=cv.height=innerHeight*dpr;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
+  resize();addEventListener('resize',resize);
+  var seed=1;function rand(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;}
+  function spawn(){var c=COLORS[(Math.floor(rand()*3))%3];drops.push({x:rand()*W,y:-20*dpr,vy:(0.6+rand()*1.1)*dpr,r:(1.4+rand()*1.8)*dpr,c:c,land:(0.25+rand()*0.7)*H});}
+  var MAX=window.innerWidth<700?14:26;
+  for(var i=0;i<MAX/2;i++){spawn();drops[i].y=rand()*H;}
+  var running=true;
+  document.addEventListener('visibilitychange',function(){running=!document.hidden;if(running)requestAnimationFrame(loop);});
+  function loop(){
+    if(!running)return;
+    ctx.clearRect(0,0,W,H);
+    if(drops.length<MAX&&rand()<0.06)spawn();
+    for(var i=drops.length-1;i>=0;i--){var d=drops[i];d.y+=d.vy;d.vy+=0.02*dpr;
+      ctx.beginPath();var grd=ctx.createLinearGradient(d.x,d.y-d.r*3,d.x,d.y+d.r);
+      grd.addColorStop(0,'rgba('+d.c[0]+','+d.c[1]+','+d.c[2]+',0)');grd.addColorStop(1,'rgba('+d.c[0]+','+d.c[1]+','+d.c[2]+',0.5)');
+      ctx.fillStyle=grd;ctx.ellipse(d.x,d.y,d.r*0.75,d.r*1.6,0,0,7);ctx.fill();
+      if(d.y>=d.land){ripples.push({x:d.x,y:d.land,r:d.r,a:0.4,c:d.c});drops.splice(i,1);}
+    }
+    for(var j=ripples.length-1;j>=0;j--){var rp=ripples[j];rp.r+=0.9*dpr;rp.a-=0.012;
+      if(rp.a<=0){ripples.splice(j,1);continue;}
+      ctx.beginPath();ctx.strokeStyle='rgba('+rp.c[0]+','+rp.c[1]+','+rp.c[2]+','+rp.a+')';ctx.lineWidth=1.2*dpr;
+      ctx.ellipse(rp.x,rp.y,rp.r,rp.r*0.34,0,0,7);ctx.stroke();
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>
+var OVERLAY={"ovRet":-12.8,"ovDD":15.1,"ovPsr":0.16,"bhRet":-35.6,"bhDD":40,"bhPsr":0.14,"ddCut":24.9,"lossCut":22.8,"bars":207,"firstDay":"2025-11-11","lastDay":"2026-06-05"};var BEAR=[{"asset":"BNB","strat":-55,"bh":-89,"edge":33},{"asset":"BTC","strat":-37,"bh":-88,"edge":51},{"asset":"ETH","strat":-41,"bh":-91,"edge":50},{"asset":"SOL","strat":-61,"bh":-98,"edge":37},{"asset":"XRP","strat":-79,"bh":-100,"edge":21},{"asset":"TRX","strat":-60,"bh":-91,"edge":31},{"asset":"DOGE","strat":-22,"bh":-71,"edge":49},{"asset":"XLM","strat":-76,"bh":-99,"edge":23},{"asset":"ADA","strat":-67,"bh":-100,"edge":33},{"asset":"LINK","strat":-69,"bh":-94,"edge":26},{"asset":"LTC","strat":-85,"bh":-100,"edge":15},{"asset":"BCH","strat":-56,"bh":-93,"edge":37},{"asset":"ZEC","strat":-72,"bh":-96,"edge":23},{"asset":"XMR","strat":-75,"bh":-92,"edge":17},{"asset":"HBAR","strat":-56,"bh":-99,"edge":43}];var EVENT=[{"horizon_days":"7","state":"confirmed-up","n":132,"mean_forward_pct":5.2,"hit_rate_pct":56.82},{"horizon_days":"7","state":"flush-down","n":156,"mean_forward_pct":1.45,"hit_rate_pct":50.64},{"horizon_days":"7","state":"neutral","n":2176,"mean_forward_pct":1.45,"hit_rate_pct":52.71},{"horizon_days":"30","state":"confirmed-up","n":128,"mean_forward_pct":14.23,"hit_rate_pct":72.66},{"horizon_days":"30","state":"flush-down","n":156,"mean_forward_pct":2.76,"hit_rate_pct":53.21},{"horizon_days":"30","state":"neutral","n":2157,"mean_forward_pct":9.38,"hit_rate_pct":56.05}];var MULTI=[{"asset":"BNBUSDT","strat_sharpe":0.93,"strat_maxdd":44.42,"strat_ret":563.32,"bh_sharpe":1.04,"bh_maxdd":70.85,"bh_ret":3483.14,"dsr":0.8},{"asset":"BTCUSDT","strat_sharpe":0.98,"strat_maxdd":27.16,"strat_ret":298.06,"bh_sharpe":0.79,"bh_maxdd":76.55,"bh_ret":620.66,"dsr":0.85},{"asset":"ETHUSDT","strat_sharpe":0.86,"strat_maxdd":51.03,"strat_ret":372,"bh_sharpe":0.8,"bh_maxdd":79.28,"bh_ret":755.54,"dsr":0.76},{"asset":"SOLUSDT","strat_sharpe":1.13,"strat_maxdd":59.68,"strat_ret":1019.77,"bh_sharpe":1,"bh_maxdd":96.26,"bh_ret":1717.91,"dsr":0.57},{"asset":"XRPUSDT","strat_sharpe":0.49,"strat_maxdd":56.94,"strat_ret":161.23,"bh_sharpe":0.54,"bh_maxdd":82.99,"bh_ret":65.47,"dsr":0.48},{"asset":"TRXUSDT","strat_sharpe":0.5,"strat_maxdd":45.81,"strat_ret":164.32,"bh_sharpe":0.74,"bh_maxdd":78.3,"bh_ret":884.1,"dsr":0.78},{"asset":"DOGEUSDT","strat_sharpe":1.11,"strat_maxdd":64.5,"strat_ret":1733.62,"bh_sharpe":0.76,"bh_maxdd":92.33,"bh_ret":2531.65,"dsr":0.66},{"asset":"XLMUSDT","strat_sharpe":0.62,"strat_maxdd":58.17,"strat_ret":363.53,"bh_sharpe":0.48,"bh_maxdd":90.1,"bh_ret":6.19,"dsr":0.25},{"asset":"ADAUSDT","strat_sharpe":0.75,"strat_maxdd":59.12,"strat_ret":436.77,"bh_sharpe":0.43,"bh_maxdd":94.67,"bh_ret":-35.08,"dsr":0.62},{"asset":"LINKUSDT","strat_sharpe":0.17,"strat_maxdd":63.62,"strat_ret":-9.55,"bh_sharpe":0.89,"bh_maxdd":90.17,"bh_ret":1551.8,"dsr":0.33},{"asset":"LTCUSDT","strat_sharpe":0.04,"strat_maxdd":65.13,"strat_ret":-26.34,"bh_sharpe":0.21,"bh_maxdd":90.29,"bh_ret":-83.03,"dsr":0.28},{"asset":"BCHUSDT","strat_sharpe":0.01,"strat_maxdd":62.88,"strat_ret":-27.46,"bh_sharpe":0.47,"bh_maxdd":94.13,"bh_ret":0.6,"dsr":0.19},{"asset":"ZECUSDT","strat_sharpe":0.08,"strat_maxdd":63.57,"strat_ret":-20.68,"bh_sharpe":0.76,"bh_maxdd":94.17,"bh_ret":414.73,"dsr":0.22},{"asset":"XMRUSDT","strat_sharpe":-0.07,"strat_maxdd":66.81,"strat_ret":-28.33,"bh_sharpe":0.6,"bh_maxdd":78.32,"bh_ret":84.88,"dsr":0.16},{"asset":"HBARUSDT","strat_sharpe":0.3,"strat_maxdd":41.57,"strat_ret":34.02,"bh_sharpe":0.67,"bh_maxdd":92.76,"bh_ret":139.64,"dsr":0.24}];var SUMMARY={"n":15,"medStratDD":59.1,"medBhDD":90.2,"medStratSharpe":0.5,"medBhSharpe":0.74,"ddWins":15,"sharpeWins":6};var ABLATION=[{"variant":"headline","sharpe":0.93,"maxdd_pct":44.42},{"variant":"contrarian","sharpe":1.04,"maxdd_pct":52.7},{"variant":"no-divergence","sharpe":1.05,"maxdd_pct":47.77},{"variant":"no-trend","sharpe":0.97,"maxdd_pct":45.17},{"variant":"no-crowding","sharpe":0.93,"maxdd_pct":44.42},{"variant":"plus-fng","sharpe":0.82,"maxdd_pct":49.51}];var SPEC={"asset":"BNB","as_of":"2026-06-07","state":"neutral","score":0,"target":0.1,"regime":"risk-off","fundingZ":-0.97,"fng":null,"priceRet":-0.18,"live":true,"source":"CoinMarketCap data-api (live, keyless)","venues":19,"oiUsd":637,"btcDom":58.3,"endpoints":3};var WALLET={"holdPct":10,"cashPct":90,"instruction":"Hold 10% in CMC20 (BEP-20 on BNB Chain) and 90% in cash/stables.","link":"https://link.trustwallet.com/open_coin?asset=c20000714_t0x2f8A339B5889FfaC4c5A956787cdA593b3c36867","token":"CMC20"};var UNI={"index20":[{"symbol":"BTC","name":"Bitcoin","mc":1218.3,"rank":1,"hedgeable":true},{"symbol":"ETH","name":"Ethereum","mc":189.2,"rank":2,"hedgeable":true},{"symbol":"BNB","name":"BNB","mc":77.5,"rank":3,"hedgeable":true},{"symbol":"XRP","name":"XRP","mc":67.9,"rank":4,"hedgeable":true},{"symbol":"SOL","name":"Solana","mc":36,"rank":5,"hedgeable":true},{"symbol":"TRX","name":"TRON","mc":30.7,"rank":6,"hedgeable":true},{"symbol":"HYPE","name":"Hyperliquid","mc":14.4,"rank":7,"hedgeable":true},{"symbol":"DOGE","name":"Dogecoin","mc":13.9,"rank":8,"hedgeable":true},{"symbol":"LEO","name":"UNUS SED LEO","mc":8.7,"rank":9,"hedgeable":false},{"symbol":"XLM","name":"Stellar","mc":7.2,"rank":10,"hedgeable":true},{"symbol":"CC","name":"Canton","mc":6.3,"rank":11,"hedgeable":true},{"symbol":"ZEC","name":"Zcash","mc":6,"rank":12,"hedgeable":true},{"symbol":"ADA","name":"Cardano","mc":5.7,"rank":13,"hedgeable":true},{"symbol":"XMR","name":"Monero","mc":5.5,"rank":14,"hedgeable":true},{"symbol":"LINK","name":"Chainlink","mc":5.4,"rank":15,"hedgeable":true},{"symbol":"TON","name":"Toncoin","mc":4.4,"rank":16,"hedgeable":true},{"symbol":"BCH","name":"Bitcoin Cash","mc":4.4,"rank":17,"hedgeable":true},{"symbol":"M","name":"MemeCore","mc":3.9,"rank":18,"hedgeable":true},{"symbol":"HBAR","name":"Hedera","mc":3.5,"rank":19,"hedgeable":true},{"symbol":"LTC","name":"Litecoin","mc":3.2,"rank":20,"hedgeable":true}],"watch":[{"symbol":"SUI","name":"Sui","mc":2.9,"rank":21,"hedgeable":true},{"symbol":"AVAX","name":"Avalanche","mc":2.9,"rank":22,"hedgeable":true},{"symbol":"SHIB","name":"Shiba Inu","mc":2.7,"rank":23,"hedgeable":false},{"symbol":"XAUt","name":"Tether Gold","mc":2.6,"rank":24,"hedgeable":false},{"symbol":"CRO","name":"Cronos","mc":2.6,"rank":25,"hedgeable":false}],"tradeable":19,"untradeable":["LEO"]};var CURVE=[{"t":"2025-11-11","ov":100,"bh":100},{"t":"2025-11-13","ov":100,"bh":100},{"t":"2025-11-15","ov":100,"bh":100},{"t":"2025-11-17","ov":100,"bh":100},{"t":"2025-11-19","ov":100,"bh":100},{"t":"2025-11-21","ov":100,"bh":100},{"t":"2025-11-23","ov":100,"bh":100},{"t":"2025-11-25","ov":100,"bh":100},{"t":"2025-11-27","ov":100,"bh":100},{"t":"2025-11-29","ov":100,"bh":100},{"t":"2025-12-01","ov":100,"bh":100},{"t":"2025-12-03","ov":100,"bh":100},{"t":"2025-12-05","ov":100,"bh":100},{"t":"2025-12-07","ov":100,"bh":100},{"t":"2025-12-09","ov":100,"bh":100},{"t":"2025-12-11","ov":100,"bh":100},{"t":"2025-12-13","ov":98.8,"bh":100.2},{"t":"2025-12-15","ov":96.5,"bh":95.4},{"t":"2025-12-17","ov":96,"bh":94.5},{"t":"2025-12-19","ov":97.2,"bh":96.9},{"t":"2025-12-21","ov":97.4,"bh":97.2},{"t":"2025-12-23","ov":96.9,"bh":96.3},{"t":"2025-12-25","ov":96.4,"bh":95.3},{"t":"2025-12-27","ov":96.8,"bh":96.1},{"t":"2025-12-29","ov":96.8,"bh":96.1},{"t":"2025-12-31","ov":97,"bh":96.4},{"t":"2026-01-02","ov":98.6,"bh":99.8},{"t":"2026-01-04","ov":99.4,"bh":101.4},{"t":"2026-01-06","ov":101.2,"bh":104.3},{"t":"2026-01-08","ov":99.7,"bh":101.3},{"t":"2026-01-10","ov":99.3,"bh":100.4},{"t":"2026-01-12","ov":99.6,"bh":101},{"t":"2026-01-14","ov":102.7,"bh":107.3},{"t":"2026-01-16","ov":101.7,"bh":105.3},{"t":"2026-01-18","ov":101.1,"bh":104},{"t":"2026-01-20","ov":97.5,"bh":96.8},{"t":"2026-01-22","ov":98,"bh":97.8},{"t":"2026-01-24","ov":98,"bh":97.7},{"t":"2026-01-26","ov":97.6,"bh":96.9},{"t":"2026-01-28","ov":97.8,"bh":98.4},{"t":"2026-01-30","ov":94.5,"bh":91.8},{"t":"2026-02-01","ov":90.1,"bh":83},{"t":"2026-02-03","ov":91.1,"bh":81.8},{"t":"2026-02-05","ov":88.8,"bh":67.9},{"t":"2026-02-07","ov":94.1,"bh":74.9},{"t":"2026-02-09","ov":94,"bh":75.8},{"t":"2026-02-11","ov":92.8,"bh":72},{"t":"2026-02-13","ov":94.3,"bh":74.3},{"t":"2026-02-15","ov":94,"bh":73.9},{"t":"2026-02-17","ov":93.6,"bh":73.2},{"t":"2026-02-19","ov":92.9,"bh":72.2},{"t":"2026-02-21","ov":93,"bh":73.5},{"t":"2026-02-23","ov":92.6,"bh":69.8},{"t":"2026-02-25","ov":93.2,"bh":74.6},{"t":"2026-02-27","ov":92.7,"bh":70.9},{"t":"2026-03-01","ov":92.7,"bh":71},{"t":"2026-03-03","ov":93,"bh":73.4},{"t":"2026-03-05","ov":93.4,"bh":76.1},{"t":"2026-03-07","ov":92.9,"bh":72.2},{"t":"2026-03-09","ov":93,"bh":73.6},{"t":"2026-03-11","ov":93.3,"bh":75.6},{"t":"2026-03-13","ov":93.4,"bh":76.3},{"t":"2026-03-15","ov":93.7,"bh":78.4},{"t":"2026-03-17","ov":93.9,"bh":80.5},{"t":"2026-03-19","ov":93.3,"bh":75.9},{"t":"2026-03-21","ov":93.2,"bh":74.7},{"t":"2026-03-23","ov":93.4,"bh":76.6},{"t":"2026-03-25","ov":93.5,"bh":77.1},{"t":"2026-03-27","ov":92.8,"bh":71.5},{"t":"2026-03-29","ov":92.7,"bh":71.3},{"t":"2026-03-31","ov":93.1,"bh":73.6},{"t":"2026-04-02","ov":92.9,"bh":72.3},{"t":"2026-04-04","ov":92.9,"bh":72.6},{"t":"2026-04-06","ov":93.1,"bh":74},{"t":"2026-04-08","ov":93.4,"bh":76.4},{"t":"2026-04-10","ov":93.7,"bh":78.2},{"t":"2026-04-12","ov":93.4,"bh":76},{"t":"2026-04-14","ov":93.8,"bh":79.2},{"t":"2026-04-16","ov":94,"bh":80.9},{"t":"2026-04-18","ov":93.1,"bh":81},{"t":"2026-04-20","ov":92.2,"bh":80.9},{"t":"2026-04-22","ov":93.6,"bh":83.4},{"t":"2026-04-24","ov":93,"bh":82.4},{"t":"2026-04-26","ov":93.5,"bh":83.3},{"t":"2026-04-28","ov":92.1,"bh":80.8},{"t":"2026-04-30","ov":92.1,"bh":80.8},{"t":"2026-05-02","ov":93.3,"bh":82.9},{"t":"2026-05-04","ov":94,"bh":84.1},{"t":"2026-05-06","ov":95,"bh":85.7},{"t":"2026-05-08","ov":94.4,"bh":84.7},{"t":"2026-05-10","ov":96,"bh":87.1},{"t":"2026-05-12","ov":94.3,"bh":85},{"t":"2026-05-14","ov":94.7,"bh":85.7},{"t":"2026-05-16","ov":92.7,"bh":82.5},{"t":"2026-05-18","ov":91.8,"bh":80.9},{"t":"2026-05-20","ov":92.3,"bh":81.6},{"t":"2026-05-22","ov":91.1,"bh":79.8},{"t":"2026-05-24","ov":91.8,"bh":80.9},{"t":"2026-05-26","ov":91.3,"bh":80.1},{"t":"2026-05-28","ov":89.8,"bh":77.6},{"t":"2026-05-30","ov":89.9,"bh":78.4},{"t":"2026-06-01","ov":88.7,"bh":76.5},{"t":"2026-06-03","ov":87.8,"bh":69.2},{"t":"2026-06-05","ov":87.2,"bh":64.4}];var PROXY=[{"asset":"BNB","real":0.93,"proxy":0.84,"gain":0.09},{"asset":"BTC","real":0.98,"proxy":1.04,"gain":-0.06},{"asset":"ETH","real":0.86,"proxy":0.7,"gain":0.16},{"asset":"SOL","real":1.13,"proxy":0.92,"gain":0.21},{"asset":"XRP","real":0.49,"proxy":-0.14,"gain":0.63},{"asset":"DOGE","real":1.11,"proxy":1.03,"gain":0.08}];
 (function(){var O=OVERLAY;
 document.getElementById('hero-split').innerHTML='<div class=split-block><div class=label>Funding-Regime Overlay</div><div class="number gold">'+O.ovDD+'%</div><div class=sub>max drawdown</div></div><div class=split-divider>vs</div><div class=split-block><div class=label>CMC20 Buy &amp; Hold</div><div class="number red">'+O.bhDD+'%</div><div class=sub>max drawdown</div></div>';
-document.getElementById('hero-delta').innerHTML='&darr; '+O.ddCut+' pts drawdown cut &middot; loss cut '+O.lossCut+' pts';
+document.getElementById('hero-delta').innerHTML='<span>&darr; '+O.ddCut+' pts drawdown cut &middot; loss cut '+O.lossCut+' pts</span>';
 // Equity chart (SVG): overlay vs buy-hold, normalised to 100.
 (function(){if(!CURVE||!CURVE.length)return;var W=900,H=240,P=28;var vals=[];CURVE.forEach(function(p){vals.push(p.ov,p.bh)});var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);var pad=(mx-mn)*0.08||1;mn-=pad;mx+=pad;
 function X(i){return P+(W-2*P)*i/(CURVE.length-1)}function Y(v){return P+(H-2*P)*(1-(v-mn)/(mx-mn))}
@@ -136,20 +222,20 @@ function path(key){return CURVE.map(function(p,i){return (i?'L':'M')+X(i).toFixe
 function area(key){return 'M'+X(0).toFixed(1)+' '+Y(CURVE[0][key]).toFixed(1)+' '+CURVE.map(function(p,i){return 'L'+X(i).toFixed(1)+' '+Y(p[key]).toFixed(1)}).join(' ')+' L'+X(CURVE.length-1).toFixed(1)+' '+(H-P)+' L'+X(0).toFixed(1)+' '+(H-P)+' Z'}
 var y100=Y(100);
 var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="equity curve">'+
-'<defs><linearGradient id="gg" x1=0 y1=0 x2=0 y2=1><stop offset=0 stop-color="#F0B90B" stop-opacity=.18/><stop offset=1 stop-color="#F0B90B" stop-opacity=0/></linearGradient></defs>'+
-'<line x1='+P+' y1='+y100.toFixed(1)+' x2='+(W-P)+' y2='+y100.toFixed(1)+' stroke="#2a2e3a" stroke-dasharray="3 4"/>'+
-'<text x='+(W-P)+' y='+(y100-5).toFixed(1)+' fill="#484f58" font-size=11 text-anchor=end font-family=monospace>start = 100</text>'+
+'<defs><linearGradient id="gg" x1=0 y1=0 x2=0 y2=1><stop offset=0 stop-color="#F0B90B" stop-opacity=.2/><stop offset=1 stop-color="#F0B90B" stop-opacity=0/></linearGradient></defs>'+
+'<line x1='+P+' y1='+y100.toFixed(1)+' x2='+(W-P)+' y2='+y100.toFixed(1)+' stroke="#D3DBE8" stroke-dasharray="3 4"/>'+
+'<text x='+(W-P)+' y='+(y100-5).toFixed(1)+' fill="#93A1B6" font-size=11 text-anchor=end font-family=monospace>start = 100</text>'+
 '<path d="'+area('ov')+'" fill="url(#gg)"/>'+
-'<path d="'+path('bh')+'" fill=none stroke="#f85149" stroke-width=2 stroke-opacity=.85/>'+
+'<path d="'+path('bh')+'" fill=none stroke="#E02424" stroke-width=2 stroke-opacity=.85/>'+
 '<path d="'+path('ov')+'" fill=none stroke="#F0B90B" stroke-width=2.5/>'+
 '<circle cx='+X(CURVE.length-1).toFixed(1)+' cy='+Y(CURVE[CURVE.length-1].ov).toFixed(1)+' r=3.5 fill="#F0B90B"/>'+
-'<circle cx='+X(CURVE.length-1).toFixed(1)+' cy='+Y(CURVE[CURVE.length-1].bh).toFixed(1)+' r=3.5 fill="#f85149"/>'+
+'<circle cx='+X(CURVE.length-1).toFixed(1)+' cy='+Y(CURVE[CURVE.length-1].bh).toFixed(1)+' r=3.5 fill="#E02424"/>'+
 '</svg>';
 document.getElementById('chart').innerHTML=svg;
 var last=CURVE[CURVE.length-1];
 document.getElementById('chart-foot').innerHTML='<span>'+CURVE[0].t+'</span><span>overlay '+last.ov+' &middot; buy&amp;hold '+last.bh+' (start 100)</span><span>'+last.t+'</span>';
 })();
-document.getElementById('overlay-cards').innerHTML='<div class=card><div class=card-label>Index Coverage</div><div class="card-value gold">'+UNI.tradeable+'/20</div><div class=card-sub>constituents hedgeable &amp; timed</div></div><div class=card><div class=card-label>Overlay Return</div><div class="card-value gold">'+O.ovRet+'%</div><div class=card-sub>vs '+O.bhRet+'% buy &amp; hold, same window</div></div><div class=card><div class=card-label>Probabilistic Sharpe</div><div class="card-value blue">'+O.ovPsr+'</div><div class=card-sub>vs '+O.bhPsr+' buy &amp; hold &middot; down-only window</div></div><div class=card><div class=card-label>Window</div><div class=card-value style=font-size:18px>'+O.bars+' days</div><div class=card-sub>'+O.firstDay+' &rarr; '+O.lastDay+'</div></div>';
+document.getElementById('overlay-cards').innerHTML='<div class=card><div class=card-label>Index Coverage</div><div class="card-value gold">'+UNI.tradeable+'/20</div><div class=card-sub>constituents hedgeable &amp; timed</div></div><div class=card><div class=card-label>Overlay Return</div><div class="card-value gold">'+O.ovRet+'%</div><div class=card-sub>vs '+O.bhRet+'% buy &amp; hold, same window</div></div><div class=card><div class=card-label>Probabilistic Sharpe</div><div class="card-value blue">'+O.ovPsr+'</div><div class=card-sub>vs '+O.bhPsr+' buy &amp; hold &middot; down-only window</div></div><div class=card><div class=card-label>Window</div><div class=card-value style=font-size:20px>'+O.bars+' days</div><div class=card-sub>'+O.firstDay+' &rarr; '+O.lastDay+'</div></div>';
 // Constituent grid
 var cg=document.getElementById('const-grid');var hh='';
 UNI.index20.forEach(function(c){var cls=c.hedgeable?'':' untradeable';var bd=c.hedgeable?'g':'r';hh+='<div class="const'+cls+'"><span class="badge '+bd+'"></span><div class=rank>#'+c.rank+'</div><div class=sym>'+c.symbol+'</div><div class=mc>$'+c.mc+'B</div></div>'});
