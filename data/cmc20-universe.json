@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1273.8,
+   "mc": 1270.5,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 203.8,
+   "mc": 204.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 81,
+   "mc": 81.7,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 72.1,
+   "mc": 72.9,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 38.8,
+   "mc": 38.9,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,56 +45,56 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 15.9,
+   "mc": 16.1,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 13.4,
+   "mc": 14.8,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.8,
+   "mc": 8.7,
    "rank": 9,
    "hedgeable": false
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 7.1,
+   "mc": 7.9,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.8,
+   "mc": 6.9,
    "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 6.1,
+   "mc": 6.3,
    "rank": 12,
    "hedgeable": true
   },
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 6.1,
+   "mc": 6.2,
    "rank": 13,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 5.9,
+   "mc": 6,
    "rank": 14,
    "hedgeable": true
   },
@@ -122,21 +122,21 @@
   {
    "symbol": "M",
    "name": "MemeCore",
-   "mc": 4,
+   "mc": 4.2,
    "rank": 18,
    "hedgeable": true
   },
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 3.6,
+   "mc": 3.5,
    "rank": 19,
    "hedgeable": true
   },
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 3.3,
+   "mc": 3.4,
    "rank": 20,
    "hedgeable": true
   }
@@ -157,11 +157,11 @@
    "hedgeable": true
   },
   {
-   "symbol": "NEAR",
-   "name": "NEAR Protocol",
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
    "mc": 2.8,
    "rank": 23,
-   "hedgeable": true
+   "hedgeable": false
   },
   {
    "symbol": "CRO",
@@ -171,11 +171,11 @@
    "hedgeable": false
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
    "mc": 2.8,
    "rank": 25,
-   "hedgeable": false
+   "hedgeable": true
   }
  ],
  "tradeable": 19,
