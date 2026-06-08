@@ -37,7 +37,7 @@
 html{scroll-behavior:smooth;background:var(--bg)}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 /* ambient droplet layer */
-#fx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.72}
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
 .container{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 22px}
 nav{position:sticky;top:0;z-index:100;background:rgba(246,248,252,.82);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-bottom:1px solid var(--border)}
 nav .inner{max-width:1120px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -176,43 +176,34 @@ footer a{color:var(--blue-ink);text-decoration:none;font-weight:500}footer a:hov
 </section></main>
 <footer><p>cmc-leverage-divergence · MIT License · BNB Hack: AI Trading Agent Edition<br>Built on CoinMarketCap · BNB Chain · Trust Wallet</p><div class=repo-cta><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn primary">↗ GitHub Repository</a><a href="https://github.com/zkasuran/cmc-leverage-divergence" target=_blank rel=noopener class="repo-btn secondary">npm install &amp;&amp; npm test (69 tests)</a></div></footer>
 <script>
-/* Storm rain field: dense, gusty, varied depth. Dependency-free, reduced-motion aware. */
+/* Ambient droplet + ripple field. Light, dependency-free, reduced-motion aware. */
 (function(){
   var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   if(rm)return;
   var cv=document.getElementById('fx'),ctx=cv.getContext('2d'),dpr=Math.min(window.devicePixelRatio||1,2);
-  var W,H,drops=[],splashes=[],t=0,COLORS=[[38,58,110],[38,58,110],[38,58,110],[56,97,251],[240,185,11]];
+  var W,H,drops=[],ripples=[],COLORS=[[56,97,251],[240,185,11],[5,0,255]];
   function resize(){W=cv.width=innerWidth*dpr;H=cv.height=innerHeight*dpr;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
   resize();addEventListener('resize',resize);
   var seed=1;function rand(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;}
-  function gust(){return 0.32+0.24*Math.sin(t/120)+0.13*Math.sin(t/41);}
-  function reset(d){d.c=COLORS[Math.floor(rand()*COLORS.length)];d.fg=rand()>0.72;d.x=rand()*(W+H)-H*0.6;d.y=-rand()*60*dpr-20*dpr;d.vy=((d.fg?15:9)+rand()*9)*dpr;d.len=d.vy*(2.6+rand()*1.8);d.w=((d.fg?1.4:0.7)+rand()*1.0)*dpr;d.a=(d.fg?0.45:0.3)+rand()*0.3;return d;}
-  var MAX=window.innerWidth<700?90:180;
-  for(var i=0;i<MAX;i++){var dd=reset({});dd.y=rand()*H;drops.push(dd);}
-  var heroEl=document.querySelector('.hero-text');
+  function spawn(){var c=COLORS[(Math.floor(rand()*3))%3];drops.push({x:rand()*W,y:-20*dpr,vy:(0.6+rand()*1.1)*dpr,r:(1.4+rand()*1.8)*dpr,c:c,land:(0.25+rand()*0.7)*H});}
+  var MAX=window.innerWidth<700?14:26;
+  for(var i=0;i<MAX/2;i++){spawn();drops[i].y=rand()*H;}
   var running=true;
   document.addEventListener('visibilitychange',function(){running=!document.hidden;if(running)requestAnimationFrame(loop);});
   function loop(){
-    if(!running)return;t++;
-    ctx.clearRect(0,0,W,H);var wd=gust();ctx.lineCap='round';
-    for(var i=0;i<drops.length;i++){var d=drops[i];d.x+=d.vy*wd;d.y+=d.vy;
-      ctx.strokeStyle='rgba('+d.c[0]+','+d.c[1]+','+d.c[2]+','+d.a+')';ctx.lineWidth=d.w;
-      ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x-d.len*wd,d.y-d.len);ctx.stroke();
-      if(d.y>H){if(rand()<0.7)splashes.push({x:d.x,y:H-1.5*dpr,r:0.6*dpr,a:d.a,c:d.c});reset(d);}
+    if(!running)return;
+    ctx.clearRect(0,0,W,H);
+    if(drops.length<MAX&&rand()<0.06)spawn();
+    for(var i=drops.length-1;i>=0;i--){var d=drops[i];d.y+=d.vy;d.vy+=0.02*dpr;
+      ctx.beginPath();var grd=ctx.createLinearGradient(d.x,d.y-d.r*3,d.x,d.y+d.r);
+      grd.addColorStop(0,'rgba('+d.c[0]+','+d.c[1]+','+d.c[2]+',0)');grd.addColorStop(1,'rgba('+d.c[0]+','+d.c[1]+','+d.c[2]+',0.5)');
+      ctx.fillStyle=grd;ctx.ellipse(d.x,d.y,d.r*0.75,d.r*1.6,0,0,7);ctx.fill();
+      if(d.y>=d.land){ripples.push({x:d.x,y:d.land,r:d.r,a:0.4,c:d.c});drops.splice(i,1);}
     }
-    for(var j=splashes.length-1;j>=0;j--){var s=splashes[j];s.r+=0.8*dpr;s.a-=0.035;
-      if(s.a<=0){splashes.splice(j,1);continue;}
-      ctx.beginPath();ctx.strokeStyle='rgba('+s.c[0]+','+s.c[1]+','+s.c[2]+','+s.a+')';ctx.lineWidth=1*dpr;
-      ctx.ellipse(s.x,s.y,s.r,s.r*0.3,0,0,7);ctx.stroke();
-    }
-    if(heroEl){var hr=heroEl.getBoundingClientRect();
-      if(hr.width>0&&hr.bottom>0&&hr.top<innerHeight){
-        ctx.save();ctx.globalCompositeOperation='destination-out';
-        ctx.shadowColor='rgba(0,0,0,1)';ctx.shadowBlur=32*dpr;ctx.fillStyle='rgba(0,0,0,1)';
-        var px=12*dpr,hx=hr.left*dpr+px,hy=hr.top*dpr+px,hw=hr.width*dpr-2*px,hh=hr.height*dpr-2*px;
-        if(hw>0&&hh>0)ctx.fillRect(hx,hy,hw,hh);
-        ctx.restore();
-      }
+    for(var j=ripples.length-1;j>=0;j--){var rp=ripples[j];rp.r+=0.9*dpr;rp.a-=0.012;
+      if(rp.a<=0){ripples.splice(j,1);continue;}
+      ctx.beginPath();ctx.strokeStyle='rgba('+rp.c[0]+','+rp.c[1]+','+rp.c[2]+','+rp.a+')';ctx.lineWidth=1.2*dpr;
+      ctx.ellipse(rp.x,rp.y,rp.r,rp.r*0.34,0,0,7);ctx.stroke();
     }
     requestAnimationFrame(loop);
   }
