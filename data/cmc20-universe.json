@@ -3,7 +3,7 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1270,
+   "mc": 1272.6,
    "rank": 1,
    "hedgeable": true
   },
@@ -17,28 +17,28 @@
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 81.6,
+   "mc": 81.2,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 70.4,
+   "mc": 70.1,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 38.7,
+   "mc": 38.6,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 29.6,
+   "mc": 29.9,
    "rank": 6,
    "hedgeable": true
   },
@@ -59,42 +59,42 @@
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.7,
+   "mc": 8.8,
    "rank": 9,
    "hedgeable": false
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 7.3,
+   "mc": 6.8,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 7.1,
+   "mc": 6.6,
    "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.5,
+   "mc": 6.4,
    "rank": 12,
    "hedgeable": true
   },
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 6.4,
+   "mc": 6.3,
    "rank": 13,
    "hedgeable": true
   },
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 6.2,
+   "mc": 6.1,
    "rank": 14,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "TON",
    "name": "Toncoin",
-   "mc": 4.6,
+   "mc": 4.5,
    "rank": 16,
    "hedgeable": true
   },
@@ -159,23 +159,23 @@
   {
    "symbol": "AVAX",
    "name": "Avalanche",
-   "mc": 2.9,
+   "mc": 2.8,
    "rank": 23,
-   "hedgeable": true
-  },
-  {
-   "symbol": "NEAR",
-   "name": "NEAR Protocol",
-   "mc": 2.7,
-   "rank": 24,
    "hedgeable": true
   },
   {
    "symbol": "CRO",
    "name": "Cronos",
    "mc": 2.7,
-   "rank": 25,
+   "rank": 24,
    "hedgeable": false
+  },
+  {
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
+   "mc": 2.6,
+   "rank": 25,
+   "hedgeable": true
   }
  ],
  "tradeable": 19,
