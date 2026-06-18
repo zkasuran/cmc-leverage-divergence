@@ -131,6 +131,27 @@ try {
   }));
 } catch { /* optional */ }
 
+// Placebo permutation null: pooled headline + per-asset pass/fail (optional).
+let PLACEBO = null;
+try {
+  const pb = json("reports/placebo.json");
+  PLACEBO = {
+    realSpread: f(pb.pooled.realSpreadPct, 1),
+    null95: f(pb.pooled.nullP95Pct, 1),
+    p: Number(Number(pb.pooled.pValue).toFixed(4)),
+    shuffles: pb.pooled.validShuffles,
+    pool: pb.pool.map((s) => s.toUpperCase()),
+    perAsset: pb.perAsset
+      .filter((r) => !r.skipped)
+      .map((r) => ({
+        asset: r.symbol.replace("USDT", ""),
+        spread: f(r.realSpreadPct, 1),
+        p: Number(Number(r.pValue).toFixed(3)),
+        passed: !!r.passed,
+      })),
+  };
+} catch { /* optional */ }
+
 const dataLine =
   `var OVERLAY=${JSON.stringify(OVERLAY)};` +
   `var BEAR=${JSON.stringify(BEAR)};` +
@@ -142,7 +163,8 @@ const dataLine =
   `var WALLET=${JSON.stringify(WALLET)};` +
   `var UNI=${JSON.stringify(UNI)};` +
   `var CURVE=${JSON.stringify(CURVE)};` +
-  `var PROXY=${JSON.stringify(PROXY)};`;
+  `var PROXY=${JSON.stringify(PROXY)};` +
+  `var PLACEBO=${JSON.stringify(PLACEBO)};`;
 
 const template = readFileSync(R("scripts/frontend-template.html"), "utf8");
 if (!template.includes("/*__DATA__*/")) {
