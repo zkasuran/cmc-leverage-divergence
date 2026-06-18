@@ -14,6 +14,30 @@ BNB Chain), Track 2: Strategy Skills.
 
 **Live demo (one click, no clone):** https://zkasuran.github.io/cmc-leverage-divergence/
 
+## What's different here, and how to check each in one command
+
+Three things in this project are not in the rest of the field. None is asserted,
+each reproduces from the committed data:
+
+1. **It times CoinMarketCap's own index.** CMC20 is CMC's flagship top-20 index, a
+   real BEP-20 on BNB Chain, and it shipped with no risk management (a 40% drawdown
+   in its first seven months). We build a funding-regime gate from CMC20's own
+   constituents and use it to time the index itself, cutting that drawdown to 15.1%.
+   No other entry times CMC20. `npm run cmc20`.
+2. **You can re-derive every live decision, not just check a log.** `verify:chain`
+   walks the live track record and recomputes each recorded allocation from its
+   recorded inputs through the published engine. A hash-chained log proves order.
+   This proves the decision: edit an allocation we never produced and it fails even
+   after re-linking every hash. `npm run verify:chain`.
+3. **The funding finding survives a permutation null.** Shuffle the funding series,
+   keep price, and the confirmed-vs-flush forward-return spread should collapse if
+   funding is just momentum in disguise. Pooled across the liquid majors it does
+   not: real spread 18.3 pts vs a shuffled-null 95th percentile of 9.7,
+   permutation p = 0.002. `npm run placebo`.
+
+The rest (deflated Sharpe, walk-forward, cost sensitivity, the assets where we
+lose) is standard rigor, all below.
+
 ## The one idea
 
 CMC20 is CoinMarketCap's flagship index, the top 20 coins by market cap
@@ -93,6 +117,21 @@ Funding-confirmed momentum, sized around a base allocation and gated by a trend
 regime filter (risk-off below the 100-day MA, so the signal never fights the
 primary trend). Long-only spot. Details in `skills/cmc-leverage-divergence/references/`.
 
+### Knowing when to step aside
+
+The edge is as much about not trading as trading. Two mechanisms keep the book out
+of harm's way:
+
+- **Trend gate.** Below the 100-day trend the allocation is cut to 20% (risk-off),
+  so a confirmed-up tilt is never sized into a structural downtrend. This is where
+  the CMC20 drawdown cut comes from, 40.0% to 15.1% over a down-only sample.
+- **Deadband.** The allocator rebalances only when the target moves more than 10% of
+  equity, so it does nothing on noise. On CMC20 that is 11 trades over 207 days.
+
+So the overlay is in the market 83% of the time but defensively, and the value it
+adds is concentrated in the periods it sizes down. That discipline (when to hold
+cash, not just what to buy) is exactly what a buy-and-hold index position lacks.
+
 
 ## Results on real data
 
@@ -168,6 +207,43 @@ a haircut for multiple-testing that a single in-sample backtest never pays.
 > *lose*, because a number you can reproduce out-of-sample is worth more than a
 > big number you can't.
 
+### 4. Placebo test: is the funding finding real, or just price momentum?
+
+A confirmed-up bucket beating flush-down could be funding, or it could be that
+"price rising" alone predicts and funding is a passenger. We settle it by
+permutation: keep the price path, shuffle the funding series so the funding-price
+link is broken, and recompute the confirmed-vs-flush 30-day spread on 500 shuffles.
+The shuffled null is not zero, it is what price momentum alone earns with random
+funding. If the real spread sits in its right tail, funding adds information beyond
+momentum.
+
+Pooled across the seven liquid majors (BNB, BTC, ETH, SOL, DOGE, XRP, ADA, fixed a
+priori, not picked by result), each asset's funding shuffled independently:
+
+| | confirmed-up − flush-down spread |
+|--|--:|
+| real | **18.3 pts** |
+| shuffled null, mean | 4.6 pts |
+| shuffled null, 95th pct | 9.7 pts |
+| **permutation p-value** | **0.002** |
+
+Per asset, the split is exactly the thesis: funding clears the null where leverage
+is liquid and is absorbed by momentum or the trend gate where it is not.
+
+| asset | real spread | p-value | funding adds signal |
+|-------|------------:|--------:|:-------------------:|
+| DOGE | 63.4 | 0.003 | yes |
+| SOL | 32.4 | 0.023 | yes |
+| ETH | 13.3 | 0.017 | yes |
+| BNB | 11.5 | 0.13 | no, the trend gate carries it |
+| BTC | 1.7 | 0.50 | no |
+| thin-funding alts | small | n.s. | no |
+
+Same story as the multi-asset and ablation tables: the signal is only as good as
+the leverage data behind it, and we show where it does not help. Deterministic
+(seeded shuffle), reproduce with `npm run placebo`. The pooled spread is re-derived
+by `npm run verify`, so the headline number is tamper-evident, not just stated.
+
 ### Why REAL funding data matters (not a price proxy)
 
 A common shortcut in "funding" strategies is to never fetch funding at all: they
@@ -216,20 +292,21 @@ data/                             committed snapshots (CMC20 + 19 constituents)
 reports/                          committed scorecard, ablation, multiasset, event-study,
                                   cost-sensitivity, per-year, cmc20-overlay, latest-spec
 demo/index.html                   self-contained dashboard (GitHub Pages)
-tests/                            69 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, chain, wallet, risk gate
+tests/                            76 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, chain, wallet, risk gate, placebo null
 ```
 
 ## Run it
 
 ```bash
 npm install
-npm test            # 69 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, chain, wallet, risk gate
+npm test            # 76 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, chain, wallet, risk gate, placebo null
 npm run verify      # re-derive every headline number from the committed data; VERIFIED or it exits nonzero
 npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json (+ a chain entry)
 npm run verify:chain # walk the live chain: re-derive each recorded decision from its inputs; CHAIN VERIFIED or exits nonzero
 npm run backtest    # BNB headline -> reports/full/{scorecard.json,scorecard.html}
 npm run multiasset  # constituents vs buy-hold + deflated Sharpe -> reports/multiasset.csv
 npm run eventstudy  # forward returns by signal state -> reports/event-study.csv
+npm run placebo     # funding label-shuffle permutation null (per-asset + pooled) -> reports/placebo.json
 npm run ablation    # contrarian / no-funding / no-trend / baselines -> reports/ablation.csv
 npm run costs       # 1x/2x/3x cost sensitivity -> reports/cost-sensitivity.csv
 npm run walkforward # per-year, out-of-sample -> reports/walkforward.csv
@@ -249,9 +326,11 @@ checks it against the committed reports AND this README. Edit any number to infl
 it and the command fails:
 
 ```
-OK    cmc20.overlay.maxDD       got   15.06  want   15.06
-OK    eventstudy.30d.up.meanFwd got   14.23  want   14.23
-OK    README.overlay.maxDD      got    15.1  want    15.1
+OK    cmc20.overlay.maxDD         got   15.06  want   15.06
+OK    eventstudy.30d.up.meanFwd   got   14.23  want   14.23
+OK    placebo.pooled.spread       got   18.28  want   18.28
+OK    placebo.pooled.significant  got   0.002  want    0.05
+OK    README.overlay.maxDD        got    15.1  want    15.1
 VERDICT: VERIFIED, every headline number reproduces from the committed data
 ```
 

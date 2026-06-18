@@ -16,6 +16,7 @@ import { emitReport } from "./report/emit.js";
 import { makeLeverageDivergence } from "./strategy/leverage-divergence.js";
 import { runStrategy, perYear, ablationSet, type YearRow } from "./runners/run.js";
 import { crossAsset, costSensitivity, eventStudy, regimeReturns, realVsProxyFunding } from "./runners/analysis.js";
+import { placeboTest, pooledPlaceboTest, pooledRealSpread } from "./runners/placebo.js";
 import { specFromDataset, specFromSnapshot, type CmcSnapshot } from "./spec.js";
 import { fetchCmcLive, buildLiveSnapshot } from "./data/cmc.js";
 import { checkClose, verdict, type Check } from "./engine/verify.js";
@@ -333,6 +334,54 @@ async function cmdVerifyChain() {
   if (!v.ok) process.exit(1);
 }
 
+/**
+ * Liquid majors pooled for the headline placebo: the CMC20 megacaps with deep
+ * perp funding markets, fixed a priori (NOT selected by p-value). They dominate
+ * CMC20 by weight, so this is the cross-asset form of the finding the index
+ * overlay relies on.
+ */
+const PLACEBO_POOL = ["bnb", "btc", "eth", "sol", "doge", "xrp", "ada"];
+
+async function cmdPlacebo() {
+  // Permutation null test: keep price, shuffle funding, recompute the confirmed-up
+  // - flush-down forward-return spread on each shuffle, build a null distribution,
+  // report the p-value. Proves the funding finding carries information beyond price
+  // momentum, not just that one window looked good.
+  const perAsset = ASSETS.map((a) => {
+    const { bars, signals } = loadDataset(a.prefix);
+    try {
+      const r = placeboTest(bars, signals, { horizonDays: 30, nShuffles: 300 });
+      return { symbol: a.symbol, ...r };
+    } catch {
+      return { symbol: a.symbol, skipped: true as const };
+    }
+  });
+
+  const pool = PLACEBO_POOL.map((p) => {
+    const { bars, signals } = loadDataset(p);
+    return { symbol: p.toUpperCase(), bars, signals };
+  });
+  const pooled = pooledPlaceboTest(pool, { horizonDays: 30, nShuffles: 500 });
+
+  console.log("Placebo (funding label-shuffle) permutation null test, 30-day horizon\n");
+  console.log("Per asset:  real   nullMean  null95   p-value  pass");
+  for (const r of perAsset) {
+    if ("skipped" in r) { console.log(`  ${r.symbol.replace("USDT", "").padEnd(6)} (skipped, too few signal bars)`); continue; }
+    console.log(
+      `  ${r.symbol.replace("USDT", "").padEnd(6)} ${fmt(r.realSpreadPct).padStart(6)} ${fmt(r.nullMeanPct).padStart(8)} ${fmt(r.nullP95Pct).padStart(7)}  ${r.pValue.toFixed(4)}   ${r.passed ? "YES" : "no"}`,
+    );
+  }
+  console.log(`\nPOOLED (${PLACEBO_POOL.join(", ")}), funding shuffled per asset, ${pooled.validShuffles}/${pooled.nShuffles} shuffles, seed ${pooled.seed}:`);
+  console.log(`  real spread (confirmed-up - flush-down): ${fmt(pooled.realSpreadPct)} pts  (up ${fmt(pooled.realUpPct)} / flush ${fmt(pooled.realFlushPct)})`);
+  console.log(`  shuffled null: mean ${fmt(pooled.nullMeanPct)} pts, 95th pct ${fmt(pooled.nullP95Pct)} pts`);
+  console.log(`  permutation p-value: ${pooled.pValue.toFixed(4)}`);
+  console.log(`  VERDICT: ${pooled.passed ? "PASS — funding carries forward-predictive information beyond price momentum" : "FAIL — within the shuffled null"}`);
+
+  mkdirSync(REPORTS, { recursive: true });
+  writeFileSync(resolve(REPORTS, "placebo.json"), JSON.stringify({ pool: PLACEBO_POOL, pooled, perAsset }, null, 2), "utf8");
+  console.log(`\nWrote ${resolve(REPORTS, "placebo.json")}`);
+}
+
 async function cmdRegime() {
   const rows = await regimeReturns();
   console.log("Regime-conditional returns (price vs 200-day MA): strategy vs buy-and-hold WITHIN each regime");
@@ -403,7 +452,29 @@ async function cmdVerify() {
     checks.push({ label: "eventstudy.30d.up.present", ok: false, got: 0, want: 1 });
   }
 
-  // 3. README headline must match the recomputed overlay (catches a doctored README).
+  // 3. Placebo: re-derive the pooled real spread (deterministic, no shuffles) and
+  // check it matches the committed report, and that the committed permutation
+  // verdict is significant. The p-value itself is reproduced by `npm run placebo`
+  // (seeded); here we make the headline spread tamper-evident and the verdict honest.
+  try {
+    const placebo = JSON.parse(readFileSync(resolve(REPORTS, "placebo.json"), "utf8"));
+    const pool = PLACEBO_POOL.map((p) => {
+      const { bars, signals } = loadDataset(p);
+      return { symbol: p.toUpperCase(), bars, signals };
+    });
+    const ps = pooledRealSpread(pool, { horizonDays: 30 });
+    checks.push(checkClose("placebo.pooled.spread", r2(ps.spreadPct), r2(placebo.pooled.realSpreadPct)));
+    checks.push({
+      label: "placebo.pooled.significant",
+      ok: placebo.pooled.passed === true && placebo.pooled.pValue < 0.05,
+      got: Number(Number(placebo.pooled.pValue).toFixed(4)),
+      want: 0.05,
+    });
+  } catch (e) {
+    checks.push({ label: "placebo.report.present", ok: false, got: 0, want: 1 });
+  }
+
+  // 4. README headline must match the recomputed overlay (catches a doctored README).
   const readme = readFileSync(resolve(HERE, "..", "README.md"), "utf8");
   const m = readme.match(/drawdown from ([\d.]+)% to ([\d.]+)%/);
   if (m) {
@@ -447,6 +518,8 @@ async function main() {
       return cmdCosts();
     case "eventstudy":
       return cmdEventStudy();
+    case "placebo":
+      return cmdPlacebo();
     case "cmc20":
       return cmdCmc20();
     case "spec":
@@ -460,7 +533,7 @@ async function main() {
     case "verifychain":
       return cmdVerifyChain();
     default:
-      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | cmc20 | spec | regime | proxy | verify | verifychain.`);
+      console.error(`Unknown command: ${cmd}. Use backtest | walkforward | ablation | multiasset | costs | eventstudy | placebo | cmc20 | spec | regime | proxy | verify | verifychain.`);
       process.exit(1);
   }
 }
