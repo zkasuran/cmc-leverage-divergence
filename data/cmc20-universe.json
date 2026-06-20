@@ -3,56 +3,56 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1265.6,
+   "mc": 1275.2,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 205.7,
+   "mc": 208.5,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 78.2,
+   "mc": 79.1,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 70.2,
+   "mc": 71.4,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 40.1,
+   "mc": 41.5,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 30.6,
+   "mc": 30.7,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 17.8,
+   "mc": 18,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12.8,
+   "mc": 14.3,
    "rank": 8,
    "hedgeable": true
   },
@@ -66,7 +66,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 7.5,
+   "mc": 7.9,
    "rank": 10,
    "hedgeable": true
   },
@@ -78,8 +78,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "CC",
-   "name": "Canton",
+   "symbol": "XMR",
+   "name": "Monero",
    "mc": 6,
    "rank": 12,
    "hedgeable": true
@@ -92,16 +92,16 @@
    "hedgeable": true
   },
   {
-   "symbol": "XMR",
-   "name": "Monero",
-   "mc": 5.8,
+   "symbol": "CC",
+   "name": "Canton",
+   "mc": 5.9,
    "rank": 14,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 5.7,
+   "mc": 5.8,
    "rank": 15,
    "hedgeable": true
   },
@@ -150,18 +150,18 @@
    "hedgeable": true
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
-   "mc": 2.8,
-   "rank": 22,
-   "hedgeable": false
-  },
-  {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
    "mc": 2.8,
-   "rank": 23,
+   "rank": 22,
    "hedgeable": true
+  },
+  {
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 2.8,
+   "rank": 23,
+   "hedgeable": false
   },
   {
    "symbol": "CRO",
@@ -173,7 +173,7 @@
   {
    "symbol": "AVAX",
    "name": "Avalanche",
-   "mc": 2.5,
+   "mc": 2.7,
    "rank": 25,
    "hedgeable": true
   }
