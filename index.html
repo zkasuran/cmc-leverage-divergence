@@ -180,7 +180,7 @@ footer a{color:var(--blue-ink);text-decoration:none;font-weight:500}footer a:hov
 <div class="reveal chart-card"><div class=chart-head><span class=chart-title>CMC20 backtest: overlay vs buy &amp; hold</span><span class=chart-legend><span class=lg><span class="lgdot gold"></span>overlay</span><span class=lg><span class="lgdot red"></span>buy &amp; hold</span></span></div><div id=chart></div><div class=chart-foot id=chart-foot></div><div style="font-family:var(--fm);font-size:10.5px;color:var(--text-muted);margin-top:8px;line-height:1.6">Backtest over CMC20's full life to the latest daily close. The CMC20 index price and the constituent funding signal are both refreshed automatically every few hours from CoinMarketCap and Binance, so the overlay stays current. <code style="background:var(--bg2);padding:1px 5px;border-radius:4px">npm run verify</code> re-derives this exact curve from the committed data. The <strong>live</strong> engine reading is the spec card near the foot of the page.</div></div>
 <div class="card-grid reveal" id=overlay-cards></div>
 
-<section class=reveal><div class=section-header><div class=section-eyebrow>The Index, In Full</div><h2>All 20 CMC20 constituents (and the one we can't hedge)</h2><p>Derived live from CoinMarketCap's market-cap ranking (ex-stablecoins, ex-wrapped). Green = has a perp funding market, so the overlay can time it. Red = no derivatives market. Refreshes with the ranking, so entries and exits are automatic.</p></div>
+<section class=reveal><div class=section-header><div class=section-eyebrow>The Index, In Full</div><h2>All 20 CMC20 constituents (and the <span id=unhedge-n></span> it can't hedge)</h2><p>Derived live from CoinMarketCap's market-cap ranking (ex-stablecoins, ex-wrapped). Green = has a perp funding market, so the overlay can time it. Red = no derivatives market. Refreshes with the ranking, so entries and exits are automatic.</p></div>
 <div class=index-panel>
 <div class=index-legend><span><span class="dot g"></span>hedgeable (perp funding), drives the signal</span><span><span class="dot r"></span>no derivatives market, cannot be timed</span><span><span class="dot b"></span>watchlist, next to enter</span></div>
 <div class=const-grid id=const-grid></div>
@@ -285,7 +285,17 @@ var cg=document.getElementById('const-grid');var hh='';
 UNI.index20.forEach(function(c){var cls=c.hedgeable?'':' untradeable';var bd=c.hedgeable?'g':'r';hh+='<div class="const'+cls+'"><span class="badge '+bd+'"></span><div class=rank>#'+c.rank+'</div><div class=sym>'+c.symbol+'</div><div class=mc>$'+c.mc+'B</div></div>'});
 UNI.watch.forEach(function(c){hh+='<div class="const watch"><div class=rank>#'+c.rank+' watch</div><div class=sym>'+c.symbol+'</div><div class=mc>$'+c.mc+'B'+(c.hedgeable?' &middot; perp':' &middot; no perp')+'</div></div>'});
 cg.innerHTML=hh;
-document.getElementById('flaw-box').innerHTML='<strong>What pure market-cap indexing misses:</strong> CMC20 holds <strong>LEO</strong> (#9, an exchange token) purely because market cap says so, but it has no derivatives market anywhere, so a risk overlay cannot hedge it. And the #20 boundary is thin: <strong>LTC</strong> ($'+UNI.index20[19].mc+'B) barely holds the last slot while <strong>AVAX, SUI</strong> sit just behind. A static "hold the index" product eats unhedgeable risk and boundary churn blindly. The overlay reads the aggregate signal of what <em>can</em> be timed, so a single marginal swap barely moves it. Market-cap ranking is necessary, not sufficient, for a <em>tradeable</em> index.';
+(function(){
+var un=UNI.index20.filter(function(c){return !c.hedgeable});
+var unN=un.map(function(c){return '<strong>'+c.symbol+'</strong> (#'+c.rank+')'}).join(', ');
+var plural=un.length>1;
+var last=UNI.index20[UNI.index20.length-1];
+var behind=(UNI.watch||[]).filter(function(c){return c.hedgeable}).map(function(c){return c.symbol}).slice(0,2).join(', ');
+var ucEl=document.getElementById('unhedge-n');if(ucEl)ucEl.textContent=un.length;
+var miss=un.length? 'CMC20 holds '+unN+' purely because market cap says so, but '+(plural?'they have':'it has')+' no perp funding market the overlay can read, so the risk gate cannot time '+(plural?'them':'it')+'. ' : '';
+var bound='The #20 boundary is thin: <strong>'+last.symbol+'</strong> ($'+last.mc+'B) holds the last slot'+(behind?' while <strong>'+behind+'</strong> sit just behind':'')+'. ';
+document.getElementById('flaw-box').innerHTML='<strong>What pure market-cap indexing misses:</strong> '+miss+bound+'A static "hold the index" product eats unhedgeable risk and boundary churn blindly. The overlay reads the aggregate signal of what <em>can</em> be timed, so a single marginal swap barely moves it. Market-cap ranking is necessary, not sufficient, for a <em>tradeable</em> index.';
+})();
 function T(id){return document.querySelector(id+' tbody')}
 var tb=T('#regime-table');BEAR.forEach(function(r){tb.innerHTML+='<tr><td class=asset>'+r.asset+'</td><td class=loss>'+r.strat+'%</td><td class=loss>'+r.bh+'%</td><td class=win>+'+r.edge+' pts</td></tr>'});
 tb=T('#event-table');EVENT.forEach(function(r){var t='<span style=color:var(--text-muted)>'+r.state+'</span>';if(r.state==='confirmed-up')t='<span style=color:var(--green);font-weight:600>'+r.state+'</span>';if(r.state==='flush-down')t='<span style=color:var(--red)>'+r.state+'</span>';tb.innerHTML+='<tr><td>'+r.horizon_days+'d</td><td>'+t+'</td><td>'+r.n+'</td><td style=font-weight:600>'+r.mean_forward_pct+'%</td><td>'+r.hit_rate_pct+'%</td></tr>'});
