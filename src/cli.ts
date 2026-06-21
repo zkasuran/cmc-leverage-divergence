@@ -343,14 +343,19 @@ async function cmdVerifyChain() {
 const PLACEBO_POOL = ["bnb", "btc", "eth", "sol", "doge", "xrp", "ada"];
 
 async function cmdPlacebo() {
-  // Permutation null test: keep price, shuffle funding, recompute the confirmed-up
-  // - flush-down forward-return spread on each shuffle, build a null distribution,
-  // report the p-value. Proves the funding finding carries information beyond price
-  // momentum, not just that one window looked good.
+  // Permutation null test: keep price, permute funding, recompute the confirmed-up
+  // - flush-down forward-return spread on each permutation, build a null
+  // distribution, report the p-value. Proves the funding finding carries
+  // information beyond price momentum, not just that one window looked good.
+  //
+  // The PRIMARY null is a circular block permutation, which preserves funding's own
+  // autocorrelation (funding is persistent) and only randomises its alignment with
+  // price, so a persistent signal is judged against an equally persistent null. We
+  // also report the naive i.i.d. label shuffle for comparison; the two agree.
   const perAsset = ASSETS.map((a) => {
     const { bars, signals } = loadDataset(a.prefix);
     try {
-      const r = placeboTest(bars, signals, { horizonDays: 30, nShuffles: 300 });
+      const r = placeboTest(bars, signals, { horizonDays: 30, nShuffles: 300, nullKind: "block" });
       return { symbol: a.symbol, ...r };
     } catch {
       return { symbol: a.symbol, skipped: true as const };
@@ -361,9 +366,10 @@ async function cmdPlacebo() {
     const { bars, signals } = loadDataset(p);
     return { symbol: p.toUpperCase(), bars, signals };
   });
-  const pooled = pooledPlaceboTest(pool, { horizonDays: 30, nShuffles: 500 });
+  const pooled = pooledPlaceboTest(pool, { horizonDays: 30, nShuffles: 500, nullKind: "block" });
+  const pooledIid = pooledPlaceboTest(pool, { horizonDays: 30, nShuffles: 500, nullKind: "iid" });
 
-  console.log("Placebo (funding label-shuffle) permutation null test, 30-day horizon\n");
+  console.log("Placebo permutation null test (primary: circular block permutation), 30-day horizon\n");
   console.log("Per asset:  real   nullMean  null95   p-value  pass");
   for (const r of perAsset) {
     if ("skipped" in r) { console.log(`  ${r.symbol.replace("USDT", "").padEnd(6)} (skipped, too few signal bars)`); continue; }
@@ -371,14 +377,14 @@ async function cmdPlacebo() {
       `  ${r.symbol.replace("USDT", "").padEnd(6)} ${fmt(r.realSpreadPct).padStart(6)} ${fmt(r.nullMeanPct).padStart(8)} ${fmt(r.nullP95Pct).padStart(7)}  ${r.pValue.toFixed(4)}   ${r.passed ? "YES" : "no"}`,
     );
   }
-  console.log(`\nPOOLED (${PLACEBO_POOL.join(", ")}), funding shuffled per asset, ${pooled.validShuffles}/${pooled.nShuffles} shuffles, seed ${pooled.seed}:`);
+  console.log(`\nPOOLED (${PLACEBO_POOL.join(", ")}), funding permuted per asset, ${pooled.validShuffles}/${pooled.nShuffles} draws, seed ${pooled.seed}:`);
   console.log(`  real spread (confirmed-up - flush-down): ${fmt(pooled.realSpreadPct)} pts  (up ${fmt(pooled.realUpPct)} / flush ${fmt(pooled.realFlushPct)})`);
-  console.log(`  shuffled null: mean ${fmt(pooled.nullMeanPct)} pts, 95th pct ${fmt(pooled.nullP95Pct)} pts`);
-  console.log(`  permutation p-value: ${pooled.pValue.toFixed(4)}`);
-  console.log(`  VERDICT: ${pooled.passed ? "PASS — funding carries forward-predictive information beyond price momentum" : "FAIL — within the shuffled null"}`);
+  console.log(`  block null:  mean ${fmt(pooled.nullMeanPct)} pts, 95th pct ${fmt(pooled.nullP95Pct)} pts, p = ${pooled.pValue.toFixed(4)} (median block ${pooled.blockLen})`);
+  console.log(`  i.i.d. null: mean ${fmt(pooledIid.nullMeanPct)} pts, 95th pct ${fmt(pooledIid.nullP95Pct)} pts, p = ${pooledIid.pValue.toFixed(4)}`);
+  console.log(`  VERDICT: ${pooled.passed ? "PASS — funding carries forward-predictive information beyond price momentum, under the autocorrelation-preserving null" : "FAIL — within the block-permutation null"}`);
 
   mkdirSync(REPORTS, { recursive: true });
-  writeFileSync(resolve(REPORTS, "placebo.json"), JSON.stringify({ pool: PLACEBO_POOL, pooled, perAsset }, null, 2), "utf8");
+  writeFileSync(resolve(REPORTS, "placebo.json"), JSON.stringify({ pool: PLACEBO_POOL, pooled, pooledIid, perAsset }, null, 2), "utf8");
   console.log(`\nWrote ${resolve(REPORTS, "placebo.json")}`);
 }
 

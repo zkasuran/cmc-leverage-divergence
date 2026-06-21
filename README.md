@@ -29,11 +29,12 @@ each reproduces from the committed data:
    recorded inputs through the published engine. A hash-chained log proves order.
    This proves the decision: edit an allocation we never produced and it fails even
    after re-linking every hash. `npm run verify:chain`.
-3. **The funding finding survives a permutation null.** Shuffle the funding series,
+3. **The funding finding survives a permutation null.** Permute the funding series
+   with a circular block permutation that keeps its own autocorrelation intact,
    keep price, and the confirmed-vs-flush forward-return spread should collapse if
    funding is just momentum in disguise. Pooled across the liquid majors it does
-   not: real spread 18.3 pts vs a shuffled-null 95th percentile of 9.7,
-   permutation p = 0.002. `npm run placebo`.
+   not: real spread 18.3 pts vs a block-null 95th percentile of 10.7, permutation
+   p = 0.002 (the naive i.i.d. shuffle agrees). `npm run placebo`.
 
 The rest (deflated Sharpe, walk-forward, cost sensitivity, the assets where we
 lose) is standard rigor, all below.
@@ -59,8 +60,10 @@ dynamic by construction: a coin that drops out of the top 20 leaves the basket a
 a new entrant joins automatically.
 
 Over CMC20's life so far, that overlay **cut the drawdown from 40.0% to 15.1% and
-the loss from -35.6% to -12.8%** and its probabilistic Sharpe edges
-buy-and-hold's (0.16 vs 0.14) even on this short down-only window (`npm run cmc20`).
+the loss from -35.6% to -12.8%** on this short down-only window (`npm run cmc20`).
+Both probabilistic Sharpes sit below 0.5 (0.16 overlay vs 0.14 buy-and-hold), so
+neither has a statistically positive Sharpe on 207 days; the honest edge here is
+the drawdown, not the Sharpe.
 The same signal, validated as a return-predictor across the constituents (event
 study below), becomes the risk gate CMC20 was missing.
 
@@ -102,7 +105,10 @@ Event study, BNB, forward return by signal state:
 | flush-down (the "buy the dip" setup) | +2.8% | 53.2% | +1.5% |
 
 Monotonic and large at the **30-day** horizon; the effect is directionally present
-but smaller at 7 days. The contrarian "buy the dip" setup is the *worst* bucket.
+but smaller at 7 days. The confirmed-up windows overlap (each is a 30-day forward
+window on daily bars), so n counts observations, not independent episodes, and this
+is a directional check rather than a powered estimate with a confidence interval.
+The contrarian "buy the dip" setup is the *worst* bucket.
 So the strategy trades confirmation. The directional proof is the event study
 above: across BTC/ETH/BNB/SOL the confirmed-up bucket leads the contrarian
 buy-the-dip bucket by a wide, monotonic margin at the 30-day horizon. Flipping the
@@ -148,10 +154,11 @@ The funding signal, built from CMC20's 19 perp-liquid constituents
 
 Drawdown cut by 25 points, loss cut by 23. It's a 7-month down-only sample, so a
 raw *annualised Sharpe* isn't meaningful (and we don't headline one; sitting in
-cash through a decline mechanically lowers it); the honest, comparable read is the
-**probabilistic Sharpe, which edges buy-and-hold (0.16 vs 0.14)** while the
-overlay is in the market 83% of the time. The result is **capital preservation**:
-the overlay is the risk gate CMC20 lacks. Reproduce with `npm run cmc20`.
+cash through a decline mechanically lowers it). Both probabilistic Sharpes sit
+**below 0.5 (0.16 overlay vs 0.14 buy-and-hold)**, so neither shows a
+statistically positive Sharpe on 207 days and the 0.02 gap is well inside noise;
+the honest edge is **capital preservation** (the drawdown), not the Sharpe. The
+overlay is in the market 83% of the time. Reproduce with `npm run cmc20`.
 
 ### 2. Why it works on return, not just drawdown (regime-conditional)
 
@@ -211,38 +218,54 @@ a haircut for multiple-testing that a single in-sample backtest never pays.
 
 A confirmed-up bucket beating flush-down could be funding, or it could be that
 "price rising" alone predicts and funding is a passenger. We settle it by
-permutation: keep the price path, shuffle the funding series so the funding-price
-link is broken, and recompute the confirmed-vs-flush 30-day spread on 500 shuffles.
-The shuffled null is not zero, it is what price momentum alone earns with random
-funding. If the real spread sits in its right tail, funding adds information beyond
-momentum.
+permutation: keep the price path, permute the funding series with a circular block
+permutation, and recompute the confirmed-vs-flush 30-day spread on 500 draws. The
+block permutation keeps funding's own autocorrelation intact and only breaks its
+alignment with price, so a persistent signal is judged against an equally persistent
+null (a plain i.i.d. shuffle would compare it against white noise and overstate
+significance). The null is not zero, it is what price momentum alone earns with
+realistically persistent but misaligned funding. If the real spread sits in its
+right tail, funding adds information beyond momentum.
 
 Pooled across the seven liquid majors (BNB, BTC, ETH, SOL, DOGE, XRP, ADA, fixed a
-priori, not picked by result), each asset's funding shuffled independently:
+priori, not picked by result), each asset's funding block-permuted independently
+(block length from each series' funding autocorrelation):
 
 | | confirmed-up − flush-down spread |
 |--|--:|
 | real | **18.3 pts** |
-| shuffled null, mean | 4.6 pts |
-| shuffled null, 95th pct | 9.7 pts |
-| **permutation p-value** | **0.002** |
+| block null, mean | 4.7 pts |
+| block null, 95th pct | 10.7 pts |
+| **permutation p-value (block)** | **0.002** |
+| permutation p-value (i.i.d. shuffle, for comparison) | 0.002 |
 
 Per asset, the split is exactly the thesis: funding clears the null where leverage
-is liquid and is absorbed by momentum or the trend gate where it is not.
+is liquid and is absorbed by momentum or the trend gate where it is not. Every
+constituent we tested is shown, not only the ones that pass:
 
-| asset | real spread | p-value | funding adds signal |
-|-------|------------:|--------:|:-------------------:|
-| DOGE | 63.4 | 0.003 | yes |
-| SOL | 32.4 | 0.023 | yes |
-| ETH | 13.3 | 0.017 | yes |
-| BNB | 11.5 | 0.13 | no, the trend gate carries it |
-| BTC | 1.7 | 0.50 | no |
-| thin-funding alts | small | n.s. | no |
+| asset | real spread | p-value (block) | funding adds signal |
+|-------|------------:|----------------:|:-------------------:|
+| DOGE | 63.4 | 0.020 | yes |
+| SOL | 32.4 | 0.027 | yes |
+| ETH | 13.3 | 0.033 | yes |
+| ADA | 13.3 | 0.20 | no |
+| BNB | 11.5 | 0.21 | no, the trend gate carries it |
+| LINK | 10.2 | 0.063 | no |
+| HBAR | 7.0 | 0.37 | no |
+| LTC | 5.7 | 0.12 | no |
+| XLM | 3.4 | 0.36 | no |
+| XRP | 2.3 | 0.46 | no |
+| XMR | 2.1 | 0.34 | no |
+| BTC | 1.7 | 0.52 | no |
+| TRX | 1.2 | 0.53 | no |
+| ZEC | -0.4 | 0.77 | no |
+| BCH | -4.0 | 0.70 | no |
 
-Same story as the multi-asset and ablation tables: the signal is only as good as
-the leverage data behind it, and we show where it does not help. Deterministic
-(seeded shuffle), reproduce with `npm run placebo`. The pooled spread is re-derived
-by `npm run verify`, so the headline number is tamper-evident, not just stated.
+**3 of 15 assets clear the null on their own** (ETH, SOL, DOGE), the leverage-liquid
+names; the rest are absorbed by momentum or the trend gate. The pooled finding is
+carried by those liquid majors, which is the honest cross-asset claim. Deterministic
+(seeded), reproduce with `npm run placebo`. The pooled spread is re-derived by
+`npm run verify`, so the headline number is tamper-evident, not just stated.
 
 ### Why REAL funding data matters (not a price proxy)
 
@@ -267,10 +290,13 @@ same strategy with funding turned off):
 
 - ETH (+0.02 Sharpe) and SOL (+0.09): funding adds value.
 - BTC: roughly flat.
-- **BNB: funding does not help here; the trend gate carries it.** We show this
-  rather than hide it. Funding earns its place where leverage is most informative,
-  and the predictive finding (event study) holds on BNB even where the marginal
-  portfolio Sharpe is absorbed by the regime gate.
+- **BNB: funding actively underperforms here.** On BNB the funding-off variant
+  (`no-divergence`) beats the headline on both Sharpe and return (1.05 vs 0.93
+  Sharpe, +689% vs +563%), and the contrarian tilt edges it on Sharpe too (1.04).
+  The trend gate carries the BNB strategy, not funding. We state this plainly rather
+  than hide it: funding earns its place where leverage is most informative (the
+  event-study predictive finding still holds on BNB), but on the BNB portfolio it is
+  the regime gate that does the work, and adding funding costs a little Sharpe.
 
 ## What's in here
 
@@ -292,21 +318,21 @@ data/                             committed snapshots (CMC20 + 19 constituents)
 reports/                          committed scorecard, ablation, multiasset, event-study,
                                   cost-sensitivity, per-year, cmc20-overlay, latest-spec
 demo/index.html                   self-contained dashboard (GitHub Pages)
-tests/                            76 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, chain, wallet, risk gate, placebo null
+tests/                            81 tests: signal math, no-lookahead, stats, spec bridge, basket, CMC adapter, verifier, chain, wallet, risk gate, placebo null
 ```
 
 ## Run it
 
 ```bash
 npm install
-npm test            # 76 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, chain, wallet, risk gate, placebo null
+npm test            # 81 tests: signal math, no-lookahead alignment, stats, spec, basket, CMC adapter, verifier, chain, wallet, risk gate, placebo null
 npm run verify      # re-derive every headline number from the committed data; VERIFIED or it exits nonzero
 npm run spec:live   # LIVE strategy spec from CoinMarketCap (keyless, no key) -> reports/live-spec.json (+ a chain entry)
 npm run verify:chain # walk the live chain: re-derive each recorded decision from its inputs; CHAIN VERIFIED or exits nonzero
 npm run backtest    # BNB headline -> reports/full/{scorecard.json,scorecard.html}
 npm run multiasset  # constituents vs buy-hold + deflated Sharpe -> reports/multiasset.csv
 npm run eventstudy  # forward returns by signal state -> reports/event-study.csv
-npm run placebo     # funding label-shuffle permutation null (per-asset + pooled) -> reports/placebo.json
+npm run placebo     # funding block-permutation null (per-asset + pooled) -> reports/placebo.json
 npm run ablation    # contrarian / no-funding / no-trend / baselines -> reports/ablation.csv
 npm run costs       # 1x/2x/3x cost sensitivity -> reports/cost-sensitivity.csv
 npm run walkforward # per-year, out-of-sample -> reports/walkforward.csv
@@ -357,9 +383,11 @@ that exact reading, not just that some number was written down in order. CI runs
 backfilled.
 
 ```
-Decision-provenance chain: 1 entry
+Decision-provenance chain: 28 entries
   seq   0  2026-06-07T10:17:46.659Z  BNB    alloc 0.1  c43469a5e924…
-VERDICT: CHAIN VERIFIED, 1 entry verified
+  ...
+  seq  27  2026-06-21T01:01:21.657Z  BNB    alloc 0.1  77259adcf8ba…
+VERDICT: CHAIN VERIFIED, 28 entries verified
 ```
 
 ## Using the Skill

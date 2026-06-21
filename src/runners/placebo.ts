@@ -156,12 +156,128 @@ function percentile(sortedAsc: readonly number[], q: number): number {
   return sortedAsc[Math.max(0, Math.min(sortedAsc.length - 1, rank))]!;
 }
 
+/** The non-null funding readings, in time order. */
+function fundingValues(signals: readonly (SignalPoint | null)[]): number[] {
+  const vals: number[] = [];
+  for (const s of signals) {
+    const f = s?.fundingRate;
+    if (f !== undefined && f !== null) vals.push(f);
+  }
+  return vals;
+}
+
+/**
+ * Unbiased integer in [0, n) from the seeded RNG (rejection sampling), so block
+ * shuffling and rotation do not inherit the modulo bias of `nextU32() % n`.
+ */
+function randInt(rng: SeededRng, n: number): number {
+  if (n <= 1) return 0;
+  const limit = Math.floor(0x100000000 / n) * n;
+  let x = rng.nextU32();
+  while (x >= limit) x = rng.nextU32();
+  return x % n;
+}
+
+/**
+ * Block length for the circular block permutation: the autocorrelation e-folding
+ * lag of the funding series (the first lag where the normalised autocorrelation
+ * drops below 1/e). Funding rates are persistent, so this is the horizon over
+ * which a permutation must keep funding values together to preserve that
+ * persistence. Clamped to [2, n/4] so a block is never degenerate or the whole
+ * series.
+ */
+export function autocorrLength(vals: readonly number[]): number {
+  const n = vals.length;
+  if (n < 8) return Math.max(1, Math.min(n - 1, 2));
+  const mean = vals.reduce((a, b) => a + b, 0) / n;
+  let c0 = 0;
+  for (const v of vals) c0 += (v - mean) * (v - mean);
+  c0 /= n;
+  if (c0 === 0) return 2;
+  const maxLag = Math.floor(n / 4);
+  const threshold = 1 / Math.E;
+  for (let lag = 1; lag <= maxLag; lag++) {
+    let c = 0;
+    for (let i = lag; i < n; i++) c += (vals[i]! - mean) * (vals[i - lag]! - mean);
+    c /= n;
+    if (c / c0 < threshold) return Math.max(2, lag);
+  }
+  return Math.max(2, maxLag);
+}
+
+/**
+ * Circular block permutation of a series: rotate by a random offset, cut into
+ * consecutive blocks of length `blockLen`, shuffle the block order, concatenate.
+ * Within-block ordering (so most of the autocorrelation up to `blockLen`) is
+ * preserved, while the alignment of the series with anything else is randomised.
+ */
+function blockPermute(vals: readonly number[], rng: SeededRng, blockLen: number): number[] {
+  const n = vals.length;
+  if (n <= 1) return [...vals];
+  const L = Math.max(1, Math.min(blockLen, n));
+  if (L >= n) {
+    // One block cannot be reordered; a pure circular rotation still breaks the
+    // funding<->price alignment while preserving autocorrelation exactly.
+    const rot = 1 + randInt(rng, n - 1);
+    return Array.from({ length: n }, (_, i) => vals[(i + rot) % n]!);
+  }
+  const rot = randInt(rng, n);
+  const rotated = Array.from({ length: n }, (_, i) => vals[(i + rot) % n]!);
+  const blocks: number[][] = [];
+  for (let s = 0; s < n; s += L) blocks.push(rotated.slice(s, Math.min(s + L, n)));
+  for (let i = blocks.length - 1; i > 0; i--) {
+    const j = randInt(rng, i + 1);
+    const t = blocks[i]!;
+    blocks[i] = blocks[j]!;
+    blocks[j] = t;
+  }
+  const out: number[] = [];
+  for (const b of blocks) out.push(...b);
+  return out.slice(0, n);
+}
+
+/**
+ * Circular block permutation of the funding series, the autocorrelation-preserving
+ * null. Unlike the i.i.d. shuffle, it keeps funding's serial correlation intact and
+ * only randomises its alignment with price, so a persistent funding series is
+ * compared against an equally persistent null. This is the stricter, primary null.
+ */
+export function blockPermuteFundingSignals(
+  signals: readonly (SignalPoint | null)[],
+  rng: SeededRng,
+  blockLen: number,
+): (SignalPoint | null)[] {
+  const idx: number[] = [];
+  const vals: number[] = [];
+  for (let i = 0; i < signals.length; i++) {
+    const f = signals[i]?.fundingRate;
+    if (f !== undefined && f !== null) {
+      idx.push(i);
+      vals.push(f);
+    }
+  }
+  const permuted = blockPermute(vals, rng, blockLen);
+  const out: (SignalPoint | null)[] = signals.map((s) => (s ? { ...s } : null));
+  for (let k = 0; k < idx.length; k++) {
+    const at = idx[k]!;
+    out[at] = { ...(out[at] ?? {}), fundingRate: permuted[k]! };
+  }
+  return out;
+}
+
+/** The funding permutation for a null kind: i.i.d. label shuffle or block permutation. */
+export type NullKind = "iid" | "block";
+
 export interface PlaceboOptions {
   horizonDays?: number;
   nShuffles?: number;
   seed?: number;
   threshold?: number;
   minBucket?: number;
+  /** Null model: "block" (autocorrelation-preserving, primary) or "iid" (label shuffle). */
+  nullKind?: NullKind;
+  /** Block length for the "block" null. Defaults to the funding autocorrelation length. */
+  blockLen?: number;
 }
 
 export interface PlaceboResult {
@@ -178,6 +294,10 @@ export interface PlaceboResult {
   pValue: number;
   /** Real spread clears the null 95th percentile and the p-value is < 0.05. */
   passed: boolean;
+  /** Which null produced this result. */
+  nullKind: NullKind;
+  /** Block length used for the "block" null (0 for the i.i.d. null). */
+  blockLen: number;
 }
 
 /** One labelled dataset for the pooled test. */
@@ -188,7 +308,7 @@ export interface NamedDataset {
 }
 
 /** Summarise a real value against a collected null distribution. */
-function summariseNull(realSpread: number, nullSpreads: number[], nShuffles: number, seed: number, horizonDays: number, up: number, flush: number): PlaceboResult {
+function summariseNull(realSpread: number, nullSpreads: number[], nShuffles: number, seed: number, horizonDays: number, up: number, flush: number, nullKind: NullKind, blockLen: number): PlaceboResult {
   nullSpreads.sort((a, b) => a - b);
   const validShuffles = nullSpreads.length;
   const atLeast = nullSpreads.filter((x) => x >= realSpread).length;
@@ -208,6 +328,8 @@ function summariseNull(realSpread: number, nullSpreads: number[], nShuffles: num
     nullP95Pct,
     pValue,
     passed: realSpread > nullP95Pct && pValue < 0.05,
+    nullKind,
+    blockLen,
   };
 }
 
@@ -249,17 +371,23 @@ export function placeboTest(
   const threshold = opts.threshold ?? 0.1;
   const minBucket = opts.minBucket ?? 5;
 
+  const nullKind: NullKind = opts.nullKind ?? "iid";
+
   const real = confirmedFlushSpread(bars, signals, horizonDays, DEFAULT_DIVERGENCE_CONFIG, threshold, minBucket);
   if (real === null) throw new Error("placebo: too few confirmed-up/flush-down bars to form a spread");
+
+  const blockLen = nullKind === "block" ? (opts.blockLen ?? autocorrLength(fundingValues(signals))) : 0;
+  const permute = (sig: readonly (SignalPoint | null)[], rng: SeededRng): (SignalPoint | null)[] =>
+    nullKind === "block" ? blockPermuteFundingSignals(sig, rng, blockLen) : shuffleFundingSignals(sig, rng);
 
   const rng = new SeededRng(seed);
   const nullSpreads: number[] = [];
   for (let s = 0; s < nShuffles; s++) {
-    const shuffled = shuffleFundingSignals(signals, rng);
+    const shuffled = permute(signals, rng);
     const r = confirmedFlushSpread(bars, shuffled, horizonDays, DEFAULT_DIVERGENCE_CONFIG, threshold, minBucket);
     if (r !== null) nullSpreads.push(r.spreadPct);
   }
-  return summariseNull(real.spreadPct, nullSpreads, nShuffles, seed, horizonDays, real.upPct, real.flushPct);
+  return summariseNull(real.spreadPct, nullSpreads, nShuffles, seed, horizonDays, real.upPct, real.flushPct, nullKind, blockLen);
 }
 
 /**
@@ -288,15 +416,26 @@ export function pooledPlaceboTest(datasets: readonly NamedDataset[], opts: Place
     return { spread: meanPct(up) - meanPct(flush), up: meanPct(up), flush: meanPct(flush) };
   };
 
+  const nullKind: NullKind = opts.nullKind ?? "iid";
+
   const real = pooledSpread(datasets.map((d) => d.signals));
   if (real === null) throw new Error("placebo(pooled): too few confirmed-up/flush-down bars to form a spread");
+
+  // Each asset's funding is permuted independently, with its own block length so
+  // the null preserves each asset's own funding persistence. The pooled blockLen
+  // reported is the median across assets (per-asset lengths are in `perAsset`).
+  const blockLens = datasets.map((d) => (nullKind === "block" ? (opts.blockLen ?? autocorrLength(fundingValues(d.signals))) : 0));
+  const sortedLens = [...blockLens].sort((a, b) => a - b);
+  const medianBlockLen = sortedLens.length ? sortedLens[Math.floor(sortedLens.length / 2)]! : 0;
+  const permute = (sig: readonly (SignalPoint | null)[], rng: SeededRng, i: number): (SignalPoint | null)[] =>
+    nullKind === "block" ? blockPermuteFundingSignals(sig, rng, blockLens[i]!) : shuffleFundingSignals(sig, rng);
 
   const rng = new SeededRng(seed);
   const nullSpreads: number[] = [];
   for (let s = 0; s < nShuffles; s++) {
-    const shuffled = datasets.map((d) => shuffleFundingSignals(d.signals, rng));
+    const shuffled = datasets.map((d, i) => permute(d.signals, rng, i));
     const r = pooledSpread(shuffled);
     if (r !== null) nullSpreads.push(r.spread);
   }
-  return summariseNull(real.spread, nullSpreads, nShuffles, seed, horizonDays, real.up, real.flush);
+  return summariseNull(real.spread, nullSpreads, nShuffles, seed, horizonDays, real.up, real.flush, nullKind, medianBlockLen);
 }

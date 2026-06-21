@@ -139,6 +139,8 @@ try {
     realSpread: f(pb.pooled.realSpreadPct, 1),
     null95: f(pb.pooled.nullP95Pct, 1),
     p: Number(Number(pb.pooled.pValue).toFixed(4)),
+    pIid: pb.pooledIid ? Number(Number(pb.pooledIid.pValue).toFixed(4)) : null,
+    blockLen: pb.pooled.blockLen ?? null,
     shuffles: pb.pooled.validShuffles,
     pool: pb.pool.map((s) => s.toUpperCase()),
     perAsset: pb.perAsset
