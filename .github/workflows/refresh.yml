@@ -31,7 +31,9 @@ jobs:
         run: |
           npm run refresh-universe
           npm run fetch-cmc20-hist
-          npm run fetch-overlay-funding
+          npm run fetch-overlay-funding || {
+            echo "::warning title=funding refresh skipped::fetch-overlay-funding got no data (Binance fapi.binance.com returns HTTP 451, geo-blocked from the runner). Keeping the committed cmc20-basket-funding.json. Refresh funding from a non-blocked IP (local) instead.";
+          }
           npm run cmc20
           npm run build-readme
           npm run spec:live || {
