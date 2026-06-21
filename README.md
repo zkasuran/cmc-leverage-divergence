@@ -130,7 +130,7 @@ of harm's way:
 
 - **Trend gate.** Below the 100-day trend the allocation is cut to 20% (risk-off),
   so a confirmed-up tilt is never sized into a structural downtrend. This is where
-  the CMC20 drawdown cut comes from, 40.0% to 15.1% over a down-only sample.
+  the CMC20 drawdown cut comes from, 40.2% to 15.1% over a down-only sample.
 - **Deadband.** The allocator rebalances only when the target moves more than 10% of
   equity, so it does nothing on noise. On CMC20 that is 11 trades over 207 days.
 

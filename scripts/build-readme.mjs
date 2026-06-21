@@ -30,6 +30,8 @@ const before = md;
 const subs = [
   // "cut the drawdown from 40.0% to 15.1%"
   [/drawdown from [\d.]+% to [\d.]+%/g, `drawdown from ${bhDD}% to ${ovDD}%`],
+  // "...drawdown cut comes from, 40.0% to 15.1%..."
+  [/comes from, [\d.]+% to [\d.]+%/g, `comes from, ${bhDD}% to ${ovDD}%`],
   // "the loss from -35.6% to -12.8%"
   [/loss from -?[\d.]+% to -?[\d.]+%/g, `loss from ${bhRet}% to ${ovRet}%`],
   // "(0.16 overlay vs 0.14 buy-and-hold)" (appears twice)
