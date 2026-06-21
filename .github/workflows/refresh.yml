@@ -30,7 +30,9 @@ jobs:
       - name: Refresh CMC20 universe + live CMC reading + frontend
         run: |
           npm run refresh-universe
+          npm run fetch-cmc20-hist
           npm run cmc20
+          npm run build-readme
           npm run spec:live || {
             echo "::warning title=live CMC read failed::spec:live did not complete, so the decision chain got no new entry. Falling back to the offline spec to keep the frontend fresh. Investigate the CMC fetch.";
             npm run spec;
@@ -47,7 +49,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json reports/live-spec.json reports/live-chain.jsonl skills/cmc-leverage-divergence/references/live-spec-example.json index.html demo/index.html
+          git add data/cmc20-hist.json data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json reports/live-spec.json reports/live-chain.jsonl skills/cmc-leverage-divergence/references/live-spec-example.json README.md index.html demo/index.html
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
