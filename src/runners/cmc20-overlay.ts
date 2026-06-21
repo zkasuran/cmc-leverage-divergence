@@ -63,9 +63,29 @@ export function loadConstituents(dir = DEFAULT_DATA_DIR): Constituent[] {
   ];
 }
 
-/** Read one constituent's funding series. Majors come via loadDataset; the rest
- * from their committed `<prefix>-funding.json`. Returns [] if no data. */
+/** Freshly-fetched basket funding (refreshed to today), keyed by prefix; [] absent. */
+let _basketCache: Record<string, [number, number][]> | null = null;
+function loadBasketFunding(dir: string): Record<string, [number, number][]> {
+  if (_basketCache) return _basketCache;
+  const path = resolve(dir, "cmc20-basket-funding.json");
+  const loaded: Record<string, [number, number][]> = existsSync(path)
+    ? JSON.parse(readFileSync(path, "utf8"))
+    : {};
+  _basketCache = loaded;
+  return loaded;
+}
+
+/** Read one constituent's funding series. Prefers the freshly-fetched basket file
+ * (data/cmc20-basket-funding.json, refreshed to today) so the overlay signal stays
+ * current; falls back to the committed deep-history files when it is absent. */
 function constituentFunding(c: Constituent, dir: string): Series[] {
+  // Fresh basket funding wins: it is refreshed up to the latest day, while the
+  // deep-history per-asset files are a pinned snapshot for the validation suite.
+  const basket = loadBasketFunding(dir);
+  const fresh = basket[c.prefix];
+  if (fresh && fresh.length) {
+    return fresh.map(([t, v]) => ({ time: Number(t), value: Number(v) })).sort((a, b) => a.time - b.time);
+  }
   // Majors are loaded as full assets (they have klines too).
   if (["btc", "eth", "bnb", "sol"].includes(c.prefix)) {
     const { bars, signals } = loadDataset(c.prefix, dir);

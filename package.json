@@ -43,9 +43,10 @@
     "regime": "tsx src/cli.ts regime",
     "refresh-universe": "node scripts/refresh-universe.mjs",
     "fetch-cmc20-hist": "node scripts/fetch-cmc20-hist.mjs",
+    "fetch-overlay-funding": "node scripts/fetch-overlay-funding.mjs",
     "build-readme": "node scripts/build-readme.mjs",
     "build-frontend": "node scripts/build-frontend.mjs",
-    "refresh": "npm run refresh-universe && npm run fetch-cmc20-hist && npm run cmc20 && npm run build-readme && npm run spec && npm run build-frontend",
+    "refresh": "npm run refresh-universe && npm run fetch-cmc20-hist && npm run fetch-overlay-funding && npm run cmc20 && npm run build-readme && npm run spec && npm run build-frontend",
     "proxy": "tsx src/cli.ts proxy"
   },
   "engines": {

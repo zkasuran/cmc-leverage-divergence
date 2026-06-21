@@ -31,6 +31,7 @@ jobs:
         run: |
           npm run refresh-universe
           npm run fetch-cmc20-hist
+          npm run fetch-overlay-funding
           npm run cmc20
           npm run build-readme
           npm run spec:live || {
@@ -49,7 +50,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/cmc20-hist.json data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json reports/live-spec.json reports/live-chain.jsonl skills/cmc-leverage-divergence/references/live-spec-example.json README.md index.html demo/index.html
+          git add data/cmc20-hist.json data/cmc20-basket-funding.json data/cmc20-universe.json reports/cmc20-overlay.json reports/latest-spec.json reports/live-spec.json reports/live-chain.jsonl skills/cmc-leverage-divergence/references/live-spec-example.json README.md index.html demo/index.html
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
