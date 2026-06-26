@@ -59,9 +59,9 @@ The constituent set is **derived live from CMC's own market-cap ranking**
 dynamic by construction: a coin that drops out of the top 20 leaves the basket and
 a new entrant joins automatically.
 
-Over CMC20's life so far, that overlay **cut the drawdown from 40.2% to 15.1% and
-the loss from -35.4% to -12.8%** on this short down-only window (`npm run cmc20`).
-Both probabilistic Sharpes sit below 0.5 (0.16 overlay vs 0.15 buy-and-hold), so
+Over CMC20's life so far, that overlay **cut the drawdown from 40.9% to 15.2% and
+the loss from -36.5% to -12.9%** on this short down-only window (`npm run cmc20`).
+Both probabilistic Sharpes sit below 0.5 (0.16 overlay vs 0.14 buy-and-hold), so
 neither has a statistically positive Sharpe on 207 days; the honest edge here is
 the drawdown, not the Sharpe.
 The same signal, validated as a return-predictor across the constituents (event
@@ -130,7 +130,7 @@ of harm's way:
 
 - **Trend gate.** Below the 100-day trend the allocation is cut to 20% (risk-off),
   so a confirmed-up tilt is never sized into a structural downtrend. This is where
-  the CMC20 drawdown cut comes from, 40.2% to 15.1% over a down-only sample.
+  the CMC20 drawdown cut comes from, 40.9% to 15.2% over a down-only sample.
 - **Deadband.** The allocator rebalances only when the target moves more than 10% of
   equity, so it does nothing on noise. On CMC20 that is 11 trades over 207 days.
 
@@ -149,13 +149,13 @@ The funding signal, built from CMC20's 19 perp-liquid constituents
 
 | | Return | Max drawdown | Prob. Sharpe |
 |--|------:|-------------:|-------------:|
-| CMC20 buy-and-hold | -35.4% | 40.2% | 0.15 |
-| **Funding-regime overlay** | **-12.8%** | **15.1%** | **0.16** |
+| CMC20 buy-and-hold | -36.5% | 40.9% | 0.14 |
+| **Funding-regime overlay** | **-12.9%** | **15.2%** | **0.16** |
 
 Drawdown cut by 25 points, loss cut by 23. It's a 7-month down-only sample, so a
 raw *annualised Sharpe* isn't meaningful (and we don't headline one; sitting in
 cash through a decline mechanically lowers it). Both probabilistic Sharpes sit
-**below 0.5 (0.16 overlay vs 0.15 buy-and-hold)**, so neither shows a
+**below 0.5 (0.16 overlay vs 0.14 buy-and-hold)**, so neither shows a
 statistically positive Sharpe on 207 days and the 0.02 gap is well inside noise;
 the honest edge is **capital preservation** (the drawdown), not the Sharpe. The
 overlay is in the market 83% of the time. Reproduce with `npm run cmc20`.
