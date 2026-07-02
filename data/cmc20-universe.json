@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1234,
+   "mc": 1235.8,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 204.8,
+   "mc": 204.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 75.6,
+   "mc": 75.5,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 68.1,
+   "mc": 67.7,
    "rank": 4,
    "hedgeable": true
   },
@@ -38,21 +38,21 @@
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 30.2,
+   "mc": 30.1,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 16.5,
+   "mc": 16.7,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11.6,
+   "mc": 11.5,
    "rank": 8,
    "hedgeable": true
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 5.8,
+   "mc": 5.9,
    "rank": 12,
    "hedgeable": true
   },
@@ -94,14 +94,14 @@
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 5.7,
+   "mc": 5.6,
    "rank": 14,
    "hedgeable": true
   },
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 5.5,
+   "mc": 5.4,
    "rank": 15,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.3,
+   "mc": 4.5,
    "rank": 17,
    "hedgeable": true
   },
@@ -164,15 +164,15 @@
    "hedgeable": false
   },
   {
-   "symbol": "XAUt",
-   "name": "Tether Gold",
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
    "mc": 2.5,
    "rank": 24,
    "hedgeable": true
   },
   {
-   "symbol": "NEAR",
-   "name": "NEAR Protocol",
+   "symbol": "XAUt",
+   "name": "Tether Gold",
    "mc": 2.5,
    "rank": 25,
    "hedgeable": true
