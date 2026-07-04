@@ -3,56 +3,56 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1252.6,
+   "mc": 1251.9,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 211.6,
+   "mc": 212.1,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 76.7,
+   "mc": 77,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 70.7,
+   "mc": 70.9,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 47.9,
+   "mc": 47.5,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 30.6,
+   "mc": 30.8,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 18,
+   "mc": 17.9,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11.9,
+   "mc": 13.1,
    "rank": 8,
    "hedgeable": true
   },
@@ -145,7 +145,7 @@
   {
    "symbol": "AVAX",
    "name": "Avalanche",
-   "mc": 3,
+   "mc": 2.9,
    "rank": 21,
    "hedgeable": true
   },
