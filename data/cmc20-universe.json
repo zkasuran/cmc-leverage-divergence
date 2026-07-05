@@ -3,21 +3,21 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1257,
+   "mc": 1256.1,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 213.1,
+   "mc": 214.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 79.3,
+   "mc": 78.9,
    "rank": 3,
    "hedgeable": true
   },
@@ -31,14 +31,14 @@
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 47.2,
+   "mc": 47.1,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.2,
+   "mc": 31.1,
    "rank": 6,
    "hedgeable": true
   },
@@ -52,21 +52,21 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 13.1,
+   "mc": 13.2,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.4,
+   "mc": 8.5,
    "rank": 9,
    "hedgeable": false
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 7.8,
+   "mc": 7.7,
    "rank": 10,
    "hedgeable": true
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 6.1,
+   "mc": 6.2,
    "rank": 13,
    "hedgeable": true
   },
@@ -136,7 +136,7 @@
   {
    "symbol": "SUI",
    "name": "Sui",
-   "mc": 3,
+   "mc": 3.1,
    "rank": 20,
    "hedgeable": true
   }
@@ -173,7 +173,7 @@
   {
    "symbol": "XAUt",
    "name": "Tether Gold",
-   "mc": 2.5,
+   "mc": 2.6,
    "rank": 25,
    "hedgeable": true
   }
