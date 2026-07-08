@@ -3,42 +3,42 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1244.3,
+   "mc": 1240.3,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 209.7,
+   "mc": 208.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 75.7,
+   "mc": 76,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67.4,
+   "mc": 67.3,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 44.9,
+   "mc": 44.8,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.1,
+   "mc": 31.2,
    "rank": 6,
    "hedgeable": true
   },
@@ -52,7 +52,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12.2,
+   "mc": 11.1,
    "rank": 8,
    "hedgeable": true
   },
@@ -66,28 +66,28 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 7.8,
+   "mc": 7.7,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.3,
+   "mc": 6.2,
    "rank": 11,
-   "hedgeable": true
-  },
-  {
-   "symbol": "XMR",
-   "name": "Monero",
-   "mc": 6.1,
-   "rank": 12,
    "hedgeable": true
   },
   {
    "symbol": "ADA",
    "name": "Cardano",
    "mc": 6.1,
+   "rank": 12,
+   "hedgeable": true
+  },
+  {
+   "symbol": "XMR",
+   "name": "Monero",
+   "mc": 6,
    "rank": 13,
    "hedgeable": true
   },
@@ -101,7 +101,7 @@
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 4.9,
+   "mc": 5,
    "rank": 15,
    "hedgeable": true
   },
@@ -157,18 +157,18 @@
    "hedgeable": false
   },
   {
-   "symbol": "XAUt",
-   "name": "Tether Gold",
-   "mc": 2.5,
-   "rank": 23,
-   "hedgeable": true
-  },
-  {
    "symbol": "SHIB",
    "name": "Shiba Inu",
    "mc": 2.5,
-   "rank": 24,
+   "rank": 23,
    "hedgeable": false
+  },
+  {
+   "symbol": "XAUt",
+   "name": "Tether Gold",
+   "mc": 2.5,
+   "rank": 24,
+   "hedgeable": true
   },
   {
    "symbol": "NEAR",
