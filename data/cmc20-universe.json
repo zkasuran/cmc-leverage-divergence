@@ -3,21 +3,21 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1245.1,
+   "mc": 1243.4,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 209.3,
+   "mc": 208.9,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 76.2,
+   "mc": 76.5,
    "rank": 3,
    "hedgeable": true
   },
@@ -31,28 +31,28 @@
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 44.8,
+   "mc": 45,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.3,
+   "mc": 31.2,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 16.8,
+   "mc": 17,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11.2,
+   "mc": 12.3,
    "rank": 8,
    "hedgeable": true
   },
@@ -101,7 +101,7 @@
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 4.9,
+   "mc": 5,
    "rank": 15,
    "hedgeable": true
   },
@@ -173,7 +173,7 @@
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 2.4,
+   "mc": 2.5,
    "rank": 25,
    "hedgeable": true
   }
