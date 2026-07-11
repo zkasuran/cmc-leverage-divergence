@@ -3,42 +3,42 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1286,
+   "mc": 1287.8,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 216.9,
+   "mc": 217.4,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 77.8,
+   "mc": 78.3,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 69.2,
+   "mc": 69.3,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 45.3,
+   "mc": 45.5,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.2,
+   "mc": 31.4,
    "rank": 6,
    "hedgeable": true
   },
@@ -52,7 +52,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12.7,
+   "mc": 12.8,
    "rank": 8,
    "hedgeable": true
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 6.1,
+   "mc": 6,
    "rank": 13,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.9,
+   "mc": 5,
    "rank": 16,
    "hedgeable": true
   },
@@ -129,7 +129,7 @@
   {
    "symbol": "DEXE",
    "name": "DeXe",
-   "mc": 3,
+   "mc": 3.1,
    "rank": 19,
    "hedgeable": true
   },
@@ -157,15 +157,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "CRO",
+   "name": "Cronos",
    "mc": 2.6,
    "rank": 23,
    "hedgeable": false
   },
   {
-   "symbol": "CRO",
-   "name": "Cronos",
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
    "mc": 2.6,
    "rank": 24,
    "hedgeable": false
