@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1278.1,
+   "mc": 1281.9,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 216.4,
+   "mc": 217.4,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 77,
+   "mc": 77.4,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 68.1,
+   "mc": 68.4,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 44.3,
+   "mc": 44.7,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,35 +45,35 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 16.9,
+   "mc": 17,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12.4,
+   "mc": 11.3,
    "rank": 8,
+   "hedgeable": true
+  },
+  {
+   "symbol": "ZEC",
+   "name": "Zcash",
+   "mc": 8.8,
+   "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
    "mc": 8.8,
-   "rank": 9,
-   "hedgeable": false
-  },
-  {
-   "symbol": "ZEC",
-   "name": "Zcash",
-   "mc": 8.6,
    "rank": 10,
-   "hedgeable": true
+   "hedgeable": false
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.3,
+   "mc": 6.4,
    "rank": 11,
    "hedgeable": true
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 5.9,
+   "mc": 6,
    "rank": 13,
    "hedgeable": true
   },
@@ -120,22 +120,22 @@
    "hedgeable": false
   },
   {
-   "symbol": "LTC",
-   "name": "Litecoin",
-   "mc": 3.4,
+   "symbol": "DEXE",
+   "name": "DeXe",
+   "mc": 3.6,
    "rank": 18,
    "hedgeable": true
   },
   {
-   "symbol": "DEXE",
-   "name": "DeXe",
+   "symbol": "LTC",
+   "name": "Litecoin",
    "mc": 3.4,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "HBAR",
-   "name": "Hedera",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 3,
    "rank": 20,
    "hedgeable": true
@@ -143,8 +143,8 @@
  ],
  "watch": [
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "HBAR",
+   "name": "Hedera",
    "mc": 3,
    "rank": 21,
    "hedgeable": true
@@ -152,7 +152,7 @@
   {
    "symbol": "AVAX",
    "name": "Avalanche",
-   "mc": 2.7,
+   "mc": 2.8,
    "rank": 22,
    "hedgeable": true
   },
