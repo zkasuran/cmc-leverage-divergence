@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1259,
+   "mc": 1263.3,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 214.8,
+   "mc": 215.8,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 76.6,
+   "mc": 76.8,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67,
+   "mc": 67.5,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 44.2,
+   "mc": 44.6,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,35 +45,35 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 16.9,
+   "mc": 16.6,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12.3,
+   "mc": 11.2,
    "rank": 8,
+   "hedgeable": true
+  },
+  {
+   "symbol": "ZEC",
+   "name": "Zcash",
+   "mc": 8.8,
+   "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
    "mc": 8.8,
-   "rank": 9,
-   "hedgeable": false
-  },
-  {
-   "symbol": "ZEC",
-   "name": "Zcash",
-   "mc": 8.7,
    "rank": 10,
-   "hedgeable": true
+   "hedgeable": false
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.2,
+   "mc": 6.3,
    "rank": 11,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.7,
+   "mc": 4.8,
    "rank": 16,
    "hedgeable": true
   },
@@ -122,7 +122,7 @@
   {
    "symbol": "DEXE",
    "name": "DeXe",
-   "mc": 4,
+   "mc": 3.9,
    "rank": 18,
    "hedgeable": true
   },
@@ -136,7 +136,7 @@
   {
    "symbol": "SUI",
    "name": "Sui",
-   "mc": 2.9,
+   "mc": 3,
    "rank": 20,
    "hedgeable": true
   }
@@ -145,7 +145,7 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 2.9,
+   "mc": 3,
    "rank": 21,
    "hedgeable": true
   },
@@ -164,8 +164,8 @@
    "hedgeable": false
   },
   {
-   "symbol": "XAUt",
-   "name": "Tether Gold",
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
    "mc": 2.5,
    "rank": 24,
    "hedgeable": true
