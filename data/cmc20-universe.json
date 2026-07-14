@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1256,
+   "mc": 1256.5,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 215.4,
+   "mc": 215.8,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 76.7,
+   "mc": 76.8,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 66.8,
+   "mc": 66.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.8,
+   "mc": 43.7,
    "rank": 5,
    "hedgeable": true
   },
@@ -52,7 +52,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11.2,
+   "mc": 12.3,
    "rank": 8,
    "hedgeable": true
   },
@@ -120,15 +120,15 @@
    "hedgeable": false
   },
   {
-   "symbol": "LTC",
-   "name": "Litecoin",
+   "symbol": "DEXE",
+   "name": "DeXe",
    "mc": 3.4,
    "rank": 18,
    "hedgeable": true
   },
   {
-   "symbol": "DEXE",
-   "name": "DeXe",
+   "symbol": "LTC",
+   "name": "Litecoin",
    "mc": 3.4,
    "rank": 19,
    "hedgeable": true
