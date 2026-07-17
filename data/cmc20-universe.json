@@ -3,42 +3,42 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1263.2,
+   "mc": 1266.1,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 221.3,
+   "mc": 220.2,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 75.2,
+   "mc": 74.6,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67.8,
+   "mc": 67.4,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.5,
+   "mc": 43.3,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 30.5,
+   "mc": 30.6,
    "rank": 6,
    "hedgeable": true
   },
@@ -57,18 +57,18 @@
    "hedgeable": true
   },
   {
+   "symbol": "ZEC",
+   "name": "Zcash",
+   "mc": 9.1,
+   "rank": 9,
+   "hedgeable": true
+  },
+  {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
    "mc": 9,
-   "rank": 9,
-   "hedgeable": false
-  },
-  {
-   "symbol": "ZEC",
-   "name": "Zcash",
-   "mc": 9,
    "rank": 10,
-   "hedgeable": true
+   "hedgeable": false
   },
   {
    "symbol": "XLM",
@@ -78,15 +78,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "LINK",
-   "name": "Chainlink",
+   "symbol": "XMR",
+   "name": "Monero",
    "mc": 6.1,
    "rank": 12,
    "hedgeable": true
   },
   {
-   "symbol": "XMR",
-   "name": "Monero",
+   "symbol": "LINK",
+   "name": "Chainlink",
    "mc": 6.1,
    "rank": 13,
    "hedgeable": true
@@ -94,28 +94,28 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 5.9,
+   "mc": 5.8,
    "rank": 14,
    "hedgeable": true
   },
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 5.1,
+   "mc": 5,
    "rank": 15,
    "hedgeable": true
   },
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.5,
+   "mc": 4.4,
    "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4.1,
+   "mc": 4.2,
    "rank": 17,
    "hedgeable": false
   },
@@ -134,8 +134,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "HBAR",
-   "name": "Hedera",
+   "symbol": "DEXE",
+   "name": "DeXe",
    "mc": 2.9,
    "rank": 20,
    "hedgeable": true
@@ -143,8 +143,8 @@
  ],
  "watch": [
   {
-   "symbol": "DEXE",
-   "name": "DeXe",
+   "symbol": "HBAR",
+   "name": "Hedera",
    "mc": 2.9,
    "rank": 21,
    "hedgeable": true
