@@ -3,49 +3,49 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1283.8,
+   "mc": 1289,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 222.1,
+   "mc": 222.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 75.8,
+   "mc": 75.9,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67.8,
+   "mc": 68,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.5,
+   "mc": 43.7,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 30.7,
+   "mc": 30.6,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 14.8,
+   "mc": 15.1,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,7 +59,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 9.1,
+   "mc": 9.3,
    "rank": 9,
    "hedgeable": true
   },
@@ -73,14 +73,14 @@
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.3,
+   "mc": 6.4,
    "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 6.2,
+   "mc": 6.3,
    "rank": 12,
    "hedgeable": true
   },
@@ -122,20 +122,20 @@
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 3.5,
+   "mc": 3.7,
    "rank": 18,
-   "hedgeable": true
-  },
-  {
-   "symbol": "DEXE",
-   "name": "DeXe",
-   "mc": 3.1,
-   "rank": 19,
    "hedgeable": true
   },
   {
    "symbol": "SUI",
    "name": "Sui",
+   "mc": 3,
+   "rank": 19,
+   "hedgeable": true
+  },
+  {
+   "symbol": "DEXE",
+   "name": "DeXe",
    "mc": 3,
    "rank": 20,
    "hedgeable": true
@@ -150,18 +150,18 @@
    "hedgeable": true
   },
   {
-   "symbol": "CRO",
-   "name": "Cronos",
-   "mc": 2.9,
-   "rank": 22,
-   "hedgeable": false
-  },
-  {
    "symbol": "AVAX",
    "name": "Avalanche",
    "mc": 2.8,
-   "rank": 23,
+   "rank": 22,
    "hedgeable": true
+  },
+  {
+   "symbol": "CRO",
+   "name": "Cronos",
+   "mc": 2.8,
+   "rank": 23,
+   "hedgeable": false
   },
   {
    "symbol": "NEAR",
