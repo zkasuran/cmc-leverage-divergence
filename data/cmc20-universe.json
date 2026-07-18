@@ -3,14 +3,14 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1282,
+   "mc": 1282.5,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 222.4,
+   "mc": 222.6,
    "rank": 2,
    "hedgeable": true
   },
@@ -24,42 +24,42 @@
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 68,
+   "mc": 67.9,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.8,
+   "mc": 43.6,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 30.6,
+   "mc": 30.5,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 15.1,
+   "mc": 14.8,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11.3,
+   "mc": 12.3,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 9.2,
+   "mc": 9.1,
    "rank": 9,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4.1,
+   "mc": 4,
    "rank": 17,
    "hedgeable": false
   },
@@ -143,23 +143,23 @@
  ],
  "watch": [
   {
-   "symbol": "CRO",
-   "name": "Cronos",
-   "mc": 2.9,
-   "rank": 21,
-   "hedgeable": false
-  },
-  {
    "symbol": "HBAR",
    "name": "Hedera",
    "mc": 2.9,
-   "rank": 22,
+   "rank": 21,
    "hedgeable": true
+  },
+  {
+   "symbol": "CRO",
+   "name": "Cronos",
+   "mc": 2.9,
+   "rank": 22,
+   "hedgeable": false
   },
   {
    "symbol": "AVAX",
    "name": "Avalanche",
-   "mc": 2.9,
+   "mc": 2.8,
    "rank": 23,
    "hedgeable": true
   },
