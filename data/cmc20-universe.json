@@ -3,14 +3,14 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1297.3,
+   "mc": 1293.2,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 225.8,
+   "mc": 225.1,
    "rank": 2,
    "hedgeable": true
   },
@@ -24,7 +24,7 @@
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 68.4,
+   "mc": 68.5,
    "rank": 4,
    "hedgeable": true
   },
@@ -45,7 +45,7 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 15.4,
+   "mc": 15.5,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,7 +59,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 9.3,
+   "mc": 9.2,
    "rank": 9,
    "hedgeable": true
   },
@@ -94,7 +94,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 6,
+   "mc": 6.1,
    "rank": 14,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.9,
+   "mc": 4,
    "rank": 17,
    "hedgeable": false
   },
@@ -134,8 +134,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "HBAR",
-   "name": "Hedera",
+   "symbol": "DEXE",
+   "name": "DeXe",
    "mc": 2.9,
    "rank": 20,
    "hedgeable": true
@@ -143,8 +143,8 @@
  ],
  "watch": [
   {
-   "symbol": "DEXE",
-   "name": "DeXe",
+   "symbol": "HBAR",
+   "name": "Hedera",
    "mc": 2.9,
    "rank": 21,
    "hedgeable": true
