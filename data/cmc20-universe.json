@@ -3,14 +3,14 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1292.9,
+   "mc": 1292.7,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 225,
+   "mc": 225.8,
    "rank": 2,
    "hedgeable": true
   },
@@ -24,14 +24,14 @@
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 68.4,
+   "mc": 68.3,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 44.2,
+   "mc": 44.3,
    "rank": 5,
    "hedgeable": true
   },
@@ -59,7 +59,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 9.4,
+   "mc": 9.3,
    "rank": 9,
    "hedgeable": true
   },
@@ -73,7 +73,7 @@
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.4,
+   "mc": 6.5,
    "rank": 11,
    "hedgeable": true
   },
@@ -115,14 +115,14 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4,
+   "mc": 3.9,
    "rank": 17,
    "hedgeable": false
   },
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 3.6,
+   "mc": 3.7,
    "rank": 18,
    "hedgeable": true
   },
@@ -150,18 +150,18 @@
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 2.8,
-   "rank": 22,
-   "hedgeable": true
-  },
-  {
    "symbol": "CRO",
    "name": "Cronos",
    "mc": 2.8,
-   "rank": 23,
+   "rank": 22,
    "hedgeable": false
+  },
+  {
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "mc": 2.8,
+   "rank": 23,
+   "hedgeable": true
   },
   {
    "symbol": "NEAR",
