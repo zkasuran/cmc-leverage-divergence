@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1316.3,
+   "mc": 1311.1,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 230.7,
+   "mc": 229.8,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 76.5,
+   "mc": 76.1,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 69.9,
+   "mc": 69.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 45.5,
+   "mc": 45.4,
    "rank": 5,
    "hedgeable": true
   },
@@ -52,14 +52,14 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12.5,
+   "mc": 12.3,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 9.3,
+   "mc": 9.2,
    "rank": 9,
    "hedgeable": true
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 6.5,
+   "mc": 6.4,
    "rank": 12,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4,
+   "mc": 3.9,
    "rank": 17,
    "hedgeable": false
   },
@@ -134,17 +134,17 @@
    "hedgeable": true
   },
   {
-   "symbol": "HBAR",
-   "name": "Hedera",
-   "mc": 2.9,
+   "symbol": "DEXE",
+   "name": "DeXe",
+   "mc": 3,
    "rank": 20,
    "hedgeable": true
   }
  ],
  "watch": [
   {
-   "symbol": "DEXE",
-   "name": "DeXe",
+   "symbol": "HBAR",
+   "name": "Hedera",
    "mc": 2.9,
    "rank": 21,
    "hedgeable": true
