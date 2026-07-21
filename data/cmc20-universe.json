@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1336.9,
+   "mc": 1333,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 233.1,
+   "mc": 232.4,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 76.6,
+   "mc": 76.4,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 71.5,
+   "mc": 72.3,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 45.6,
+   "mc": 45.4,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,7 +45,7 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 15.8,
+   "mc": 15.3,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,7 +59,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 9.2,
+   "mc": 9,
    "rank": 9,
    "hedgeable": true
   },
@@ -94,7 +94,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 6.4,
+   "mc": 6.3,
    "rank": 14,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.9,
+   "mc": 4.2,
    "rank": 17,
    "hedgeable": false
   },
@@ -157,15 +157,15 @@
    "hedgeable": false
   },
   {
-   "symbol": "NEAR",
-   "name": "NEAR Protocol",
-   "mc": 2.6,
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 2.5,
    "rank": 23,
    "hedgeable": true
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
    "mc": 2.5,
    "rank": 24,
    "hedgeable": true
