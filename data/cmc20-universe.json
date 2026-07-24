@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1310.3,
+   "mc": 1312.8,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 226.7,
+   "mc": 227.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 75.8,
+   "mc": 75.7,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 69.4,
+   "mc": 69.5,
    "rank": 4,
    "hedgeable": true
   },
@@ -38,14 +38,14 @@
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.2,
+   "mc": 31.3,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 14.7,
+   "mc": 14.8,
    "rank": 7,
    "hedgeable": true
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.2,
+   "mc": 6.3,
    "rank": 13,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.2,
+   "mc": 4.3,
    "rank": 16,
    "hedgeable": true
   },
@@ -173,7 +173,7 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 2.4,
+   "mc": 2.5,
    "rank": 25,
    "hedgeable": true
   }
