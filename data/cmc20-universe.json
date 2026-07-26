@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1293.7,
+   "mc": 1290.8,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 226.9,
+   "mc": 227.1,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 75.9,
+   "mc": 76.1,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 68.8,
+   "mc": 68.6,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.7,
+   "mc": 43.6,
    "rank": 5,
    "hedgeable": true
   },
@@ -52,7 +52,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12.4,
+   "mc": 12.5,
    "rank": 8,
    "hedgeable": true
   },
@@ -73,7 +73,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 6.8,
+   "mc": 6.9,
    "rank": 11,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4.2,
+   "mc": 4.1,
    "rank": 17,
    "hedgeable": false
   },
@@ -129,7 +129,7 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 3.2,
+   "mc": 3.3,
    "rank": 19,
    "hedgeable": true
   },
