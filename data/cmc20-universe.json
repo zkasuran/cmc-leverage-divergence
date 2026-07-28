@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1268.8,
+   "mc": 1274.2,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 226.4,
+   "mc": 227.4,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 75.3,
+   "mc": 75.1,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 66.1,
+   "mc": 66.2,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 42.7,
+   "mc": 42.8,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,14 +45,14 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 14.1,
+   "mc": 14,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12,
+   "mc": 10.9,
    "rank": 8,
    "hedgeable": true
   },
@@ -66,7 +66,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 8,
+   "mc": 7.9,
    "rank": 10,
    "hedgeable": true
   },
@@ -94,7 +94,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 5.6,
+   "mc": 5.7,
    "rank": 14,
    "hedgeable": true
   },
@@ -143,15 +143,15 @@
  ],
  "watch": [
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 2.8,
    "rank": 21,
    "hedgeable": true
   },
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
    "mc": 2.8,
    "rank": 22,
    "hedgeable": true
