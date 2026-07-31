@@ -3,63 +3,63 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1290,
+   "mc": 1284.2,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 230,
+   "mc": 228.2,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 78.4,
+   "mc": 78.8,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67.6,
+   "mc": 67.2,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 42.9,
+   "mc": 42.7,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.1,
+   "mc": 31.2,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 13.9,
+   "mc": 14,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12,
+   "mc": 11.9,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 9,
+   "mc": 8.9,
    "rank": 9,
    "hedgeable": false
   },
@@ -73,21 +73,21 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 6.7,
+   "mc": 6.6,
    "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 6.3,
+   "mc": 6.2,
    "rank": 12,
    "hedgeable": true
   },
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 6.2,
+   "mc": 6.1,
    "rank": 13,
    "hedgeable": true
   },
@@ -134,8 +134,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 2.8,
    "rank": 20,
    "hedgeable": true
@@ -143,23 +143,23 @@
  ],
  "watch": [
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 2.8,
    "rank": 21,
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
+   "symbol": "UNI",
+   "name": "Uniswap",
    "mc": 2.8,
    "rank": 22,
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
-   "mc": 2.7,
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 2.8,
    "rank": 23,
    "hedgeable": true
   },
