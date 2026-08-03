@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1261.4,
+   "mc": 1255.5,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 224.2,
+   "mc": 222.3,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 77.7,
+   "mc": 77.5,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67,
+   "mc": 66.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 42.3,
+   "mc": 42.1,
    "rank": 5,
    "hedgeable": true
   },
@@ -52,7 +52,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 10.9,
+   "mc": 11.8,
    "rank": 8,
    "hedgeable": true
   },
@@ -66,7 +66,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 8,
+   "mc": 7.9,
    "rank": 10,
    "hedgeable": true
   },
@@ -80,28 +80,28 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 6.8,
+   "mc": 6.7,
    "rank": 12,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 6.2,
+   "mc": 6.1,
    "rank": 13,
    "hedgeable": true
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 5.9,
+   "mc": 5.8,
    "rank": 14,
    "hedgeable": true
   },
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 4.6,
+   "mc": 4.5,
    "rank": 15,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.9,
+   "mc": 3.8,
    "rank": 17,
    "hedgeable": false
   },
@@ -136,7 +136,7 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 2.9,
+   "mc": 2.8,
    "rank": 20,
    "hedgeable": true
   }
@@ -157,18 +157,18 @@
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
-   "mc": 2.6,
-   "rank": 23,
-   "hedgeable": true
-  },
-  {
    "symbol": "CRO",
    "name": "Cronos",
    "mc": 2.6,
-   "rank": 24,
+   "rank": 23,
    "hedgeable": false
+  },
+  {
+   "symbol": "UNI",
+   "name": "Uniswap",
+   "mc": 2.5,
+   "rank": 24,
+   "hedgeable": true
   },
   {
    "symbol": "XAUt",
