@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1277,
+   "mc": 1278.1,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 224,
+   "mc": 225.1,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 78.6,
+   "mc": 78.5,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67.1,
+   "mc": 67.2,
    "rank": 4,
    "hedgeable": true
   },
@@ -45,14 +45,14 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 13.7,
+   "mc": 13.9,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12,
+   "mc": 10.9,
    "rank": 8,
    "hedgeable": true
   },
@@ -73,7 +73,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 7.2,
+   "mc": 7.1,
    "rank": 11,
    "hedgeable": true
   },
@@ -101,7 +101,7 @@
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 4.4,
+   "mc": 4.3,
    "rank": 15,
    "hedgeable": true
   },
@@ -134,17 +134,17 @@
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 2.9,
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 3,
    "rank": 20,
    "hedgeable": true
   }
  ],
  "watch": [
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 2.9,
    "rank": 21,
    "hedgeable": true
