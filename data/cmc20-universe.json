@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1277.4,
+   "mc": 1279.3,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 225,
+   "mc": 224.8,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 78.5,
+   "mc": 78.7,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 67.6,
+   "mc": 67.3,
    "rank": 4,
    "hedgeable": true
   },
@@ -52,7 +52,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 10.9,
+   "mc": 12,
    "rank": 8,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.9,
+   "mc": 3.8,
    "rank": 17,
    "hedgeable": false
   },
@@ -134,8 +134,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 3,
    "rank": 20,
    "hedgeable": true
@@ -143,9 +143,9 @@
  ],
  "watch": [
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 2.8,
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 2.9,
    "rank": 21,
    "hedgeable": true
   },
@@ -173,7 +173,7 @@
   {
    "symbol": "UNI",
    "name": "Uniswap",
-   "mc": 2.5,
+   "mc": 2.4,
    "rank": 25,
    "hedgeable": true
   }
