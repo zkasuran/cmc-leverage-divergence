@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1298.2,
+   "mc": 1297.8,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 230.9,
+   "mc": 230.5,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 79.9,
+   "mc": 79.4,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 66.9,
+   "mc": 66.5,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.3,
+   "mc": 43.1,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,21 +45,21 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 14.6,
+   "mc": 14.3,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12,
+   "mc": 10.9,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 9,
+   "mc": 8.9,
    "rank": 9,
    "hedgeable": false
   },
@@ -73,28 +73,28 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 7,
+   "mc": 6.9,
    "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 6.7,
+   "mc": 6.8,
    "rank": 12,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 6.2,
+   "mc": 6.1,
    "rank": 13,
    "hedgeable": true
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 5.8,
+   "mc": 5.7,
    "rank": 14,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.9,
+   "mc": 3.8,
    "rank": 17,
    "hedgeable": false
   },
@@ -164,18 +164,18 @@
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
-   "mc": 2.6,
-   "rank": 24,
-   "hedgeable": true
-  },
-  {
    "symbol": "CRO",
    "name": "Cronos",
    "mc": 2.6,
-   "rank": 25,
+   "rank": 24,
    "hedgeable": false
+  },
+  {
+   "symbol": "UNI",
+   "name": "Uniswap",
+   "mc": 2.5,
+   "rank": 25,
+   "hedgeable": true
   }
  ],
  "tradeable": 18,
