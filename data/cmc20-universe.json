@@ -3,42 +3,42 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1293.8,
+   "mc": 1299.5,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 228.8,
+   "mc": 230.7,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 79,
+   "mc": 79.2,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 65.3,
+   "mc": 65.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 42.7,
+   "mc": 43,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.1,
+   "mc": 31,
    "rank": 6,
    "hedgeable": true
   },
@@ -71,16 +71,16 @@
    "hedgeable": true
   },
   {
-   "symbol": "ADA",
-   "name": "Cardano",
+   "symbol": "XMR",
+   "name": "Monero",
    "mc": 6.9,
    "rank": 11,
    "hedgeable": true
   },
   {
-   "symbol": "XMR",
-   "name": "Monero",
-   "mc": 6.8,
+   "symbol": "ADA",
+   "name": "Cardano",
+   "mc": 6.9,
    "rank": 12,
    "hedgeable": true
   },
@@ -164,18 +164,18 @@
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
-   "mc": 2.6,
-   "rank": 24,
-   "hedgeable": true
-  },
-  {
    "symbol": "CRO",
    "name": "Cronos",
+   "mc": 2.6,
+   "rank": 24,
+   "hedgeable": false
+  },
+  {
+   "symbol": "UNI",
+   "name": "Uniswap",
    "mc": 2.5,
    "rank": 25,
-   "hedgeable": false
+   "hedgeable": true
   }
  ],
  "tradeable": 18,
