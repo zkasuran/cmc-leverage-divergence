@@ -3,7 +3,7 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1303.8,
+   "mc": 1303.4,
    "rank": 1,
    "hedgeable": true
   },
@@ -17,7 +17,7 @@
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 79,
+   "mc": 79.1,
    "rank": 3,
    "hedgeable": true
   },
@@ -31,7 +31,7 @@
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.4,
+   "mc": 43.5,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,14 +45,14 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 13.7,
+   "mc": 13.8,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 12,
+   "mc": 10.9,
    "rank": 8,
    "hedgeable": true
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 7.1,
+   "mc": 7.2,
    "rank": 12,
    "hedgeable": true
   },
@@ -101,7 +101,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.3,
+   "mc": 4.4,
    "rank": 15,
    "hedgeable": true
   },
@@ -113,15 +113,15 @@
    "hedgeable": false
   },
   {
-   "symbol": "CC",
-   "name": "Canton",
+   "symbol": "LTC",
+   "name": "Litecoin",
    "mc": 3.5,
    "rank": 17,
    "hedgeable": true
   },
   {
-   "symbol": "LTC",
-   "name": "Litecoin",
+   "symbol": "CC",
+   "name": "Canton",
    "mc": 3.5,
    "rank": 18,
    "hedgeable": true
@@ -152,14 +152,14 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 2.7,
+   "mc": 2.8,
    "rank": 22,
    "hedgeable": true
   },
   {
    "symbol": "XAUt",
    "name": "Tether Gold",
-   "mc": 2.6,
+   "mc": 2.7,
    "rank": 23,
    "hedgeable": true
   },
@@ -171,11 +171,11 @@
    "hedgeable": true
   },
   {
-   "symbol": "CRO",
-   "name": "Cronos",
-   "mc": 2.4,
+   "symbol": "TAO",
+   "name": "Bittensor",
+   "mc": 2.2,
    "rank": 25,
-   "hedgeable": false
+   "hedgeable": true
   }
  ],
  "tradeable": 18,
