@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1308.3,
+   "mc": 1306.1,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 232.1,
+   "mc": 231.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 81,
+   "mc": 80.9,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 65.2,
+   "mc": 65.1,
    "rank": 4,
    "hedgeable": true
   },
@@ -45,21 +45,21 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 13.9,
+   "mc": 13.8,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11,
+   "mc": 12,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 9,
+   "mc": 8.9,
    "rank": 9,
    "hedgeable": false
   },
@@ -101,7 +101,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.4,
+   "mc": 4.3,
    "rank": 15,
    "hedgeable": true
   },
@@ -136,7 +136,7 @@
   {
    "symbol": "SUI",
    "name": "Sui",
-   "mc": 2.9,
+   "mc": 2.8,
    "rank": 20,
    "hedgeable": true
   }
@@ -152,7 +152,7 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 2.7,
+   "mc": 2.8,
    "rank": 22,
    "hedgeable": true
   },
