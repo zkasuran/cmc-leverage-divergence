@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1256.6,
+   "mc": 1265.7,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 225.4,
+   "mc": 227.1,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 80.4,
+   "mc": 80.7,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 62.8,
+   "mc": 62.7,
    "rank": 4,
    "hedgeable": true
   },
@@ -45,14 +45,14 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 14.2,
+   "mc": 14.1,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 10.8,
+   "mc": 10.9,
    "rank": 8,
    "hedgeable": true
   },
@@ -108,14 +108,14 @@
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 3.9,
+   "mc": 3.8,
    "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.6,
+   "mc": 3.7,
    "rank": 17,
    "hedgeable": false
   },
@@ -134,8 +134,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 2.8,
    "rank": 20,
    "hedgeable": true
@@ -143,23 +143,23 @@
  ],
  "watch": [
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 2.8,
    "rank": 21,
+   "hedgeable": true
+  },
+  {
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 2.7,
+   "rank": 22,
    "hedgeable": true
   },
   {
    "symbol": "XAUt",
    "name": "Tether Gold",
    "mc": 2.7,
-   "rank": 22,
-   "hedgeable": true
-  },
-  {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
-   "mc": 2.6,
    "rank": 23,
    "hedgeable": true
   },
@@ -171,8 +171,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "TAO",
-   "name": "Bittensor",
+   "symbol": "OKB",
+   "name": "OKB",
    "mc": 2.2,
    "rank": 25,
    "hedgeable": true
