@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1263.8,
+   "mc": 1266.1,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 227.2,
+   "mc": 227.3,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 80.9,
+   "mc": 81.4,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 62.7,
+   "mc": 63,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 43.9,
+   "mc": 44,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,7 +45,7 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 14.3,
+   "mc": 14.2,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,14 +59,14 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 8.4,
+   "mc": 8.3,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.3,
+   "mc": 8,
    "rank": 10,
    "hedgeable": false
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 6.9,
+   "mc": 7.1,
    "rank": 12,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 3.9,
+   "mc": 3.8,
    "rank": 16,
    "hedgeable": true
   },
@@ -127,16 +127,16 @@
    "hedgeable": true
   },
   {
-   "symbol": "HBAR",
-   "name": "Hedera",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 2.9,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 2.8,
+   "symbol": "HBAR",
+   "name": "Hedera",
+   "mc": 2.9,
    "rank": 20,
    "hedgeable": true
   }
@@ -164,15 +164,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "OKB",
-   "name": "OKB",
+   "symbol": "CRO",
+   "name": "Cronos",
    "mc": 2.3,
    "rank": 24,
    "hedgeable": true
   },
   {
-   "symbol": "CRO",
-   "name": "Cronos",
+   "symbol": "OKB",
+   "name": "OKB",
    "mc": 2.3,
    "rank": 25,
    "hedgeable": true
