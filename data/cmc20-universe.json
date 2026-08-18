@@ -3,21 +3,21 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1300,
+   "mc": 1296.3,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 231.4,
+   "mc": 230.9,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 80.4,
+   "mc": 80.2,
    "rank": 3,
    "hedgeable": true
   },
@@ -38,21 +38,21 @@
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.7,
+   "mc": 31.6,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 14.8,
+   "mc": 14.9,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 10.9,
+   "mc": 12,
    "rank": 8,
    "hedgeable": true
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 6.4,
+   "mc": 6.3,
    "rank": 13,
    "hedgeable": true
   },
@@ -122,7 +122,7 @@
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 3.4,
+   "mc": 3.5,
    "rank": 18,
    "hedgeable": true
   },
@@ -143,15 +143,15 @@
  ],
  "watch": [
   {
-   "symbol": "XAUt",
-   "name": "Tether Gold",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 2.7,
    "rank": 21,
    "hedgeable": true
   },
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "XAUt",
+   "name": "Tether Gold",
    "mc": 2.7,
    "rank": 22,
    "hedgeable": true
@@ -166,14 +166,14 @@
   {
    "symbol": "CRO",
    "name": "Cronos",
-   "mc": 2.3,
+   "mc": 2.2,
    "rank": 24,
    "hedgeable": true
   },
   {
    "symbol": "TAO",
    "name": "Bittensor",
-   "mc": 2.2,
+   "mc": 2.1,
    "rank": 25,
    "hedgeable": true
   }
