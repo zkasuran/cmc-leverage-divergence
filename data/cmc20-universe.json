@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1510.7,
+   "mc": 1504.2,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 285.4,
+   "mc": 284,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 88.4,
+   "mc": 88,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 81.3,
+   "mc": 82.2,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 52,
+   "mc": 52.1,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,42 +45,42 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 18.8,
+   "mc": 18.4,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 14.2,
+   "mc": 12.8,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 9.7,
+   "mc": 9.9,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.6,
+   "mc": 8.5,
    "rank": 10,
    "hedgeable": false
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 8.1,
+   "mc": 8.2,
    "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 7.8,
+   "mc": 7.9,
    "rank": 12,
    "hedgeable": true
   },
@@ -101,23 +101,23 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 4.5,
+   "mc": 4.6,
    "rank": 15,
+   "hedgeable": true
+  },
+  {
+   "symbol": "CC",
+   "name": "Canton",
+   "mc": 4,
+   "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
    "mc": 3.9,
-   "rank": 16,
-   "hedgeable": false
-  },
-  {
-   "symbol": "CC",
-   "name": "Canton",
-   "mc": 3.9,
    "rank": 17,
-   "hedgeable": true
+   "hedgeable": false
   },
   {
    "symbol": "LTC",
@@ -145,7 +145,7 @@
   {
    "symbol": "SUI",
    "name": "Sui",
-   "mc": 3,
+   "mc": 3.1,
    "rank": 21,
    "hedgeable": true
   },
@@ -173,7 +173,7 @@
   {
    "symbol": "TAO",
    "name": "Bittensor",
-   "mc": 2.4,
+   "mc": 2.5,
    "rank": 25,
    "hedgeable": true
   }
