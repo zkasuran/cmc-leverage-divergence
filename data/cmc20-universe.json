@@ -3,42 +3,42 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1551.7,
+   "mc": 1551.6,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 293.1,
+   "mc": 292.4,
    "rank": 2,
-   "hedgeable": true
-  },
-  {
-   "symbol": "XRP",
-   "name": "XRP",
-   "mc": 94.4,
-   "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
    "mc": 92.6,
+   "rank": 3,
+   "hedgeable": true
+  },
+  {
+   "symbol": "XRP",
+   "name": "XRP",
+   "mc": 92.3,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 54.8,
+   "mc": 54.9,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 32.6,
+   "mc": 32.7,
    "rank": 6,
    "hedgeable": true
   },
@@ -52,28 +52,28 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 14.3,
+   "mc": 14.2,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 13.4,
+   "mc": 13.7,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 8.9,
+   "mc": 8.7,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.7,
+   "mc": 8.6,
    "rank": 11,
    "hedgeable": false
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 8,
+   "mc": 7.8,
    "rank": 13,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 4,
+   "mc": 4.1,
    "rank": 17,
    "hedgeable": true
   },
@@ -127,15 +127,15 @@
    "hedgeable": false
   },
   {
-   "symbol": "HBAR",
-   "name": "Hedera",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 3.4,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "HBAR",
+   "name": "Hedera",
    "mc": 3.4,
    "rank": 20,
    "hedgeable": true
@@ -152,7 +152,7 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 3.2,
+   "mc": 3.3,
    "rank": 22,
    "hedgeable": true
   },
