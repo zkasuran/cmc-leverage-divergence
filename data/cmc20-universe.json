@@ -3,14 +3,14 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1547.8,
+   "mc": 1542.9,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 293.7,
+   "mc": 294,
    "rank": 2,
    "hedgeable": true
   },
@@ -24,7 +24,7 @@
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 92.3,
+   "mc": 92.6,
    "rank": 4,
    "hedgeable": true
   },
@@ -45,14 +45,14 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 20.3,
+   "mc": 20.1,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 14.2,
+   "mc": 15.8,
    "rank": 8,
    "hedgeable": true
   },
@@ -64,18 +64,18 @@
    "hedgeable": true
   },
   {
+   "symbol": "LINK",
+   "name": "Chainlink",
+   "mc": 8.6,
+   "rank": 10,
+   "hedgeable": true
+  },
+  {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
    "mc": 8.6,
-   "rank": 10,
-   "hedgeable": false
-  },
-  {
-   "symbol": "LINK",
-   "name": "Chainlink",
-   "mc": 8.5,
    "rank": 11,
-   "hedgeable": true
+   "hedgeable": false
   },
   {
    "symbol": "ADA",
@@ -115,7 +115,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4,
+   "mc": 4.1,
    "rank": 17,
    "hedgeable": false
   },
@@ -129,7 +129,7 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 3.4,
+   "mc": 3.5,
    "rank": 19,
    "hedgeable": true
   },
@@ -157,15 +157,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "XAUt",
-   "name": "Tether Gold",
-   "mc": 2.8,
+   "symbol": "CRO",
+   "name": "Cronos",
+   "mc": 3,
    "rank": 23,
    "hedgeable": true
   },
   {
-   "symbol": "CRO",
-   "name": "Cronos",
+   "symbol": "XAUt",
+   "name": "Tether Gold",
    "mc": 2.8,
    "rank": 24,
    "hedgeable": true
@@ -173,7 +173,7 @@
   {
    "symbol": "UNI",
    "name": "Uniswap",
-   "mc": 2.7,
+   "mc": 2.8,
    "rank": 25,
    "hedgeable": true
   }
