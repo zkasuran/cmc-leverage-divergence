@@ -3,21 +3,21 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1592,
+   "mc": 1584.4,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 303.7,
+   "mc": 298.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 95.3,
+   "mc": 94.6,
    "rank": 3,
    "hedgeable": true
   },
@@ -38,35 +38,35 @@
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 32.7,
+   "mc": 32.6,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 20.4,
+   "mc": 19.8,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 15.9,
+   "mc": 15.6,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 14.4,
+   "mc": 14.1,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 8.8,
+   "mc": 8.7,
    "rank": 10,
    "hedgeable": true
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 8.3,
+   "mc": 8.2,
    "rank": 12,
    "hedgeable": true
   },
@@ -94,37 +94,37 @@
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 6.9,
+   "mc": 6.8,
    "rank": 14,
    "hedgeable": true
   },
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 5.7,
+   "mc": 5.5,
    "rank": 15,
    "hedgeable": true
   },
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 5.2,
+   "mc": 4.9,
    "rank": 16,
-   "hedgeable": true
-  },
-  {
-   "symbol": "LTC",
-   "name": "Litecoin",
-   "mc": 4.1,
-   "rank": 17,
    "hedgeable": true
   },
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
    "mc": 4.1,
-   "rank": 18,
+   "rank": 17,
    "hedgeable": false
+  },
+  {
+   "symbol": "LTC",
+   "name": "Litecoin",
+   "mc": 4.1,
+   "rank": 18,
+   "hedgeable": true
   },
   {
    "symbol": "HBAR",
@@ -152,7 +152,7 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 3.3,
+   "mc": 3.2,
    "rank": 22,
    "hedgeable": true
   },
@@ -166,13 +166,13 @@
   {
    "symbol": "XAUt",
    "name": "Tether Gold",
-   "mc": 2.9,
+   "mc": 2.8,
    "rank": 24,
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
+   "symbol": "TAO",
+   "name": "Bittensor",
    "mc": 2.7,
    "rank": 25,
    "hedgeable": true
