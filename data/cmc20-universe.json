@@ -3,49 +3,49 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1583.3,
+   "mc": 1582.2,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 296.6,
+   "mc": 296.8,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 92.5,
+   "mc": 92.9,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 90.4,
+   "mc": 89.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 56.4,
+   "mc": 56.5,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 32.1,
+   "mc": 32,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 20.7,
+   "mc": 20.6,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,14 +59,14 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 13.3,
+   "mc": 13.2,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.6,
+   "mc": 8.5,
    "rank": 10,
    "hedgeable": false
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 8.3,
+   "mc": 8.4,
    "rank": 12,
    "hedgeable": true
   },
@@ -108,14 +108,14 @@
   {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 4.7,
+   "mc": 4.6,
    "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4,
+   "mc": 3.9,
    "rank": 17,
    "hedgeable": false
   },
