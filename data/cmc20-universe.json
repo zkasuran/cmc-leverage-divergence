@@ -3,42 +3,42 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1606.7,
+   "mc": 1604.8,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 302.4,
+   "mc": 303.7,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 103.3,
+   "mc": 102.7,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 89.2,
+   "mc": 89.1,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 60.8,
+   "mc": 60.7,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.7,
+   "mc": 31.8,
    "rank": 6,
    "hedgeable": true
   },
@@ -52,21 +52,21 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 17.4,
+   "mc": 17.1,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 15.9,
+   "mc": 15.5,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.2,
+   "mc": 10.4,
    "rank": 10,
    "hedgeable": true
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.5,
+   "mc": 8.6,
    "rank": 12,
    "hedgeable": false
   },
@@ -106,15 +106,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "CC",
-   "name": "Canton",
+   "symbol": "UNI",
+   "name": "Uniswap",
    "mc": 4.4,
    "rank": 16,
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
+   "symbol": "CC",
+   "name": "Canton",
    "mc": 4.3,
    "rank": 17,
    "hedgeable": true
@@ -136,7 +136,7 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 3.6,
+   "mc": 3.5,
    "rank": 20,
    "hedgeable": true
   }
@@ -159,14 +159,14 @@
   {
    "symbol": "SHIB",
    "name": "Shiba Inu",
-   "mc": 3.3,
+   "mc": 3.2,
    "rank": 23,
    "hedgeable": true
   },
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 2.9,
+   "mc": 2.8,
    "rank": 24,
    "hedgeable": true
   },
