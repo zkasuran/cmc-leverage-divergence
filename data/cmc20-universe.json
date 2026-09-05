@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1599.4,
+   "mc": 1601,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 299.4,
+   "mc": 300,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 99.4,
+   "mc": 102.4,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 88.1,
+   "mc": 88.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 59.9,
+   "mc": 60.2,
    "rank": 5,
    "hedgeable": true
   },
@@ -52,28 +52,28 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 17,
+   "mc": 17.1,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 14.7,
+   "mc": 15,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.1,
+   "mc": 10.2,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 8.8,
+   "mc": 8.9,
    "rank": 11,
    "hedgeable": true
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 7.8,
+   "mc": 8,
    "rank": 13,
    "hedgeable": true
   },
@@ -101,7 +101,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 5.1,
+   "mc": 5,
    "rank": 15,
    "hedgeable": true
   },
@@ -115,7 +115,7 @@
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 4.1,
+   "mc": 4.2,
    "rank": 17,
    "hedgeable": true
   },
@@ -143,16 +143,16 @@
  ],
  "watch": [
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 3.2,
+   "symbol": "SUI",
+   "name": "Sui",
+   "mc": 3.3,
    "rank": 21,
    "hedgeable": true
   },
   {
-   "symbol": "SUI",
-   "name": "Sui",
-   "mc": 3.2,
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "mc": 3.3,
    "rank": 22,
    "hedgeable": true
   },
