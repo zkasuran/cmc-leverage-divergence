@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1585.2,
+   "mc": 1582.6,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 302.8,
+   "mc": 303,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 98.2,
+   "mc": 99.3,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 87.1,
+   "mc": 87.5,
    "rank": 4,
    "hedgeable": true
   },
@@ -38,14 +38,14 @@
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.7,
+   "mc": 31.8,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 21.4,
+   "mc": 21.3,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,14 +59,14 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 14,
+   "mc": 15.4,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 9.7,
+   "mc": 9.8,
    "rank": 10,
    "hedgeable": true
   },
@@ -106,16 +106,16 @@
    "hedgeable": true
   },
   {
-   "symbol": "LTC",
-   "name": "Litecoin",
-   "mc": 4.3,
+   "symbol": "UNI",
+   "name": "Uniswap",
+   "mc": 4.4,
    "rank": 16,
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
-   "mc": 4.2,
+   "symbol": "LTC",
+   "name": "Litecoin",
+   "mc": 4.3,
    "rank": 17,
    "hedgeable": true
   },
