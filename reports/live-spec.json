@@ -1,20 +1,20 @@
 {
   "asset": "BNB",
-  "as_of": "2026-09-11T12:50:38.587Z",
+  "as_of": "2026-09-11T19:09:56.810Z",
   "regime": "risk-on",
   "signal": {
     "state": "neutral",
-    "score": -0.01569
+    "score": -0.046579
   },
   "readings": {
-    "funding_rate": -0.000005836816804530525,
-    "funding_z": -1.059361,
-    "price_return_lookback": 0.015527,
+    "funding_rate": -0.000011307037955737105,
+    "funding_z": -1.182679,
+    "price_return_lookback": 0.01763,
     "fear_greed": null,
     "long_short_ratio": null,
-    "open_interest": 763161454.9776154
+    "open_interest": 749272485.1175416
   },
-  "target_allocation": 0.492155,
+  "target_allocation": 0.476711,
   "rules": {
     "lookback": 7,
     "z_window": 30,
@@ -38,14 +38,14 @@
     "provider": "CoinMarketCap data-api (keyless)",
     "asset": "BNB",
     "cmc_id": 1839,
-    "price_usd": 721.5827367805462,
-    "market_cap_usd": 96086761953.19725,
-    "aggregate_funding_rate": -0.000005836816804530525,
-    "open_interest_usd": 763161454.9776154,
+    "price_usd": 723.0771011374077,
+    "market_cap_usd": 96285733813.49718,
+    "aggregate_funding_rate": -0.000011307037955737105,
+    "open_interest_usd": 749272485.1175416,
     "perp_venues": 19,
-    "btc_dominance_pct": 58.931669603045,
-    "eth_dominance_pct": 11.517404558133,
-    "as_of": "2026-09-11T12:50:38.587Z",
+    "btc_dominance_pct": 58.722742942283,
+    "eth_dominance_pct": 11.743337694042,
+    "as_of": "2026-09-11T19:09:56.810Z",
     "endpoints": [
       "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing?start=1&limit=30&sortBy=market_cap&sortType=desc&convert=USD&cryptoType=all&tagType=all",
       "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/market-pairs/latest?id=1839&category=perpetual&limit=20&convert=USD",
@@ -57,9 +57,9 @@
     "token": "CMC20",
     "contract": "0x2f8A339B5889FfaC4c5A956787cdA593b3c36867",
     "chain": "BNB Smart Chain",
-    "holdPct": 49,
-    "cashPct": 51,
-    "instruction": "Hold 49% in CMC20 (BEP-20 on BNB Chain) and 51% in cash/stables.",
+    "holdPct": 48,
+    "cashPct": 52,
+    "instruction": "Hold 48% in CMC20 (BEP-20 on BNB Chain) and 52% in cash/stables.",
     "trustWalletLink": "https://link.trustwallet.com/open_coin?asset=c20000714_t0x2f8A339B5889FfaC4c5A956787cdA593b3c36867"
   }
 }
