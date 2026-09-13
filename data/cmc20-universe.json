@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1550.9,
+   "mc": 1550.3,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 307.8,
+   "mc": 307.5,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 96.7,
+   "mc": 96.8,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 85.7,
+   "mc": 85.8,
    "rank": 4,
    "hedgeable": true
   },
@@ -38,35 +38,35 @@
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 32.3,
+   "mc": 32.2,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 20.1,
+   "mc": 19.9,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 18.9,
+   "mc": 19.2,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 13.2,
+   "mc": 14.5,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.1,
+   "mc": 10,
    "rank": 10,
    "hedgeable": true
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.4,
+   "mc": 8.3,
    "rank": 12,
    "hedgeable": true
   },
@@ -120,22 +120,22 @@
    "hedgeable": true
   },
   {
-   "symbol": "GRAM",
-   "name": "Gram (prev. Toncoin)",
-   "mc": 3.9,
-   "rank": 18,
-   "hedgeable": false
-  },
-  {
    "symbol": "CC",
    "name": "Canton",
-   "mc": 3.8,
-   "rank": 19,
+   "mc": 3.9,
+   "rank": 18,
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
+   "symbol": "GRAM",
+   "name": "Gram (prev. Toncoin)",
+   "mc": 3.8,
+   "rank": 19,
+   "hedgeable": false
+  },
+  {
+   "symbol": "HBAR",
+   "name": "Hedera",
    "mc": 3.3,
    "rank": 20,
    "hedgeable": true
@@ -143,8 +143,8 @@
  ],
  "watch": [
   {
-   "symbol": "HBAR",
-   "name": "Hedera",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 3.3,
    "rank": 21,
    "hedgeable": true
