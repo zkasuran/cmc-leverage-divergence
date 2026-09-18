@@ -3,14 +3,14 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1624.9,
+   "mc": 1630.5,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 318.9,
+   "mc": 321.1,
    "rank": 2,
    "hedgeable": true
   },
@@ -24,14 +24,14 @@
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 87.2,
+   "mc": 88,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 65.9,
+   "mc": 66.5,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,49 +45,49 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 24.6,
+   "mc": 25.3,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 22.9,
+   "mc": 23.1,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 13.6,
+   "mc": 15.2,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.5,
+   "mc": 10.7,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 9.1,
+   "mc": 9.3,
    "rank": 11,
+   "hedgeable": true
+  },
+  {
+   "symbol": "ADA",
+   "name": "Cardano",
+   "mc": 8.3,
+   "rank": 12,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
    "mc": 8.2,
-   "rank": 12,
-   "hedgeable": true
-  },
-  {
-   "symbol": "ADA",
-   "name": "Cardano",
-   "mc": 8.1,
    "rank": 13,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 5.1,
+   "mc": 5.3,
    "rank": 16,
    "hedgeable": true
   },
@@ -122,7 +122,7 @@
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 4.4,
+   "mc": 4.5,
    "rank": 18,
    "hedgeable": true
   },
@@ -136,7 +136,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.8,
+   "mc": 3.9,
    "rank": 20,
    "hedgeable": false
   }
@@ -152,7 +152,7 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 3.4,
+   "mc": 3.5,
    "rank": 22,
    "hedgeable": true
   },
@@ -171,8 +171,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "M",
-   "name": "MemeCore",
+   "symbol": "CRO",
+   "name": "Cronos",
    "mc": 3,
    "rank": 25,
    "hedgeable": true
