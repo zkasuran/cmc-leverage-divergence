@@ -1,18 +1,18 @@
 {
   "asset": "BNB",
-  "as_of": "2026-09-24T23:13:42.800Z",
+  "as_of": "2026-09-25T05:00:48.854Z",
   "regime": "risk-on",
   "signal": {
     "state": "neutral",
     "score": 0
   },
   "readings": {
-    "funding_rate": 0.000009919600967609315,
-    "funding_z": -0.704156,
-    "price_return_lookback": 0.093347,
+    "funding_rate": 0.0000419045517039775,
+    "funding_z": 0.016898,
+    "price_return_lookback": 0.088129,
     "fear_greed": null,
     "long_short_ratio": null,
-    "open_interest": 1155022142.7403612
+    "open_interest": 1161963746.3767235
   },
   "target_allocation": 0.5,
   "rules": {
@@ -38,14 +38,14 @@
     "provider": "CoinMarketCap data-api (keyless)",
     "asset": "BNB",
     "cmc_id": 1839,
-    "price_usd": 776.877755177878,
-    "market_cap_usd": 103448946455.59157,
-    "aggregate_funding_rate": 0.000009919600967609315,
-    "open_interest_usd": 1155022142.7403612,
+    "price_usd": 773.1699211891082,
+    "market_cap_usd": 102955201368.87158,
+    "aggregate_funding_rate": 0.0000419045517039775,
+    "open_interest_usd": 1161963746.3767235,
     "perp_venues": 20,
-    "btc_dominance_pct": 58.890566347486,
-    "eth_dominance_pct": 11.404316897738,
-    "as_of": "2026-09-24T23:13:42.800Z",
+    "btc_dominance_pct": 58.845842345388,
+    "eth_dominance_pct": 11.382821177953,
+    "as_of": "2026-09-25T05:00:48.854Z",
     "endpoints": [
       "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing?start=1&limit=30&sortBy=market_cap&sortType=desc&convert=USD&cryptoType=all&tagType=all",
       "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/market-pairs/latest?id=1839&category=perpetual&limit=20&convert=USD",
