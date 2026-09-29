@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1672.1,
+   "mc": 1680.3,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 327.1,
+   "mc": 326.8,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 100.1,
+   "mc": 101,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 93.3,
+   "mc": 94.1,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 69.3,
+   "mc": 70,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,7 +45,7 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 23.7,
+   "mc": 23.9,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,14 +59,14 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 16,
+   "mc": 16.1,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 10.9,
+   "mc": 11,
    "rank": 10,
    "hedgeable": true
   },
@@ -80,7 +80,7 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 8.9,
+   "mc": 9,
    "rank": 12,
    "hedgeable": true
   },
@@ -94,21 +94,21 @@
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 7.7,
+   "mc": 7.8,
    "rank": 14,
    "hedgeable": true
   },
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 6.3,
+   "mc": 6.4,
    "rank": 15,
    "hedgeable": true
   },
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 6.1,
+   "mc": 6.2,
    "rank": 16,
    "hedgeable": true
   },
@@ -127,15 +127,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "CC",
-   "name": "Canton",
-   "mc": 5,
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "mc": 5.1,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
+   "symbol": "CC",
+   "name": "Canton",
    "mc": 4.9,
    "rank": 20,
    "hedgeable": true
@@ -152,7 +152,7 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 4.6,
+   "mc": 4.5,
    "rank": 22,
    "hedgeable": true
   },
