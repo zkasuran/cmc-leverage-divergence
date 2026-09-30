@@ -3,49 +3,49 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1676,
+   "mc": 1683.4,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 326.7,
+   "mc": 327.1,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 101.7,
+   "mc": 102,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 94.7,
+   "mc": 94.5,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 70.1,
+   "mc": 69.9,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 32,
+   "mc": 32.2,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 23.8,
+   "mc": 24.2,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,21 +59,21 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 16.1,
+   "mc": 14.8,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 10.8,
+   "mc": 10.6,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.2,
+   "mc": 10.1,
    "rank": 11,
    "hedgeable": true
   },
@@ -101,14 +101,14 @@
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 6.5,
+   "mc": 6.9,
    "rank": 15,
    "hedgeable": true
   },
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 6.2,
+   "mc": 6.1,
    "rank": 16,
    "hedgeable": true
   },
@@ -127,16 +127,16 @@
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 5,
+   "symbol": "CC",
+   "name": "Canton",
+   "mc": 5.1,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "CC",
-   "name": "Canton",
-   "mc": 5,
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "mc": 4.8,
    "rank": 20,
    "hedgeable": true
   }
@@ -145,14 +145,14 @@
   {
    "symbol": "SUI",
    "name": "Sui",
-   "mc": 4.8,
+   "mc": 4.7,
    "rank": 21,
    "hedgeable": true
   },
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 4.6,
+   "mc": 4.7,
    "rank": 22,
    "hedgeable": true
   },
@@ -164,16 +164,16 @@
    "hedgeable": false
   },
   {
-   "symbol": "TAO",
-   "name": "Bittensor",
+   "symbol": "QNT",
+   "name": "Quant",
    "mc": 3.5,
    "rank": 24,
    "hedgeable": true
   },
   {
-   "symbol": "QNT",
-   "name": "Quant",
-   "mc": 3.4,
+   "symbol": "TAO",
+   "name": "Bittensor",
+   "mc": 3.5,
    "rank": 25,
    "hedgeable": true
   }
