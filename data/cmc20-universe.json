@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1703.4,
+   "mc": 1705,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 326.9,
+   "mc": 327.6,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 102.8,
+   "mc": 105.2,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 93.6,
+   "mc": 93.9,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 70.2,
+   "mc": 70.4,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,7 +45,7 @@
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 22.2,
+   "mc": 22.3,
    "rank": 7,
    "hedgeable": true
   },
@@ -59,7 +59,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 15.9,
+   "mc": 14.5,
    "rank": 9,
    "hedgeable": true
   },
@@ -73,7 +73,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.3,
+   "mc": 10.4,
    "rank": 11,
    "hedgeable": true
   },
@@ -108,14 +108,14 @@
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 6.1,
+   "mc": 6.2,
    "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "UNI",
    "name": "Uniswap",
-   "mc": 5.7,
+   "mc": 5.6,
    "rank": 17,
    "hedgeable": true
   },
@@ -134,17 +134,17 @@
    "hedgeable": true
   },
   {
-   "symbol": "SUI",
-   "name": "Sui",
-   "mc": 4.9,
+   "symbol": "CC",
+   "name": "Canton",
+   "mc": 4.8,
    "rank": 20,
    "hedgeable": true
   }
  ],
  "watch": [
   {
-   "symbol": "CC",
-   "name": "Canton",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 4.8,
    "rank": 21,
    "hedgeable": true
@@ -152,28 +152,28 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 4.4,
+   "mc": 4.5,
    "rank": 22,
    "hedgeable": true
   },
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4.2,
+   "mc": 4.3,
    "rank": 23,
    "hedgeable": false
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
-   "mc": 3.3,
+   "symbol": "TAO",
+   "name": "Bittensor",
+   "mc": 3.4,
    "rank": 24,
    "hedgeable": true
   },
   {
-   "symbol": "TAO",
-   "name": "Bittensor",
-   "mc": 3.3,
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
+   "mc": 3.4,
    "rank": 25,
    "hedgeable": true
   }
