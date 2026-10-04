@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1706.1,
+   "mc": 1712.6,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 329.1,
+   "mc": 329.4,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 104.8,
+   "mc": 105.1,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 94.1,
+   "mc": 94.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 71.1,
+   "mc": 71.6,
    "rank": 5,
    "hedgeable": true
   },
@@ -59,7 +59,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 16,
+   "mc": 16.1,
    "rank": 9,
    "hedgeable": true
   },
@@ -73,7 +73,7 @@
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.4,
+   "mc": 10.3,
    "rank": 11,
    "hedgeable": true
   },
@@ -87,7 +87,7 @@
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.2,
+   "mc": 8.3,
    "rank": 13,
    "hedgeable": true
   },
@@ -108,14 +108,14 @@
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 6.3,
+   "mc": 6.4,
    "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "UNI",
    "name": "Uniswap",
-   "mc": 5.7,
+   "mc": 5.6,
    "rank": 17,
    "hedgeable": true
   },
@@ -134,8 +134,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 4.9,
    "rank": 20,
    "hedgeable": true
@@ -143,8 +143,8 @@
  ],
  "watch": [
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 4.9,
    "rank": 21,
    "hedgeable": true
@@ -171,8 +171,8 @@
    "hedgeable": true
   },
   {
-   "symbol": "SHIB",
-   "name": "Shiba Inu",
+   "symbol": "CRO",
+   "name": "Cronos",
    "mc": 3.4,
    "rank": 25,
    "hedgeable": true
