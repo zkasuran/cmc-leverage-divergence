@@ -3,84 +3,84 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1674.6,
+   "mc": 1663.4,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 314,
+   "mc": 313.5,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 102.6,
+   "mc": 102.2,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 89.6,
+   "mc": 88.4,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 68.4,
+   "mc": 67.7,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.9,
+   "mc": 31.8,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 22.4,
+   "mc": 22.2,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 22.3,
+   "mc": 20.9,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 15.3,
+   "mc": 15,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 10.3,
+   "mc": 10.5,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 10,
+   "mc": 9.8,
    "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 9.4,
+   "mc": 9.3,
    "rank": 12,
    "hedgeable": true
   },
@@ -108,43 +108,43 @@
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 6.1,
+   "mc": 5.9,
    "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 5.1,
-   "rank": 17,
-   "hedgeable": true
-  },
-  {
-   "symbol": "AVAX",
-   "name": "Avalanche",
    "mc": 5,
-   "rank": 18,
+   "rank": 17,
    "hedgeable": true
   },
   {
    "symbol": "UNI",
    "name": "Uniswap",
-   "mc": 4.9,
+   "mc": 4.8,
+   "rank": 18,
+   "hedgeable": true
+  },
+  {
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "mc": 4.8,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "CC",
-   "name": "Canton",
-   "mc": 4.8,
+   "symbol": "SUI",
+   "name": "Sui",
+   "mc": 4.6,
    "rank": 20,
    "hedgeable": true
   }
  ],
  "watch": [
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "CC",
+   "name": "Canton",
    "mc": 4.6,
    "rank": 21,
    "hedgeable": true
@@ -159,14 +159,14 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 4.1,
+   "mc": 4,
    "rank": 23,
    "hedgeable": false
   },
   {
    "symbol": "TAO",
    "name": "Bittensor",
-   "mc": 3.4,
+   "mc": 3.3,
    "rank": 24,
    "hedgeable": true
   },
