@@ -1,39 +1,39 @@
 {
-  "bars": 341,
+  "bars": 342,
   "firstDay": "2025-11-11",
-  "lastDay": "2026-10-17",
+  "lastDay": "2026-10-18",
   "overlay": {
     "startingEquity": 10000,
-    "finalEquity": 10467.41188247412,
-    "totalReturnPct": 4.674118824741199,
+    "finalEquity": 10503.2215103792,
+    "totalReturnPct": 5.032215103792005,
     "maxDrawdownPct": 9.382874594700308,
-    "sharpe": 0.48198984763770364,
-    "sortino": 0.49189811525546706,
+    "sharpe": 0.5128552783481459,
+    "sortino": 0.5228529898515439,
     "winRatePct": 72.72727272727273,
     "profitFactor": 2.272335654512798,
     "totalTrades": 11,
     "totalFees": 56.719862496502884,
-    "turnover": 5.680916702851639,
-    "exposurePct": 69.20821114369502,
+    "turnover": 5.680050938714513,
+    "exposurePct": 69.2982456140351,
     "violations": 0
   },
   "buyHold": {
     "startingEquity": 10000,
-    "finalEquity": 8636.750370321959,
-    "totalReturnPct": -13.632496296780408,
+    "finalEquity": 8696.13500647982,
+    "totalReturnPct": -13.038649935201793,
     "maxDrawdownPct": 41.915575524364,
-    "sharpe": -0.1377433673733644,
-    "sortino": -0.13372658578049298,
+    "sharpe": -0.12077501980250997,
+    "sortino": -0.11709659375482824,
     "winRatePct": 0,
     "profitFactor": 0,
     "totalTrades": 0,
     "totalFees": 9.904950564833195,
-    "turnover": 1.2058642826392365,
-    "exposurePct": 90.6158357771261,
+    "turnover": 1.2056567444519632,
+    "exposurePct": 90.64327485380117,
     "violations": 0
   },
-  "overlayPsr": 0.685173673183195,
-  "buyHoldPsr": 0.4472143172652818,
+  "overlayPsr": 0.6967330108587606,
+  "buyHoldPsr": 0.4536150031483911,
   "curve": [
     {
       "t": "2025-11-11",
@@ -464,6 +464,11 @@
       "t": "2026-10-17",
       "ov": 104.7,
       "bh": 86.4
+    },
+    {
+      "t": "2026-10-18",
+      "ov": 105,
+      "bh": 87
     }
   ]
 }
