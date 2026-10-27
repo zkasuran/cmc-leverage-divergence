@@ -3,28 +3,28 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1602.5,
+   "mc": 1611.4,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 282.6,
+   "mc": 284,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 96.9,
+   "mc": 97.5,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 82.2,
+   "mc": 83.1,
    "rank": 4,
    "hedgeable": true
   },
@@ -38,35 +38,35 @@
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 31.2,
+   "mc": 31.1,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 20.7,
+   "mc": 21.5,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 19.7,
+   "mc": 20,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 13.3,
+   "mc": 12.1,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 11.3,
+   "mc": 11.1,
    "rank": 10,
    "hedgeable": true
   },
@@ -92,23 +92,23 @@
    "hedgeable": true
   },
   {
-   "symbol": "XLM",
-   "name": "Stellar",
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
    "mc": 5.9,
    "rank": 14,
    "hedgeable": true
   },
   {
-   "symbol": "NEAR",
-   "name": "NEAR Protocol",
-   "mc": 5.8,
+   "symbol": "XLM",
+   "name": "Stellar",
+   "mc": 5.9,
    "rank": 15,
    "hedgeable": true
   },
   {
    "symbol": "BCH",
    "name": "Bitcoin Cash",
-   "mc": 5.6,
+   "mc": 5.8,
    "rank": 16,
    "hedgeable": true
   },
@@ -127,15 +127,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 3.9,
+   "symbol": "CC",
+   "name": "Canton",
+   "mc": 4,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "CC",
-   "name": "Canton",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 3.9,
    "rank": 20,
    "hedgeable": true
@@ -145,7 +145,7 @@
   {
    "symbol": "SUI",
    "name": "Sui",
-   "mc": 3.7,
+   "mc": 3.8,
    "rank": 21,
    "hedgeable": true
   },
