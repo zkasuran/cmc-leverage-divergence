@@ -3,77 +3,77 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1556.3,
+   "mc": 1564.9,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 275.1,
+   "mc": 277.2,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 92.3,
+   "mc": 92.7,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 79.2,
+   "mc": 79.5,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 56.3,
+   "mc": 56.5,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 28.7,
+   "mc": 29.5,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 22.2,
+   "mc": 22.3,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 21.1,
+   "mc": 21.2,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11.8,
+   "mc": 13.1,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 11.2,
+   "mc": 11.4,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 8.8,
+   "mc": 8.7,
    "rank": 11,
    "hedgeable": true
   },
@@ -99,15 +99,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "NEAR",
-   "name": "NEAR Protocol",
-   "mc": 5.8,
+   "symbol": "BCH",
+   "name": "Bitcoin Cash",
+   "mc": 5.7,
    "rank": 15,
    "hedgeable": true
   },
   {
-   "symbol": "BCH",
-   "name": "Bitcoin Cash",
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
    "mc": 5.7,
    "rank": 16,
    "hedgeable": true
@@ -115,28 +115,28 @@
   {
    "symbol": "UNI",
    "name": "Uniswap",
-   "mc": 4.4,
+   "mc": 4.5,
    "rank": 17,
    "hedgeable": true
   },
   {
    "symbol": "LTC",
    "name": "Litecoin",
-   "mc": 4.3,
+   "mc": 4.4,
    "rank": 18,
+   "hedgeable": true
+  },
+  {
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "mc": 4,
+   "rank": 19,
    "hedgeable": true
   },
   {
    "symbol": "CC",
    "name": "Canton",
    "mc": 3.9,
-   "rank": 19,
-   "hedgeable": true
-  },
-  {
-   "symbol": "AVAX",
-   "name": "Avalanche",
-   "mc": 3.8,
    "rank": 20,
    "hedgeable": true
   }
@@ -152,7 +152,7 @@
   {
    "symbol": "GRAM",
    "name": "Gram (prev. Toncoin)",
-   "mc": 3.4,
+   "mc": 3.5,
    "rank": 22,
    "hedgeable": true
   },
