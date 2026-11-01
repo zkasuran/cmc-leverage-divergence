@@ -3,91 +3,91 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1567.4,
+   "mc": 1561.7,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 277.3,
+   "mc": 275.5,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 94.2,
+   "mc": 93,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 79.3,
+   "mc": 78.9,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 56,
+   "mc": 55.4,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 29.6,
+   "mc": 29.7,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 22.3,
+   "mc": 22,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 21,
+   "mc": 20.6,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 13,
+   "mc": 11.7,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 11.3,
+   "mc": 11.2,
    "rank": 10,
-   "hedgeable": true
-  },
-  {
-   "symbol": "LINK",
-   "name": "Chainlink",
-   "mc": 8.7,
-   "rank": 11,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
    "mc": 8.6,
-   "rank": 12,
+   "rank": 11,
    "hedgeable": false
+  },
+  {
+   "symbol": "LINK",
+   "name": "Chainlink",
+   "mc": 8.5,
+   "rank": 12,
+   "hedgeable": true
   },
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 7.1,
+   "mc": 7,
    "rank": 13,
    "hedgeable": true
   },
@@ -99,23 +99,23 @@
    "hedgeable": true
   },
   {
-   "symbol": "NEAR",
-   "name": "NEAR Protocol",
-   "mc": 5.7,
+   "symbol": "BCH",
+   "name": "Bitcoin Cash",
+   "mc": 5.6,
    "rank": 15,
    "hedgeable": true
   },
   {
-   "symbol": "BCH",
-   "name": "Bitcoin Cash",
-   "mc": 5.7,
+   "symbol": "NEAR",
+   "name": "NEAR Protocol",
+   "mc": 5.6,
    "rank": 16,
    "hedgeable": true
   },
   {
    "symbol": "UNI",
    "name": "Uniswap",
-   "mc": 4.6,
+   "mc": 4.4,
    "rank": 17,
    "hedgeable": true
   },
@@ -136,7 +136,7 @@
   {
    "symbol": "AVAX",
    "name": "Avalanche",
-   "mc": 3.9,
+   "mc": 3.8,
    "rank": 20,
    "hedgeable": true
   }
