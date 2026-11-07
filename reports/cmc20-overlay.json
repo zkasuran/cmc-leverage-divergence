@@ -1,39 +1,39 @@
 {
-  "bars": 360,
+  "bars": 361,
   "firstDay": "2025-11-11",
-  "lastDay": "2026-11-05",
+  "lastDay": "2026-11-06",
   "overlay": {
     "startingEquity": 10000,
-    "finalEquity": 10003.703507686769,
-    "totalReturnPct": 0.037035076867687165,
+    "finalEquity": 10000.24727604377,
+    "totalReturnPct": 0.0024727604377039825,
     "maxDrawdownPct": 9.382874594700324,
-    "sharpe": 0.06339166070104367,
-    "sortino": 0.05701434494098919,
-    "winRatePct": 69.23076923076923,
-    "profitFactor": 1.3430192668266763,
-    "totalTrades": 13,
-    "totalFees": 67.65618195126947,
-    "turnover": 6.788164437603226,
-    "exposurePct": 67.77777777777779,
+    "sharpe": 0.060427093739505715,
+    "sortino": 0.054507416919535735,
+    "winRatePct": 64.28571428571429,
+    "profitFactor": 1.1176789852302969,
+    "totalTrades": 14,
+    "totalFees": 71.59141470039755,
+    "turnover": 7.182932131854412,
+    "exposurePct": 67.86703601108033,
     "violations": 0
   },
   "buyHold": {
     "startingEquity": 10000,
-    "finalEquity": 8064.386316045336,
-    "totalReturnPct": -19.356136839546643,
+    "finalEquity": 8083.909092288043,
+    "totalReturnPct": -19.160909077119566,
     "maxDrawdownPct": 41.915575524364,
-    "sharpe": -0.2779231496911994,
-    "sortino": -0.26625253279921207,
+    "sharpe": -0.2719392593040038,
+    "sortino": -0.2601620251111331,
     "winRatePct": 0,
     "profitFactor": 0,
     "totalTrades": 0,
     "totalFees": 9.904950564833195,
-    "turnover": 1.2036452138098162,
-    "exposurePct": 91.11111111111111,
+    "turnover": 1.2037042185242053,
+    "exposurePct": 91.13573407202216,
     "violations": 0
   },
-  "overlayPsr": 0.5251134668560022,
-  "buyHoldPsr": 0.3916107792196112,
+  "overlayPsr": 0.523970227306769,
+  "buyHoldPsr": 0.39374134468004457,
   "curve": [
     {
       "t": "2025-11-11",
@@ -486,9 +486,9 @@
       "bh": 81.7
     },
     {
-      "t": "2026-11-05",
+      "t": "2026-11-06",
       "ov": 100,
-      "bh": 80.6
+      "bh": 80.8
     }
   ]
 }
