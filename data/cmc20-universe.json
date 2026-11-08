@@ -3,35 +3,35 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1527,
+   "mc": 1524.3,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 273.3,
+   "mc": 272.2,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 91.6,
+   "mc": 91.7,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 73.6,
+   "mc": 73.1,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 52.9,
+   "mc": 52.8,
    "rank": 5,
    "hedgeable": true
   },
@@ -45,14 +45,14 @@
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 21.6,
+   "mc": 21.3,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 19.6,
+   "mc": 19.4,
    "rank": 8,
    "hedgeable": true
   },
@@ -66,7 +66,7 @@
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 11.2,
+   "mc": 11.1,
    "rank": 10,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 4.9,
+   "mc": 4.8,
    "rank": 16,
    "hedgeable": true
   },
@@ -166,13 +166,13 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 2.9,
+   "mc": 3,
    "rank": 24,
    "hedgeable": true
   },
   {
-   "symbol": "TAO",
-   "name": "Bittensor",
+   "symbol": "SHIB",
+   "name": "Shiba Inu",
    "mc": 2.6,
    "rank": 25,
    "hedgeable": true
