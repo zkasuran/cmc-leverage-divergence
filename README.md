@@ -60,7 +60,7 @@ dynamic by construction: a coin that drops out of the top 20 leaves the basket a
 a new entrant joins automatically.
 
 Over CMC20's life so far, that overlay **cut the drawdown from 41.9% to 9.4% and
-the loss from -22.5% to -0.4%** on this short down-only window (`npm run cmc20`).
+the loss from -22.4% to -0.4%** on this short down-only window (`npm run cmc20`).
 Both probabilistic Sharpes sit below 0.5 (0.51 overlay vs 0.36 buy-and-hold), so
 neither has a statistically positive Sharpe on 207 days; the honest edge here is
 the drawdown, not the Sharpe.
@@ -149,7 +149,7 @@ The funding signal, built from CMC20's 19 perp-liquid constituents
 
 | | Return | Max drawdown | Prob. Sharpe |
 |--|------:|-------------:|-------------:|
-| CMC20 buy-and-hold | -22.5% | 41.9% | 0.36 |
+| CMC20 buy-and-hold | -22.4% | 41.9% | 0.36 |
 | **Funding-regime overlay** | **-0.4%** | **9.4%** | **0.51** |
 
 Drawdown cut by 25 points, loss cut by 23. It's a 7-month down-only sample, so a
