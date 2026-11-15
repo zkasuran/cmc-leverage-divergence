@@ -3,56 +3,56 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1300.8,
+   "mc": 1309,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 221.1,
+   "mc": 223,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 77.6,
+   "mc": 78.2,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 60.9,
+   "mc": 61,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 42.2,
+   "mc": 42.5,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 29.1,
+   "mc": 29,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 17,
+   "mc": 17.1,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 15.1,
+   "mc": 15.4,
    "rank": 8,
    "hedgeable": true
   },
@@ -73,7 +73,7 @@
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.4,
+   "mc": 8.5,
    "rank": 11,
    "hedgeable": false
   },
@@ -87,14 +87,14 @@
   {
    "symbol": "ADA",
    "name": "Cardano",
-   "mc": 5.6,
+   "mc": 5.7,
    "rank": 13,
    "hedgeable": true
   },
   {
    "symbol": "XLM",
    "name": "Stellar",
-   "mc": 4.9,
+   "mc": 5,
    "rank": 14,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 4.1,
+   "mc": 4.2,
    "rank": 16,
    "hedgeable": true
   },
@@ -127,15 +127,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 3.2,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
+   "symbol": "UNI",
+   "name": "Uniswap",
    "mc": 3.2,
    "rank": 20,
    "hedgeable": true
@@ -143,15 +143,15 @@
  ],
  "watch": [
   {
-   "symbol": "GRAM",
-   "name": "Gram (prev. Toncoin)",
+   "symbol": "SUI",
+   "name": "Sui",
    "mc": 3,
    "rank": 21,
    "hedgeable": true
   },
   {
-   "symbol": "SUI",
-   "name": "Sui",
+   "symbol": "GRAM",
+   "name": "Gram (prev. Toncoin)",
    "mc": 3,
    "rank": 22,
    "hedgeable": true
