@@ -3,84 +3,84 @@
   {
    "symbol": "BTC",
    "name": "Bitcoin",
-   "mc": 1303,
+   "mc": 1296.4,
    "rank": 1,
    "hedgeable": true
   },
   {
    "symbol": "ETH",
    "name": "Ethereum",
-   "mc": 221.8,
+   "mc": 221.5,
    "rank": 2,
    "hedgeable": true
   },
   {
    "symbol": "BNB",
    "name": "BNB",
-   "mc": 77.5,
+   "mc": 77.6,
    "rank": 3,
    "hedgeable": true
   },
   {
    "symbol": "XRP",
    "name": "XRP",
-   "mc": 60.8,
+   "mc": 60.7,
    "rank": 4,
    "hedgeable": true
   },
   {
    "symbol": "SOL",
    "name": "Solana",
-   "mc": 42.1,
+   "mc": 42.4,
    "rank": 5,
    "hedgeable": true
   },
   {
    "symbol": "TRX",
    "name": "TRON",
-   "mc": 29.2,
+   "mc": 29,
    "rank": 6,
    "hedgeable": true
   },
   {
    "symbol": "HYPE",
    "name": "Hyperliquid",
-   "mc": 16.9,
+   "mc": 17.4,
    "rank": 7,
    "hedgeable": true
   },
   {
    "symbol": "ZEC",
    "name": "Zcash",
-   "mc": 15,
+   "mc": 15.4,
    "rank": 8,
    "hedgeable": true
   },
   {
    "symbol": "XMR",
    "name": "Monero",
-   "mc": 9.4,
+   "mc": 9.3,
    "rank": 9,
    "hedgeable": true
   },
   {
    "symbol": "DOGE",
    "name": "Dogecoin",
-   "mc": 9.3,
+   "mc": 9.2,
    "rank": 10,
    "hedgeable": true
   },
   {
    "symbol": "LEO",
    "name": "UNUS SED LEO",
-   "mc": 8.4,
+   "mc": 8.5,
    "rank": 11,
    "hedgeable": false
   },
   {
    "symbol": "LINK",
    "name": "Chainlink",
-   "mc": 6.9,
+   "mc": 6.8,
    "rank": 12,
    "hedgeable": true
   },
@@ -108,7 +108,7 @@
   {
    "symbol": "NEAR",
    "name": "NEAR Protocol",
-   "mc": 4.1,
+   "mc": 4.2,
    "rank": 16,
    "hedgeable": true
   },
@@ -127,15 +127,15 @@
    "hedgeable": true
   },
   {
-   "symbol": "AVAX",
-   "name": "Avalanche",
+   "symbol": "UNI",
+   "name": "Uniswap",
    "mc": 3.2,
    "rank": 19,
    "hedgeable": true
   },
   {
-   "symbol": "UNI",
-   "name": "Uniswap",
+   "symbol": "AVAX",
+   "name": "Avalanche",
    "mc": 3.2,
    "rank": 20,
    "hedgeable": true
@@ -166,7 +166,7 @@
   {
    "symbol": "HBAR",
    "name": "Hedera",
-   "mc": 2.6,
+   "mc": 2.5,
    "rank": 24,
    "hedgeable": true
   },
